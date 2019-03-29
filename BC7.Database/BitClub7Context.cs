@@ -18,8 +18,19 @@ namespace BC7.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserAccountData>().HasKey(x => x.Id);
-            modelBuilder.Entity<UserAccountData>().Property(x => x.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<UserAccountData>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.HasIndex(e => e.Email).IsUnique();
+                entity.HasIndex(e => e.Login).IsUnique();
+            });
+
+            modelBuilder.Entity<UserMultiAccount>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            });
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
