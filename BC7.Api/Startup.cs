@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BC7.Api.ConfigurationExtensions;
 using BC7.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,6 +41,7 @@ namespace BC7.Api
         {
             if (env.IsDevelopment())
             {
+                app.UpdateDatabase();
                 app.UseDeveloperExceptionPage();
             }
             else
