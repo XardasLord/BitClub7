@@ -6,7 +6,8 @@ namespace BC7.Database
 {
     public class BitClub7Context : DbContext, IBitClub7Context
     {
-        public BitClub7Context()
+        public BitClub7Context(DbContextOptions<BitClub7Context> options) 
+            : base(options)
         {
         }
 
