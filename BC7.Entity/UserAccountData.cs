@@ -1,4 +1,5 @@
-﻿using BC7.Entity.AbstractBase;
+﻿using System.Collections.Generic;
+using BC7.Entity.AbstractBase;
 
 namespace BC7.Entity
 {
@@ -14,5 +15,6 @@ namespace BC7.Entity
         public string City { get; set; }
         public string ZipCode { get; set; }
         public string Country { get; set; }
+        public virtual ICollection<UserMultiAccount> UserMultiAccounts { get; set; }
     }
 }
