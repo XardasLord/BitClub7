@@ -8,7 +8,7 @@ namespace BC7.Entity
         public Guid UserMultiAccountId { get; set; }
         public virtual UserMultiAccount UserMultiAccount { get; set; }
         public Guid? ParentId { get; set; }
-        public virtual MatrixPosition ParentMatrixPosition { get; set; }
+        public virtual MatrixPosition Parent { get; set; }
 
         public int MatrixLevel { get; set; }
         public int Left { get; set; }
