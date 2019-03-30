@@ -11,7 +11,7 @@ namespace BC7.Entity
         public virtual Guid? UserMultiAccountInvitingId { get; set; }
         public virtual UserMultiAccount UserMultiAccountInviting { get; set; }
 
-        public int AccountNumber { get; set; }
+        public string MultiAccountName { get; set; }
         public string RefLink { get; set; }
     }
 }

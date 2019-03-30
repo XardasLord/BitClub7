@@ -1,9 +1,6 @@
-﻿using System;
-using MediatR;
-
-namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAccount
+﻿namespace BC7.Business.Models
 {
-    public class RegisterNewUserAccountCommand : IRequest<Guid>
+    public class RegisterNewUserModel
     {
         public string Email { get; set; }
         public string Login { get; set; }
@@ -14,8 +11,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAc
         public string City { get; set; }
         public string ZipCode { get; set; }
         public string Country { get; set; }
-        public string InvitingRefLink { get; set; }
-        public string InvitingUserLogin { get; set; }
         public string BtcWalletAddress { get; set; }
+        public string InvitingUserLogin { get; set; }
     }
 }

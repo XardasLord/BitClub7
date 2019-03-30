@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using BC7.Api.ConfigurationExtensions;
 using BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAccount;
+using BC7.Business.Validators;
 using BC7.Database;
 using BC7.Security;
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -42,7 +42,7 @@ namespace BC7.Api
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterNewUserAccountCommandValidator>()); // TODO: Getting Assembly can be done more universal and pretty
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterNewUserModelValidator>()); // TODO: Getting Assembly can be done more universal and pretty
 
             services.AddSwaggerGen(c =>
             {

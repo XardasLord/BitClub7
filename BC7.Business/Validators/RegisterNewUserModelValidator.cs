@@ -1,10 +1,11 @@
-﻿using FluentValidation;
+﻿using BC7.Business.Models;
+using FluentValidation;
 
-namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAccount
+namespace BC7.Business.Validators
 {
-    public class RegisterNewUserAccountCommandValidator : AbstractValidator<RegisterNewUserAccountCommand>
+    public class RegisterNewUserModelValidator : AbstractValidator<RegisterNewUserModel>
     {
-        public RegisterNewUserAccountCommandValidator()
+        public RegisterNewUserModelValidator()
         {
             RuleFor(x => x.Login)
                 .NotNull()
