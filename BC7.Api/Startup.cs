@@ -32,6 +32,7 @@ namespace BC7.Api
         {
             // TODO: Move to extension
             services.AddTransient<IReflinkHelper, ReflinkHelper>();
+            services.AddTransient<IUserMultiAccountHelper, UserMultiAccountHelper>();
             services.AddDbContext<IBitClub7Context, BitClub7Context>(
                 opts => opts.UseSqlServer(Configuration.GetConnectionString("BitClub7DB"),
                     b => b.MigrationsAssembly(typeof(IBitClub7Context).Namespace))
