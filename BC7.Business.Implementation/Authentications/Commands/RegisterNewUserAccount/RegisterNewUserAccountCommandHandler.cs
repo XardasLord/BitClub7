@@ -47,7 +47,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAc
             {
                 UserAccountDataId = userAccountData.Id,
                 UserMultiAccountInvitingId = invitingUserMultiAccountId,
-                //MultiAccountName = 
+                MultiAccountName = userAccountData.Login,
                 RefLink = _reflinkHelper.GenerateReflink()
             };
             await _context.Set<UserMultiAccount>().AddAsync(userMultiAccount);
