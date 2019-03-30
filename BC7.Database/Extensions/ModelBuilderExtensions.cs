@@ -1,5 +1,6 @@
 ﻿using System;
 using BC7.Entity;
+using BC7.Security;
 using Microsoft.EntityFrameworkCore;
 
 namespace BC7.Database.Extensions
@@ -95,6 +96,7 @@ namespace BC7.Database.Extensions
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("getutcdate()");
                 entity.HasIndex(e => e.Email).IsUnique();
                 entity.HasIndex(e => e.Login).IsUnique();
                 entity.Property(e => e.Email).IsRequired();
@@ -115,12 +117,14 @@ namespace BC7.Database.Extensions
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("getutcdate()");
             });
 
             modelBuilder.Entity<MatrixPosition>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("getutcdate()");
             });
         }
     }
