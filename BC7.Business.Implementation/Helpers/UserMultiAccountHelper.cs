@@ -1,13 +1,37 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using BC7.Business.Helpers;
+using BC7.Database;
+using BC7.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BC7.Business.Implementation.Helpers
 {
     public class UserMultiAccountHelper : IUserMultiAccountHelper
     {
-        public string GetNextMultiAccountName(Guid userAccountDataId)
+        private readonly IBitClub7Context _context;
+
+        public UserMultiAccountHelper(IBitClub7Context context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+
+        public async Task<string> GetNextMultiAccountName(Guid userAccountDataId)
+        {
+            var userAccount = await _context.Set<UserAccountData>()
+                .Include(x => x.UserMultiAccounts)
+                .Where(x => x.Id == userAccountDataId)
+                .SingleAsync();
+
+            var numberOfMultiAccounts = userAccount.UserMultiAccounts.Count;
+
+            if (numberOfMultiAccounts == 0)
+            {
+                return userAccount.Login;
+            }
+
+            return $"{userAccount.Login}-{numberOfMultiAccounts:000}";
         }
     }
 }

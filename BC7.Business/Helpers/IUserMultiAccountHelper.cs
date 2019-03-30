@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace BC7.Business.Helpers
 {
     public interface IUserMultiAccountHelper
     {
-        string GetNextMultiAccountName(Guid userAccountDataId);
+        Task<string> GetNextMultiAccountName(Guid userAccountDataId);
     }
 }
