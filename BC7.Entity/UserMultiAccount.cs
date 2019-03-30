@@ -7,6 +7,10 @@ namespace BC7.Entity
     {
         public Guid UserAccountDataId { get; set; }
         public virtual UserAccountData UserAccountData { get; set; }
+
+        public virtual Guid? InvitedByUserMultiAccountId { get; set; }
+        public virtual UserMultiAccount UserMultiAccountInviting { get; set; }
+
         public int AccountNumber { get; set; }
         public string RefLink { get; set; }
     }
