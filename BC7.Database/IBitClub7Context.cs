@@ -14,5 +14,7 @@ namespace BC7.Database
         DatabaseFacade Database { get; }
 
         DbSet<UserAccountData> UserAccountsData { get; set; }
+        DbSet<UserMultiAccount> UserMultiAccounts { get; set; }
+        DbSet<MatrixPosition> MatrixPositions { get; set; }
     }
 }

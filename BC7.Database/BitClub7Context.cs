@@ -31,6 +31,12 @@ namespace BC7.Database
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
             });
+
+            modelBuilder.Entity<MatrixPosition>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            });
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -43,5 +49,6 @@ namespace BC7.Database
 
         public DbSet<UserAccountData> UserAccountsData { get; set; }
         public DbSet<UserMultiAccount> UserMultiAccounts { get; set; }
+        public DbSet<MatrixPosition> MatrixPositions { get; set; }
     }
 }
