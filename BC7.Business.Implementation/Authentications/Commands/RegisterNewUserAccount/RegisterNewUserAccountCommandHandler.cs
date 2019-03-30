@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using BC7.Business.Helpers;
 using BC7.Database;
 using BC7.Entity;
 using BC7.Security;
@@ -16,11 +17,13 @@ namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAc
     {
         private readonly IBitClub7Context _context;
         private readonly IMapper _mapper;
+        private readonly IReflinkHelper _reflinkHelper;
 
-        public RegisterNewUserAccountCommandHandler(IBitClub7Context context, IMapper mapper)
+        public RegisterNewUserAccountCommandHandler(IBitClub7Context context, IMapper mapper, IReflinkHelper reflinkHelper)
         {
             _context = context;
             _mapper = mapper;
+            _reflinkHelper = reflinkHelper;
         }
 
         public async Task<Guid> Handle(RegisterNewUserAccountCommand command, CancellationToken cancellationToken = default(CancellationToken))
@@ -45,7 +48,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAc
                 UserAccountDataId = userAccountData.Id,
                 UserMultiAccountInvitingId = invitingUserMultiAccountId,
                 //MultiAccountName = 
-                RefLink = "1234567890" // TODO: Create random generator helper
+                RefLink = _reflinkHelper.GenerateReflink()
             };
             await _context.Set<UserMultiAccount>().AddAsync(userMultiAccount);
             await _context.SaveChangesAsync();
