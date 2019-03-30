@@ -15,6 +15,7 @@ namespace BC7.Entity
         public string City { get; set; }
         public string ZipCode { get; set; }
         public string Country { get; set; }
+        public string BtcWalletAddress { get; set; }
         public string Role { get; set; }
         public virtual ICollection<UserMultiAccount> UserMultiAccounts { get; set; }
     }
