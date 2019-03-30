@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using System.Threading.Tasks;
+using BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAccount;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BC7.Api.Controllers
@@ -12,6 +14,12 @@ namespace BC7.Api.Controllers
         public AuthenticationController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpPost("registerNewAccount")]
+        public async Task<IActionResult> RegisterNewAccount([FromBody] RegisterNewUserAccountCommand command)
+        {
+            return Ok(await _mediator.Send(command));
         }
     }
 }
