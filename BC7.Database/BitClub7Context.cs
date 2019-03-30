@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using BC7.Database.Extensions;
 using BC7.Entity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,8 @@ namespace BC7.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Seed();
+
             modelBuilder.Entity<UserAccountData>(entity =>
             {
                 entity.HasKey(e => e.Id);

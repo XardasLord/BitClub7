@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.2.0" />
     <PackageReference Include="MediatR" Version="6.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -14,6 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BC7.Business.Implementation\BC7.Business.Implementation.csproj" />
+    <ProjectReference Include="..\BC7.Business\BC7.Business.csproj" />
     <ProjectReference Include="..\BC7.Database\BC7.Database.csproj" />
     <ProjectReference Include="..\BC7.Security\BC7.Security.csproj" />
   </ItemGroup>
