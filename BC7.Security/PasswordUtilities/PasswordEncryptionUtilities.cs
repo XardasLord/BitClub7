@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace BC7.Security.PasswordUtilities
 {
-    public class PasswordEncryptionUtilities
+    public static class PasswordEncryptionUtilities
     {
         private const int SaltSize = 8;
         private const int NumIterations = 10000;
