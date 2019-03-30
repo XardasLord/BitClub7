@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using BC7.Api.ConfigurationExtensions;
+using BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAccount;
 using BC7.Database;
 using BC7.Security;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace BC7.Api
@@ -40,7 +34,7 @@ namespace BC7.Api
             services.ConfigureApplicationJwtAuthorization(Configuration);
 
             services.AddAutoMapper();
-            services.AddMediatR();
+            services.AddMediatR(typeof(RegisterNewUserAccountCommand).Assembly); // TODO: Getting Assembly can be done more universal and pretty
 
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 
