@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BC7.Api.ConfigurationExtensions;
 using BC7.Database;
 using BC7.Security;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +36,7 @@ namespace BC7.Api
             );
 
             services.ConfigureApplicationJwtAuthorization(Configuration);
+            services.AddMediatR();
 
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 
