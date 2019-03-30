@@ -17,7 +17,25 @@ namespace BC7.Business.Implementation.Helpers
             _context = context;
         }
 
-        public async Task<string> GetNextMultiAccountName(Guid userAccountDataId)
+        public Task<UserMultiAccount> GetByReflink(string reflink)
+        {
+            return _context.Set<UserMultiAccount>().SingleOrDefaultAsync(x => x.RefLink == reflink);
+        }
+
+        public Task<UserMultiAccount> GetByAccountName(string accountName)
+        {
+            return _context.Set<UserMultiAccount>().SingleOrDefaultAsync(x => x.MultiAccountName == accountName);
+        }
+
+        public Task<UserMultiAccount> GetRandomUserMultiAccount()
+        {
+            return _context.Set<UserMultiAccount>()
+                .OrderBy(r => Guid.NewGuid())
+                .Take(1)
+                .FirstAsync();
+        }
+
+        public async Task<string> GenerateNextMultiAccountName(Guid userAccountDataId)
         {
             var userAccount = await _context.Set<UserAccountData>()
                 .Include(x => x.UserMultiAccounts)

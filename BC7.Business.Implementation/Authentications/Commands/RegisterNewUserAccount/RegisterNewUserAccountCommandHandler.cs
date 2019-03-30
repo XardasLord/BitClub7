@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -18,12 +17,18 @@ namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAc
         private readonly IBitClub7Context _context;
         private readonly IMapper _mapper;
         private readonly IReflinkHelper _reflinkHelper;
+        private readonly IUserMultiAccountHelper _userMultiAccountHelper;
 
-        public RegisterNewUserAccountCommandHandler(IBitClub7Context context, IMapper mapper, IReflinkHelper reflinkHelper)
+        public RegisterNewUserAccountCommandHandler(
+            IBitClub7Context context,
+            IMapper mapper,
+            IReflinkHelper reflinkHelper,
+            IUserMultiAccountHelper userMultiAccountHelper)
         {
             _context = context;
             _mapper = mapper;
             _reflinkHelper = reflinkHelper;
+            _userMultiAccountHelper = userMultiAccountHelper;
         }
 
         public async Task<Guid> Handle(RegisterNewUserAccountCommand command, CancellationToken cancellationToken = default(CancellationToken))
@@ -85,7 +90,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAc
 
         private async Task<Guid> GetInvitingUserIdByLogin(string login)
         {
-            var invitingUser = await _context.Set<UserMultiAccount>().SingleOrDefaultAsync(x => x.MultiAccountName == login);
+            var invitingUser = await _userMultiAccountHelper.GetByAccountName(login);
 
             if (invitingUser == null)
             {
@@ -97,7 +102,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAc
 
         private async Task<Guid> GetInvitingUserIdByRefLink(string reflink)
         {
-            var invitingUser = await _context.Set<UserMultiAccount>().SingleOrDefaultAsync(x => x.RefLink == reflink);
+            var invitingUser = await _userMultiAccountHelper.GetByReflink(reflink);
 
             if (invitingUser == null)
             {
@@ -109,13 +114,9 @@ namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAc
 
         private async Task<Guid> GetRandomInvitingUserId()
         {
-            var randomSponsorId = await _context.Set<UserMultiAccount>()
-                            .Select(x => x.Id)
-                            .OrderBy(r => Guid.NewGuid())
-                            .Take(1)
-                            .FirstAsync();
+            var randomSponsor = await _userMultiAccountHelper.GetRandomUserMultiAccount();
 
-            return randomSponsorId;
+            return randomSponsor.Id;
         }
     }
 }
