@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BC7.Api.ConfigurationExtensions;
 using BC7.Database;
 using BC7.Security;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace BC7.Api
 {
@@ -35,10 +37,22 @@ namespace BC7.Api
             );
 
             services.ConfigureApplicationJwtAuthorization(Configuration);
+            services.AddMediatR();
 
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v0.1 alpha",
+                    Title = "BitClub7",
+                    Description = "BitClub7 API",
+                    TermsOfService = "None",
+                    //Contact = new Contact() { Name = "Talking Dotnet", Email = "contact@talkingdotnet.com", Url = "www.talkingdotnet.com" }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +73,12 @@ namespace BC7.Api
             app.UseHttpsRedirection();
             app.UseCors("AllowAll");
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "BitClub7 API");
+            });
         }
     }
 }
