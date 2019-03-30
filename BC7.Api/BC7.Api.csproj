@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BC7.Database\BC7.Database.csproj" />
+    <ProjectReference Include="..\BC7.Security\BC7.Security.csproj" />
   </ItemGroup>
 
 </Project>

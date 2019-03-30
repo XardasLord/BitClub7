@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BC7.Api.ConfigurationExtensions;
 using BC7.Database;
+using BC7.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,6 +34,10 @@ namespace BC7.Api
                     b => b.MigrationsAssembly(typeof(IBitClub7Context).Namespace))
             );
 
+            services.ConfigureApplicationJwtAuthorization(Configuration);
+
+            services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -50,7 +55,9 @@ namespace BC7.Api
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
+            app.UseCors("AllowAll");
             app.UseMvc();
         }
     }
