@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BC7.Api.ConfigurationExtensions;
+using BC7.Business.Helpers;
 using BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAccount;
+using BC7.Business.Implementation.Helpers;
 using BC7.Business.Validators;
 using BC7.Database;
 using BC7.Security;
@@ -28,6 +30,8 @@ namespace BC7.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // TODO: Move to extension
+            services.AddTransient<IReflinkHelper, ReflinkHelper>();
             services.AddDbContext<IBitClub7Context, BitClub7Context>(
                 opts => opts.UseSqlServer(Configuration.GetConnectionString("BitClub7DB"),
                     b => b.MigrationsAssembly(typeof(IBitClub7Context).Namespace))
