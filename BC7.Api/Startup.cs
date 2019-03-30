@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BC7.Api.ConfigurationExtensions;
 using BC7.Database;
 using BC7.Security;
@@ -37,6 +38,8 @@ namespace BC7.Api
             );
 
             services.ConfigureApplicationJwtAuthorization(Configuration);
+
+            services.AddAutoMapper();
             services.AddMediatR();
 
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
