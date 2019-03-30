@@ -7,6 +7,7 @@ using BC7.Entity;
 using BC7.Security;
 using BC7.Security.PasswordUtilities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAccount
 {
@@ -23,7 +24,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAc
 
         public async Task<Guid> Handle(RegisterNewUserAccountCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
-            // TODO: Command validation here
+            await ValidateForUniqueness(command);
 
             var userAccountData = _mapper.Map<UserAccountData>(command);
 
@@ -36,6 +37,18 @@ namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAc
             await _context.SaveChangesAsync();
 
             return userAccountData.Id;
+        }
+
+        private async Task ValidateForUniqueness(RegisterNewUserAccountCommand command)
+        {
+            var isDuplicated = await _context.Set<UserAccountData>()
+                            .AnyAsync(x => x.Email == command.Email || x.Login == command.Login);
+
+            if (isDuplicated)
+            {
+                // TODO: Maybe throw custom Exception type and handle it as a BadRequest or other error message code
+                throw new InvalidOperationException("User with given email or login already exists");
+            }
         }
     }
 }
