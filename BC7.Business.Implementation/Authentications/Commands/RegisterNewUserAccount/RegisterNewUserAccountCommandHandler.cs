@@ -3,6 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using BC7.Database;
+using BC7.Entity;
+using BC7.Security.PasswordUtilities;
 using MediatR;
 
 namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAccount
@@ -18,9 +20,20 @@ namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAc
             _mapper = mapper;
         }
 
-        public Task<Guid> Handle(RegisterNewUserAccountCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(RegisterNewUserAccountCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new NotImplementedException();
+            // TODO: Command validation here
+
+            var userAccountData = _mapper.Map<UserAccountData>(command);
+
+            var hashSalt = PasswordEncryptionUtilities.GenerateSaltedHash(command.Password);
+            userAccountData.Salt = hashSalt.Salt;
+            userAccountData.Hash = hashSalt.Hash;
+
+            await _context.Set<UserAccountData>().AddAsync(userAccountData);
+            await _context.SaveChangesAsync();
+
+            return userAccountData.Id;
         }
     }
 }
