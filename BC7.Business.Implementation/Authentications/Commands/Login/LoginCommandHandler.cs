@@ -63,6 +63,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.Login
                 audience: "http://localhost:4200",
                 claims: new List<Claim>
                 {
+                    // TODO: More claims if needed
                     new Claim(ClaimTypes.Name, email),
                     new Claim(ClaimTypes.Role, role)
                 },
