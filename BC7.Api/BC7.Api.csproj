@@ -28,4 +28,10 @@
     <ProjectReference Include="..\BC7.Security\BC7.Security.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="nlog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
