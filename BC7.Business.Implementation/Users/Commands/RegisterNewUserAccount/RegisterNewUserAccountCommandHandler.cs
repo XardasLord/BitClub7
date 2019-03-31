@@ -10,7 +10,7 @@ using BC7.Security.PasswordUtilities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAccount
+namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
 {
     public class RegisterNewUserAccountCommandHandler : IRequestHandler<RegisterNewUserAccountCommand, Guid>
     {

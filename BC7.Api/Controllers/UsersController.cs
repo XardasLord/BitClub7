@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
-using BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAccount;
+using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Business.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +27,7 @@ namespace BC7.Api.Controllers
         /// <returns>Returns the Id of the created user account</returns>
         /// <response code="200">Returns the Id of the newly created user account</response>
         [HttpPost]
-        public async Task<IActionResult> RegisterNewAccount([FromBody] RegisterNewUserModel model, string reflink = null)
+        public async Task<IActionResult> RegisterNewAccount([FromBody] RegisterNewUserModel model, [FromQuery] string reflink = null)
         {
             var command = _mapper.Map<RegisterNewUserAccountCommand>(model);
             command.InvitingRefLink = reflink;
