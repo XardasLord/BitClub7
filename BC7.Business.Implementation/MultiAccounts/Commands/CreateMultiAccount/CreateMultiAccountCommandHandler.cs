@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BC7.Business.Helpers;
+using BC7.Common.Extensions;
 using BC7.Database;
 using BC7.Entity;
 using MediatR;
@@ -60,7 +61,7 @@ namespace BC7.Business.Implementation.MultiAccounts.Commands.CreateMultiAccount
                 throw new InvalidOperationException("The main account did not pay the membership's fee yet");
             }
 
-            if (await CheckIfAllMultiAccountsAreInMatrixPositions(userAccount))
+            if (!await CheckIfAllMultiAccountsAreInMatrixPositions(userAccount))
             {
                 throw new InvalidOperationException("Not all user multi accounts are available in matrix positions");
             }
@@ -78,15 +79,17 @@ namespace BC7.Business.Implementation.MultiAccounts.Commands.CreateMultiAccount
 
         private async Task<bool> CheckIfAllMultiAccountsAreInMatrixPositions(UserAccountData userAccount)
         {
+            // TODO: Move it to helper
             var userMultiAccountIds = userAccount.UserMultiAccounts
                 .Select(x => x.Id)
                 .ToList();
 
             var allUserMultiAccountsInMatrixPositions = await _context.Set<MatrixPosition>()
                 .Where(x => userMultiAccountIds.Contains(x.Id))
+                .Select(x => x.UserMultiAccountId)
                 .ToListAsync();
 
-            return allUserMultiAccountsInMatrixPositions.All(x => userMultiAccountIds.Contains(x.UserMultiAccountId));
+            return allUserMultiAccountsInMatrixPositions.ContainsAll(userMultiAccountIds);
         }
 
         private Task<UserMultiAccount> CreateMultiAccount()
