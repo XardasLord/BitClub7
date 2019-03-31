@@ -89,5 +89,43 @@ namespace BC7.Database.Extensions
                 }
             );
         }
+
+        public static void Configuration(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserAccountData>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("getutcdate()");
+                entity.HasIndex(e => e.Email).IsUnique();
+                entity.HasIndex(e => e.Login).IsUnique();
+                entity.Property(e => e.Email).IsRequired();
+                entity.Property(e => e.Login).IsRequired();
+                entity.Property(e => e.Salt).IsRequired();
+                entity.Property(e => e.Hash).IsRequired();
+                entity.Property(e => e.FirstName).IsRequired();
+                entity.Property(e => e.LastName).IsRequired();
+                entity.Property(e => e.BtcWalletAddress).IsRequired();
+                entity.Property(e => e.Street).IsRequired();
+                entity.Property(e => e.City).IsRequired();
+                entity.Property(e => e.ZipCode).IsRequired();
+                entity.Property(e => e.Country).IsRequired();
+                entity.Property(e => e.Role).IsRequired();
+            });
+
+            modelBuilder.Entity<UserMultiAccount>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("getutcdate()");
+            });
+
+            modelBuilder.Entity<MatrixPosition>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("getutcdate()");
+            });
+        }
     }
 }
