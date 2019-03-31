@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using BC7.Infrastructure.CustomExceptions;
 using BC7.Infrastructure.ErrorHandling;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -33,13 +34,29 @@ namespace BC7.Infrastructure.Implementation.ErrorHandling
 
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            // TODO: Create custom exceptions and here bind to BadRequest or something similar
+            var statusCode = (int)HttpStatusCode.BadRequest;
+            var exceptionType = exception.GetType();
+
+            switch (exception)
+            {
+                case Exception e when exceptionType == typeof(UnauthorizedAccessException):
+                    statusCode = (int)HttpStatusCode.Unauthorized;
+                    break;
+                case AccountNotFoundException e when exceptionType == typeof(AccountNotFoundException):
+                case ValidationException ex when exceptionType == typeof(ValidationException):
+                    statusCode = (int)HttpStatusCode.BadRequest;
+                    break;
+                case Exception e when exceptionType == typeof(Exception):
+                    statusCode = (int)HttpStatusCode.InternalServerError;
+                    break;
+            }
+
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.Response.StatusCode = statusCode;
 
             return context.Response.WriteAsync(new ErrorDetails()
             {
-                StatusCode = context.Response.StatusCode,
+                StatusCode = statusCode,
                 Message = $"{exception.Message}"
             }.ToString());
         }
