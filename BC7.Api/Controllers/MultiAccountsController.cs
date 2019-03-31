@@ -16,7 +16,7 @@ namespace BC7.Api.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("{UserAccountId}")]
+        [HttpPost("{userAccountId}")]
         public async Task<IActionResult> CreateMultiAccount([FromBody] CreateMultiAccountModel model, [FromRoute] Guid userAccountId)
         {
             var command = new CreateMultiAccountCommand
