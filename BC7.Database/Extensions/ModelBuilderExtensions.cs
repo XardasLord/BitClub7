@@ -68,10 +68,14 @@ namespace BC7.Database.Extensions
                 }
             );
 
+            var root1MultiAccountId = Guid.NewGuid();
+            var root2MultiAccountId = Guid.NewGuid();
+            var root3MultiAccountId = Guid.NewGuid();
+
             modelBuilder.Entity<UserMultiAccount>().HasData(
                 new UserMultiAccount
                 {
-                    Id = Guid.NewGuid(),
+                    Id = root1MultiAccountId,
                     UserAccountDataId = root1Id,
                     MultiAccountName = "LoginRoot1",
                     RefLink = "111111",
@@ -79,7 +83,7 @@ namespace BC7.Database.Extensions
                 },
                 new UserMultiAccount
                 {
-                    Id = Guid.NewGuid(),
+                    Id = root2MultiAccountId,
                     UserAccountDataId = root2Id,
                     MultiAccountName = "LoginRoot2",
                     RefLink = "222222",
@@ -87,11 +91,88 @@ namespace BC7.Database.Extensions
                 },
                 new UserMultiAccount
                 {
-                    Id = Guid.NewGuid(),
+                    Id = root3MultiAccountId,
                     UserAccountDataId = root3Id,
                     MultiAccountName = "LoginRoot3",
                     RefLink = "333333",
                     IsMainAccount = true
+                }
+            );
+
+            var root1MatrixPositionId = Guid.NewGuid();
+            var root2MatrixPositionId = Guid.NewGuid();
+            var root3MatrixPositionId = Guid.NewGuid();
+
+            modelBuilder.Entity<MatrixPosition>().HasData(
+                new MatrixPosition
+                { // root1
+                    Id = root1MatrixPositionId,
+                    MatrixLevel = 0,
+                    ParentId = null,
+                    UserMultiAccountId = root1MultiAccountId,
+                    DepthLevel = 0,
+                    Left = 1,
+                    Right = 14
+                },
+                new MatrixPosition
+                { // root2
+                    Id = root2MatrixPositionId,
+                    MatrixLevel = 0,
+                    ParentId = root1MatrixPositionId,
+                    UserMultiAccountId = root2MultiAccountId,
+                    DepthLevel = 1,
+                    Left = 2,
+                    Right = 7
+                },
+                new MatrixPosition
+                { // root3
+                    Id = root3MatrixPositionId,
+                    MatrixLevel = 0,
+                    ParentId = root1MatrixPositionId,
+                    UserMultiAccountId = root3MultiAccountId,
+                    DepthLevel = 1,
+                    Left = 8,
+                    Right = 13
+                },
+                new MatrixPosition
+                { // free space
+                    Id = Guid.NewGuid(),
+                    MatrixLevel = 0,
+                    ParentId = root2MatrixPositionId,
+                    UserMultiAccountId = null,
+                    DepthLevel = 2,
+                    Left = 3,
+                    Right = 4
+                },
+                new MatrixPosition
+                { // free space
+                    Id = Guid.NewGuid(),
+                    MatrixLevel = 0,
+                    ParentId = root2MatrixPositionId,
+                    UserMultiAccountId = null,
+                    DepthLevel = 2,
+                    Left = 5,
+                    Right = 6
+                },
+                new MatrixPosition
+                { // free space
+                    Id = Guid.NewGuid(),
+                    MatrixLevel = 0,
+                    ParentId = root3MatrixPositionId,
+                    UserMultiAccountId = null,
+                    DepthLevel = 2,
+                    Left = 9,
+                    Right = 10
+                },
+                new MatrixPosition
+                { // free space
+                    Id = Guid.NewGuid(),
+                    MatrixLevel = 0,
+                    ParentId = root3MatrixPositionId,
+                    UserMultiAccountId = null,
+                    DepthLevel = 2,
+                    Left = 11,
+                    Right = 12
                 }
             );
         }

@@ -92,7 +92,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
 
             var allUserMultiAccountsInMatrixPositions = await _context.Set<MatrixPosition>()
                 .Where(x => userMultiAccountIds.Contains(x.Id))
-                .Select(x => x.UserMultiAccountId)
+                .Select(x => x.UserMultiAccountId.Value)
                 .ToListAsync();
 
             return allUserMultiAccountsInMatrixPositions.ContainsAll(userMultiAccountIds);
