@@ -52,6 +52,7 @@ namespace BC7.Api
                 app.UseHsts();
             }
 
+            app.ConfigureCustomExceptionMiddleware();
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseCors("AllowAll");

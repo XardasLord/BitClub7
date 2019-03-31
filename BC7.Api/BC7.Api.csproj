@@ -22,6 +22,7 @@
     <ProjectReference Include="..\BC7.Business.Implementation\BC7.Business.Implementation.csproj" />
     <ProjectReference Include="..\BC7.Business\BC7.Business.csproj" />
     <ProjectReference Include="..\BC7.Database\BC7.Database.csproj" />
+    <ProjectReference Include="..\BC7.Infrastructure.Implementation\BC7.Infrastructure.Implementation.csproj" />
     <ProjectReference Include="..\BC7.Security\BC7.Security.csproj" />
   </ItemGroup>
 
