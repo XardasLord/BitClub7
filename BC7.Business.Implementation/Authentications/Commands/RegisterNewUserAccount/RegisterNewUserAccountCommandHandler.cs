@@ -43,6 +43,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAc
             userAccountData.Salt = hashSalt.Salt;
             userAccountData.Hash = hashSalt.Hash;
             userAccountData.Role = UserRolesHelper.User;
+            userAccountData.IsMembershipFeePaid = false;
 
             await _context.Set<UserAccountData>().AddAsync(userAccountData);
             await _context.SaveChangesAsync();
