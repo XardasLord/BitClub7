@@ -5,6 +5,7 @@ using BC7.Business.Implementation.MultiAccounts.Commands.CreateMultiAccount;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Business.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BC7.Api.Controllers
@@ -48,6 +49,7 @@ namespace BC7.Api.Controllers
         /// <returns>Returns the Id of the newly created user multi account</returns>
         /// <response code="200">Returns the Id of the newly created user multi account</response>
         [HttpPost("{userId}/multiAccount")]
+        [Authorize]
         public async Task<IActionResult> CreateMultiAccount([FromBody] CreateMultiAccountModel model, [FromRoute] Guid userId)
         {
             var command = new CreateMultiAccountCommand
