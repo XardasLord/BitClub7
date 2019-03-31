@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using BC7.Business.Implementation.Authentications.Commands.Login;
 using BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAccount;
 using BC7.Business.Models;
 using MediatR;
@@ -31,6 +32,16 @@ namespace BC7.Api.Controllers
 
             // TODO: Created (201) maybe?
             return Ok(new { Id = resultId });
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        {
+            var command = _mapper.Map<LoginCommand>(model);
+
+            var token = await _mediator.Send(command);
+
+            return Ok(new { Token = token });
         }
     }
 }
