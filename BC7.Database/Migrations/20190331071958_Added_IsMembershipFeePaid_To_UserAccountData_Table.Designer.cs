@@ -4,14 +4,16 @@ using BC7.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BC7.Database.Migrations
 {
     [DbContext(typeof(BitClub7Context))]
-    partial class BitClub7ContextModelSnapshot : ModelSnapshot
+    [Migration("20190331071958_Added_IsMembershipFeePaid_To_UserAccountData_Table")]
+    partial class Added_IsMembershipFeePaid_To_UserAccountData_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

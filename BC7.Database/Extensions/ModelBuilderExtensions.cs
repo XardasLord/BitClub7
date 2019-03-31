@@ -28,6 +28,7 @@ namespace BC7.Database.Extensions
                     ZipCode = "ZipCodeRoot1",
                     Country = "CountryRoot1",
                     BtcWalletAddress = "BtcWalletAddressRoot1",
+                    IsMembershipFeePaid = true,
                     Role = UserRolesHelper.Root
 
                 },
@@ -45,6 +46,7 @@ namespace BC7.Database.Extensions
                     ZipCode = "ZipCodeRoot2",
                     Country = "CountryRoot2",
                     BtcWalletAddress = "BtcWalletAddressRoot2",
+                    IsMembershipFeePaid = true,
                     Role = UserRolesHelper.Root
                 },
                 new UserAccountData
@@ -61,6 +63,7 @@ namespace BC7.Database.Extensions
                     ZipCode = "ZipCodeRoot3",
                     Country = "CountryRoot3",
                     BtcWalletAddress = "BtcWalletAddressRoot3",
+                    IsMembershipFeePaid = true,
                     Role = UserRolesHelper.Root
                 }
             );
