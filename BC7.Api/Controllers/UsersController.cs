@@ -48,7 +48,7 @@ namespace BC7.Api.Controllers
         /// <param name="userId">User account ID</param>
         /// <returns>Returns the Id of the newly created user multi account</returns>
         /// <response code="200">Returns the Id of the newly created user multi account</response>
-        [HttpPost("{userId}/multiAccount")]
+        [HttpPost("{userId}/multiAccounts")]
         [Authorize]
         public async Task<IActionResult> CreateMultiAccount([FromBody] CreateMultiAccountModel model, [FromRoute] Guid userId)
         {
