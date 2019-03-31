@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BC7.Api
 {
+#pragma warning disable CS1591
     public class Program
     {
         public static void Main(string[] args)
@@ -21,4 +22,5 @@ namespace BC7.Api
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
     }
+#pragma warning restore CS1591
 }
