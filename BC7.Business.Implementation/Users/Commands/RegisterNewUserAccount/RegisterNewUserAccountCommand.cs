@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAccount
+namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
 {
     public class RegisterNewUserAccountCommand : IRequest<Guid>
     {

@@ -10,7 +10,7 @@ using BC7.Security.PasswordUtilities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAccount
+namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
 {
     public class RegisterNewUserAccountCommandHandler : IRequestHandler<RegisterNewUserAccountCommand, Guid>
     {
@@ -43,6 +43,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAc
             userAccountData.Salt = hashSalt.Salt;
             userAccountData.Hash = hashSalt.Hash;
             userAccountData.Role = UserRolesHelper.User;
+            userAccountData.IsMembershipFeePaid = false;
 
             await _context.Set<UserAccountData>().AddAsync(userAccountData);
             await _context.SaveChangesAsync();
@@ -53,7 +54,8 @@ namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAc
                 UserAccountDataId = userAccountData.Id,
                 UserMultiAccountInvitingId = invitingUserMultiAccountId,
                 MultiAccountName = userAccountData.Login,
-                RefLink = _reflinkHelper.GenerateReflink() // TODO: This should be empty on first account creating - it should be generated after buying the lvl0 matrix position
+                RefLink = _reflinkHelper.GenerateReflink(), // TODO: This should be empty on first account creating - it should be generated after buying the lvl0 matrix position
+                IsMainAccount = true
             };
             await _context.Set<UserMultiAccount>().AddAsync(userMultiAccount);
             await _context.SaveChangesAsync();

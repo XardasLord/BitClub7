@@ -12,6 +12,8 @@ namespace BC7.Business.Helpers
 
         Task<UserMultiAccount> GetRandomUserMultiAccount();
 
+        Task<UserMultiAccount> Create(Guid userAccountId, string reflink);
+
         Task<string> GenerateNextMultiAccountName(Guid userAccountDataId);
     }
 }

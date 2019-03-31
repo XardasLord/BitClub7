@@ -4,14 +4,16 @@ using BC7.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BC7.Database.Migrations
 {
     [DbContext(typeof(BitClub7Context))]
-    partial class BitClub7ContextModelSnapshot : ModelSnapshot
+    [Migration("20190331071958_Added_IsMembershipFeePaid_To_UserAccountData_Table")]
+    partial class Added_IsMembershipFeePaid_To_UserAccountData_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,7 +111,7 @@ namespace BC7.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("92454a8f-0cbd-4e14-8f27-e39d878a7239"),
+                            Id = new Guid("bd40573d-a820-473d-b823-0facf4200f8c"),
                             BtcWalletAddress = "BtcWalletAddressRoot1",
                             City = "CityRoot1",
                             Country = "CountryRoot1",
@@ -127,7 +129,7 @@ namespace BC7.Database.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d9c7d725-596d-45ea-87c8-1598898094e3"),
+                            Id = new Guid("aba8457d-38b2-4992-b3dc-e55fbbbd3cf9"),
                             BtcWalletAddress = "BtcWalletAddressRoot2",
                             City = "CityRoot2",
                             Country = "CountryRoot2",
@@ -145,7 +147,7 @@ namespace BC7.Database.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4af9960c-eb99-4cf6-9f51-d3da6faebca2"),
+                            Id = new Guid("a4000228-f30b-4214-aaef-680321a37737"),
                             BtcWalletAddress = "BtcWalletAddressRoot3",
                             City = "CityRoot3",
                             Country = "CountryRoot3",
@@ -172,8 +174,6 @@ namespace BC7.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("getutcdate()");
 
-                    b.Property<bool>("IsMainAccount");
-
                     b.Property<string>("MultiAccountName");
 
                     b.Property<string>("RefLink");
@@ -193,30 +193,27 @@ namespace BC7.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b5743183-0295-4297-b076-639b7b6e3ba0"),
+                            Id = new Guid("66e981e5-1c6d-4078-aa96-89e4cb4359cb"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsMainAccount = true,
                             MultiAccountName = "LoginRoot1",
                             RefLink = "111111",
-                            UserAccountDataId = new Guid("92454a8f-0cbd-4e14-8f27-e39d878a7239")
+                            UserAccountDataId = new Guid("bd40573d-a820-473d-b823-0facf4200f8c")
                         },
                         new
                         {
-                            Id = new Guid("0f48dbb7-4eda-4947-92e0-1764a932077a"),
+                            Id = new Guid("22238166-a8d8-4ad2-93f8-37079e7607d1"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsMainAccount = true,
                             MultiAccountName = "LoginRoot2",
                             RefLink = "222222",
-                            UserAccountDataId = new Guid("d9c7d725-596d-45ea-87c8-1598898094e3")
+                            UserAccountDataId = new Guid("aba8457d-38b2-4992-b3dc-e55fbbbd3cf9")
                         },
                         new
                         {
-                            Id = new Guid("9e94082c-343d-45c3-a854-34abe72769f8"),
+                            Id = new Guid("0af28994-1464-45c2-9353-377c278f0b49"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsMainAccount = true,
                             MultiAccountName = "LoginRoot3",
                             RefLink = "333333",
-                            UserAccountDataId = new Guid("4af9960c-eb99-4cf6-9f51-d3da6faebca2")
+                            UserAccountDataId = new Guid("a4000228-f30b-4214-aaef-680321a37737")
                         });
                 });
 

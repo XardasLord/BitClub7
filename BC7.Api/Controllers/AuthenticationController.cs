@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using BC7.Business.Implementation.Authentications.Commands.Login;
-using BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAccount;
 using BC7.Business.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -21,18 +20,12 @@ namespace BC7.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("registerNewAccount")]
-        public async Task<IActionResult> RegisterNewAccount([FromBody] RegisterNewUserModel model, string reflink = null)
-        {
-            var command = _mapper.Map<RegisterNewUserAccountCommand>(model);
-            command.InvitingRefLink = reflink;
-
-            var resultId = await _mediator.Send(command);
-
-            // TODO: Created (201) maybe?
-            return Ok(new { Id = resultId });
-        }
-
+        /// <summary>
+        /// Log in user to the system
+        /// </summary>
+        /// <param name="model">A model with credentials to log in</param>
+        /// <returns>Returns a JWT token</returns>
+        /// <response code="200">Returns a JWT token</response>
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {

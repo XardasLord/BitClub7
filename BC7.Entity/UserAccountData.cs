@@ -17,6 +17,7 @@ namespace BC7.Entity
         public string Country { get; set; }
         public string BtcWalletAddress { get; set; }
         public string Role { get; set; }
+        public bool IsMembershipFeePaid { get; set; }
         public virtual ICollection<UserMultiAccount> UserMultiAccounts { get; set; }
     }
 }
