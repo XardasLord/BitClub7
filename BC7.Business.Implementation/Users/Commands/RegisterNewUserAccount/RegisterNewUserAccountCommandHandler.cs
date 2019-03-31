@@ -5,6 +5,7 @@ using AutoMapper;
 using BC7.Business.Helpers;
 using BC7.Database;
 using BC7.Entity;
+using BC7.Infrastructure.CustomExceptions;
 using BC7.Security;
 using BC7.Security.PasswordUtilities;
 using MediatR;
@@ -70,8 +71,7 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
 
             if (isDuplicated)
             {
-                // TODO: Maybe throw custom Exception type and handle it as a BadRequest or other error message code
-                throw new InvalidOperationException("User with given email or login already exists");
+                throw new ValidationException("User with given email or login already exists");
             }
         }
 

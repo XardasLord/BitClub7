@@ -6,6 +6,7 @@ using AutoMapper;
 using BC7.Business.Helpers;
 using BC7.Business.Models;
 using BC7.Database;
+using BC7.Infrastructure.CustomExceptions;
 using MediatR;
 
 namespace BC7.Business.Implementation.Users.Requests.GetMultiAccounts
@@ -28,8 +29,7 @@ namespace BC7.Business.Implementation.Users.Requests.GetMultiAccounts
             var userAccount = await _userAccountDataHelper.GetById(request.UserAccountId);
             if (userAccount == null)
             {
-                // TODO: Custom exception
-                throw new InvalidOperationException("User with given ID does not exist");
+                throw new AccountNotFoundException("User with given ID does not exist");
             }
 
             var userMultiAccountModels = _mapper.Map<IEnumerable<UserMultiAccountModel>>(userAccount.UserMultiAccounts);
