@@ -66,6 +66,11 @@ namespace BC7.Business.Implementation.MultiAccounts.Commands.CreateMultiAccount
             {
                 throw new InvalidOperationException("Not all user multi accounts are available in matrix positions");
             }
+
+            if (userAccount.UserMultiAccounts.Count > 20)
+            {
+                throw new InvalidOperationException("You cannot have more than 20 multi accounts attached to the main account");
+            }
         }
 
         private static bool CheckIfUserPaidMembershipsFee(UserAccountData userAccount)
