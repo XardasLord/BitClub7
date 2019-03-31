@@ -28,6 +28,7 @@ namespace BC7.Database.Extensions
                     ZipCode = "ZipCodeRoot1",
                     Country = "CountryRoot1",
                     BtcWalletAddress = "BtcWalletAddressRoot1",
+                    IsMembershipFeePaid = true,
                     Role = UserRolesHelper.Root
 
                 },
@@ -45,6 +46,7 @@ namespace BC7.Database.Extensions
                     ZipCode = "ZipCodeRoot2",
                     Country = "CountryRoot2",
                     BtcWalletAddress = "BtcWalletAddressRoot2",
+                    IsMembershipFeePaid = true,
                     Role = UserRolesHelper.Root
                 },
                 new UserAccountData
@@ -61,6 +63,7 @@ namespace BC7.Database.Extensions
                     ZipCode = "ZipCodeRoot3",
                     Country = "CountryRoot3",
                     BtcWalletAddress = "BtcWalletAddressRoot3",
+                    IsMembershipFeePaid = true,
                     Role = UserRolesHelper.Root
                 }
             );
@@ -71,21 +74,24 @@ namespace BC7.Database.Extensions
                     Id = Guid.NewGuid(),
                     UserAccountDataId = root1Id,
                     MultiAccountName = "LoginRoot1",
-                    RefLink = "111111"
+                    RefLink = "111111",
+                    IsMainAccount = true
                 },
                 new UserMultiAccount
                 {
                     Id = Guid.NewGuid(),
                     UserAccountDataId = root2Id,
                     MultiAccountName = "LoginRoot2",
-                    RefLink = "222222"
+                    RefLink = "222222",
+                    IsMainAccount = true
                 },
                 new UserMultiAccount
                 {
                     Id = Guid.NewGuid(),
                     UserAccountDataId = root3Id,
                     MultiAccountName = "LoginRoot3",
-                    RefLink = "333333"
+                    RefLink = "333333",
+                    IsMainAccount = true
                 }
             );
         }

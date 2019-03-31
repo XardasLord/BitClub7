@@ -11,10 +11,12 @@ namespace BC7.Business.Implementation.Helpers
     public class UserMultiAccountHelper : IUserMultiAccountHelper
     {
         private readonly IBitClub7Context _context;
+        private readonly IReflinkHelper _reflinkHelper;
 
-        public UserMultiAccountHelper(IBitClub7Context context)
+        public UserMultiAccountHelper(IBitClub7Context context, IReflinkHelper reflinkHelper)
         {
             _context = context;
+            _reflinkHelper = reflinkHelper;
         }
 
         public Task<UserMultiAccount> GetByReflink(string reflink)
@@ -33,6 +35,26 @@ namespace BC7.Business.Implementation.Helpers
                 .OrderBy(r => Guid.NewGuid())
                 .Take(1)
                 .FirstAsync();
+        }
+
+        public async Task<UserMultiAccount> Create(Guid userAccountId, string reflink)
+        {
+            var userMultiAccountInviting = await GetByReflink(reflink);
+            var multiAccountName = await GenerateNextMultiAccountName(userAccountId);
+
+            var userMultiAccount = new UserMultiAccount
+            {
+                UserAccountDataId = userAccountId,
+                UserMultiAccountInvitingId = userMultiAccountInviting.Id,
+                MultiAccountName = multiAccountName,
+                RefLink = _reflinkHelper.GenerateReflink(),
+                IsMainAccount = false
+            };
+
+            await _context.Set<UserMultiAccount>().AddAsync(userMultiAccount);
+            await _context.SaveChangesAsync();
+
+            return userMultiAccount;
         }
 
         public async Task<string> GenerateNextMultiAccountName(Guid userAccountDataId)
