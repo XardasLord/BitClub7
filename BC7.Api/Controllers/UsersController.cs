@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
+using BC7.Business.Implementation.MultiAccounts.Commands.CreateMultiAccount;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Business.Models;
 using MediatR;
@@ -36,6 +38,26 @@ namespace BC7.Api.Controllers
 
             // TODO: Created (201) maybe?
             return Ok(new { Id = resultId });
+        }
+
+        /// <summary>
+        /// Create new multi account for the user
+        /// </summary>
+        /// <param name="model">A model with the reflink of user who invites the requested user</param>
+        /// <param name="userId">User account ID</param>
+        /// <returns>Returns the Id of the newly created user multi account</returns>
+        /// <response code="200">Returns the Id of the newly created user multi account</response>
+        [HttpPost("{userId}/multiAccount")]
+        public async Task<IActionResult> CreateMultiAccount([FromBody] CreateMultiAccountModel model, [FromRoute] Guid userId)
+        {
+            var command = new CreateMultiAccountCommand
+            {
+                UserAccountId = userId,
+                RefLink = model.Reflink
+            };
+
+            // TODO: Maybe 201 created?
+            return Ok(new { Id = await _mediator.Send(command) });
         }
     }
 }
