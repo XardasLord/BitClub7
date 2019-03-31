@@ -13,5 +13,6 @@ namespace BC7.Entity
 
         public string MultiAccountName { get; set; }
         public string RefLink { get; set; }
+        public bool IsMainAccount { get; set; }
     }
 }
