@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using BC7.Business.Implementation.MultiAccounts.Commands.CreateMultiAccount;
+using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Business.Models;
 using MediatR;

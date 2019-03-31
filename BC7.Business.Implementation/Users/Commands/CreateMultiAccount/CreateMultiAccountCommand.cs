@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace BC7.Business.Implementation.MultiAccounts.Commands.CreateMultiAccount
+namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
 {
     public class CreateMultiAccountCommand : IRequest<Guid>
     {
