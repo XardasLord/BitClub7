@@ -63,6 +63,12 @@ namespace BC7.Api.Controllers
             return Ok(new { Id = await _mediator.Send(command) });
         }
 
+        /// <summary>
+        /// Get multi accounts for given User ID
+        /// </summary>
+        /// <param name="userId">User ID for whom multi accounts will be returned</param>
+        /// <returns>Returns list of multi accounts</returns>
+        /// <response code="200">Returns list of multi accounts</response>
         [HttpGet("{userId}/multiAccounts")]
         [Authorize]
         public async Task<IActionResult> GetAllMultiAccounts([FromRoute] Guid userId)
