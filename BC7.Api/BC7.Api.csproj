@@ -15,6 +15,8 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="NLog" Version="4.6.1" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
@@ -24,6 +26,12 @@
     <ProjectReference Include="..\BC7.Database\BC7.Database.csproj" />
     <ProjectReference Include="..\BC7.Infrastructure.Implementation\BC7.Infrastructure.Implementation.csproj" />
     <ProjectReference Include="..\BC7.Security\BC7.Security.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="nlog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

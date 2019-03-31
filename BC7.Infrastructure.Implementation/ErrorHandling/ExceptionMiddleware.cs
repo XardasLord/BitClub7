@@ -27,12 +27,11 @@ namespace BC7.Infrastructure.Implementation.ErrorHandling
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong: {ex}");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             var statusCode = (int)HttpStatusCode.BadRequest;
             var exceptionType = exception.GetType();
@@ -45,9 +44,11 @@ namespace BC7.Infrastructure.Implementation.ErrorHandling
                 case AccountNotFoundException e when exceptionType == typeof(AccountNotFoundException):
                 case ValidationException ex when exceptionType == typeof(ValidationException):
                     statusCode = (int)HttpStatusCode.BadRequest;
+                    _logger.LogError(exception.Message);
                     break;
                 case Exception e when exceptionType == typeof(Exception):
                     statusCode = (int)HttpStatusCode.InternalServerError;
+                    _logger.LogError($"{exception}");
                     break;
             }
 
