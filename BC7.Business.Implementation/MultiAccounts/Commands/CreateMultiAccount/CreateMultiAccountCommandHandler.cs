@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BC7.Business.Helpers;
 using BC7.Database;
 using BC7.Entity;
 using MediatR;
@@ -13,10 +14,12 @@ namespace BC7.Business.Implementation.MultiAccounts.Commands.CreateMultiAccount
     {
         private CreateMultiAccountCommand _command;
         private readonly IBitClub7Context _context;
+        private readonly IUserMultiAccountHelper _userMultiAccountHelper;
 
-        public CreateMultiAccountCommandHandler(IBitClub7Context context)
+        public CreateMultiAccountCommandHandler(IBitClub7Context context, IUserMultiAccountHelper userMultiAccountHelper)
         {
             _context = context;
+            _userMultiAccountHelper = userMultiAccountHelper;
         }
 
         public async Task<Guid> Handle(CreateMultiAccountCommand command, CancellationToken cancellationToken)
@@ -41,7 +44,7 @@ namespace BC7.Business.Implementation.MultiAccounts.Commands.CreateMultiAccount
                 throw new InvalidOperationException("User with given ID does not exist");
             }
 
-            var multiAccount = await _context.Set<UserMultiAccount>().SingleOrDefaultAsync(x => x.RefLink == _command.RefLink);
+            var multiAccount = await _userMultiAccountHelper.GetByReflink(_command.RefLink);
             if (multiAccount == null)
             {
                 throw new InvalidOperationException("Account with given reflink does not exist");
@@ -88,7 +91,7 @@ namespace BC7.Business.Implementation.MultiAccounts.Commands.CreateMultiAccount
 
         private Task<UserMultiAccount> CreateMultiAccount()
         {
-            throw new NotImplementedException();
+            return _userMultiAccountHelper.Create(_command.UserAccountId, _command.RefLink);
         }
     }
 }
