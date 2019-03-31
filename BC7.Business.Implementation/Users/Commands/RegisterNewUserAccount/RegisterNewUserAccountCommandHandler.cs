@@ -96,7 +96,7 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
 
             if (invitingUser == null)
             {
-                throw new InvalidOperationException("User with given reflink does not exist");
+                throw new InvalidOperationException("User with multi account name does not exist");
             }
 
             return invitingUser.Id;
