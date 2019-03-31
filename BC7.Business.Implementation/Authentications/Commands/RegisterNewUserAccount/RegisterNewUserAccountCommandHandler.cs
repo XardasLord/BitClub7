@@ -54,7 +54,8 @@ namespace BC7.Business.Implementation.Authentications.Commands.RegisterNewUserAc
                 UserAccountDataId = userAccountData.Id,
                 UserMultiAccountInvitingId = invitingUserMultiAccountId,
                 MultiAccountName = userAccountData.Login,
-                RefLink = _reflinkHelper.GenerateReflink() // TODO: This should be empty on first account creating - it should be generated after buying the lvl0 matrix position
+                RefLink = _reflinkHelper.GenerateReflink(), // TODO: This should be empty on first account creating - it should be generated after buying the lvl0 matrix position
+                IsMainAccount = true
             };
             await _context.Set<UserMultiAccount>().AddAsync(userMultiAccount);
             await _context.SaveChangesAsync();
