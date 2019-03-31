@@ -56,10 +56,11 @@ namespace BC7.Business.Implementation.MultiAccounts.Commands.CreateMultiAccount
                 throw new InvalidOperationException("Given reflink belongs to the requested user account");
             }
 
-            if (!CheckIfUserPaidMembershipsFee(userAccount))
-            {
-                throw new InvalidOperationException("The main account did not pay the membership's fee yet");
-            }
+#warning this validation has to be uncomment in the ETAP 1
+            //if (!CheckIfUserPaidMembershipsFee(userAccount))
+            //{
+            //    throw new InvalidOperationException("The main account did not pay the membership's fee yet");
+            //}
 
             if (!await CheckIfAllMultiAccountsAreInMatrixPositions(userAccount))
             {
