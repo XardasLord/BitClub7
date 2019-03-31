@@ -18,7 +18,9 @@ namespace BC7.Business.Implementation.Helpers
 
         public Task<UserAccountData> GetById(Guid id)
         {
-            return _context.Set<UserAccountData>().SingleOrDefaultAsync(x => x.Id == id);
+            return _context.Set<UserAccountData>()
+                .Include(x => x.UserMultiAccounts)
+                .SingleOrDefaultAsync(x => x.Id == id);
         }
     }
 }
