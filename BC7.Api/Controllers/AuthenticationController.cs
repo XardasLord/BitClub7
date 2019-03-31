@@ -20,6 +20,12 @@ namespace BC7.Api.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Log in user to the system
+        /// </summary>
+        /// <param name="model">A model with credentials to log in</param>
+        /// <returns>Returns a JWT token</returns>
+        /// <response code="200">Returns a JWT token</response>
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
