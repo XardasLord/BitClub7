@@ -14,8 +14,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BC7.Business\BC7.Business.csproj" />
-    <ProjectReference Include="..\BC7.Common\BC7.Common.csproj" />
     <ProjectReference Include="..\BC7.Database\BC7.Database.csproj" />
+    <ProjectReference Include="..\BC7.Infrastructure\BC7.Infrastructure.csproj" />
     <ProjectReference Include="..\BC7.Security\BC7.Security.csproj" />
   </ItemGroup>
 
