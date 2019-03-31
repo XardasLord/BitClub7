@@ -6,6 +6,7 @@ using BC7.Business.Helpers;
 using BC7.Common.Extensions;
 using BC7.Database;
 using BC7.Entity;
+using BC7.Infrastructure.CustomExceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,24 +37,23 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
 
         private async Task ValidateIfMultiAccountCanBeCreated()
         {
-            // TODO: Custom exception
             var userAccount = await _context.Set<UserAccountData>()
                 .Include(x => x.UserMultiAccounts)
                 .SingleOrDefaultAsync(x => x.Id == _command.UserAccountId);
             if (userAccount == null)
             {
-                throw new InvalidOperationException("User with given ID does not exist");
+                throw new AccountNotFoundException("User with given ID does not exist");
             }
 
             var multiAccount = await _userMultiAccountHelper.GetByReflink(_command.RefLink);
             if (multiAccount == null)
             {
-                throw new InvalidOperationException("Account with given reflink does not exist");
+                throw new AccountNotFoundException("Account with given reflink does not exist");
             }
 
             if (CheckIfReflinkBelongsToRequestedUser(multiAccount))
             {
-                throw new InvalidOperationException("Given reflink belongs to the requested user account");
+                throw new ValidationException("Given reflink belongs to the requested user account");
             }
 
 #warning this validation has to be uncomment in the ETAP 1
@@ -64,12 +64,12 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
 
             if (!await CheckIfAllMultiAccountsAreInMatrixPositions(userAccount))
             {
-                throw new InvalidOperationException("Not all user multi accounts are available in matrix positions");
+                throw new ValidationException("Not all user multi accounts are available in matrix positions");
             }
 
             if (userAccount.UserMultiAccounts.Count > 20)
             {
-                throw new InvalidOperationException("You cannot have more than 20 multi accounts attached to the main account");
+                throw new ValidationException("You cannot have more than 20 multi accounts attached to the main account");
             }
         }
 

@@ -25,8 +25,6 @@ namespace BC7.Database
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            // TODO: Auto inserting dates?
-
             return await base.SaveChangesAsync(cancellationToken);
         }
 

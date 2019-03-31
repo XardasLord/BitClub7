@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BC7.Database;
 using BC7.Entity;
+using BC7.Infrastructure.CustomExceptions;
 using BC7.Security;
 using BC7.Security.PasswordUtilities;
 using MediatR;
@@ -32,8 +33,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.Login
             var user = await _context.Set<UserAccountData>().SingleOrDefaultAsync(x => x.Login == command.LoginOrEmail || x.Email == command.LoginOrEmail);
             if (user == null)
             {
-                // TODO: Maybe throw custom Exception type and handle it as a BadRequest or other error message code
-                throw new Exception("Invalid credentials");
+                throw new ValidationException("Invalid credentials");
             }
 
             VerifyLoginCredentials(command.Password, user.Hash, user.Salt);
@@ -48,8 +48,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.Login
             var isPasswordVerified = PasswordEncryptionUtilities.VerifyPassword(password, hash, salt);
             if (!isPasswordVerified)
             {
-                // TODO: Maybe throw custom Exception type and handle it as a BadRequest or other error message code
-                throw new Exception("Invalid credentials");
+                throw new ValidationException("Invalid credentials");
             }
         }
 

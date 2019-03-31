@@ -1,4 +1,5 @@
 ﻿using BC7.Database;
+using BC7.Infrastructure.Implementation.ErrorHandling;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,11 @@ namespace BC7.Api.ConfigurationExtensions
             }
 
             return app;
+        }
+
+        public static void ConfigureCustomExceptionMiddleware(this IApplicationBuilder app)
+        {
+            app.UseMiddleware<ExceptionMiddleware>();
         }
     }
 }
