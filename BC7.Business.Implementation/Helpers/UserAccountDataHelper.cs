@@ -20,6 +20,7 @@ namespace BC7.Business.Implementation.Helpers
         {
             return _context.Set<UserAccountData>()
                 .Include(x => x.UserMultiAccounts)
+                .ThenInclude(x => x.MatrixPositions)
                 .SingleOrDefaultAsync(x => x.Id == id);
         }
     }

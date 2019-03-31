@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BC7.Entity.AbstractBase;
 
 namespace BC7.Entity
@@ -14,5 +15,7 @@ namespace BC7.Entity
         public string MultiAccountName { get; set; }
         public string RefLink { get; set; }
         public bool IsMainAccount { get; set; }
+
+        public virtual ICollection<MatrixPosition> MatrixPositions { get; set; }
     }
 }
