@@ -22,7 +22,6 @@ namespace BC7.Api.Controllers
         }
 
         [HttpPost("registerNewAccount")]
-        [HttpPost("registerNewAccount/{reflink?}")]
         public async Task<IActionResult> RegisterNewAccount([FromBody] RegisterNewUserModel model, string reflink = null)
         {
             var command = _mapper.Map<RegisterNewUserAccountCommand>(model);
