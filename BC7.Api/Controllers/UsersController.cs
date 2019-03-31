@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
+using BC7.Business.Implementation.Users.Requests.GetMultiAccounts;
 using BC7.Business.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -60,6 +61,15 @@ namespace BC7.Api.Controllers
 
             // TODO: Maybe 201 created?
             return Ok(new { Id = await _mediator.Send(command) });
+        }
+
+        [HttpGet("{userId}/multiAccounts")]
+        [Authorize]
+        public async Task<IActionResult> GetAllMultiAccounts([FromRoute] Guid userId)
+        {
+            var request = new GetMultiAccountsRequest { UserAccountId = userId };
+
+            return Ok(await _mediator.Send(request));
         }
     }
 }
