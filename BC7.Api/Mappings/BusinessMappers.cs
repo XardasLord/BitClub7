@@ -16,6 +16,7 @@ namespace BC7.Api.Mappings
             CreateMap<RegisterNewUserAccountCommand, UserAccountData>(); // TODO: Maybe commands -> entities should be mapper manually?
 
             CreateMap<UserMultiAccount, UserMultiAccountModel>();
+            CreateMap<MatrixPosition, MatrixPositionModel>();
         }
     }
 }

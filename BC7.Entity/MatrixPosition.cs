@@ -5,7 +5,7 @@ namespace BC7.Entity
 {
     public class MatrixPosition : BaseEntity
     {
-        public Guid UserMultiAccountId { get; set; }
+        public Guid? UserMultiAccountId { get; set; }
         public virtual UserMultiAccount UserMultiAccount { get; set; }
         public Guid? ParentId { get; set; }
         public virtual MatrixPosition Parent { get; set; }
