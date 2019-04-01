@@ -77,8 +77,6 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             //  "Nasze multikonto nie może znaleźć się w jakiejkolwiek naszej wykupionej matrycy.
             //   Można stworzyć multikonto jedynie zakładając je z reflinka osoby z poziomu B w naszej matrycy.
             //   Niedozwolone jest tworzenie multikont z reflinków osób z poziomu A którejkolwiek z naszych matryc."
-            // Musimy tutaj sprawdzić, czy zakładane multikonto nie będzie się przypadkiem znajdować w którejkolwiek z istniejącej matrycy multikonta użytkownika
-            // (np. w pętli po każdym multikoncie patrzymy 2 poziomy w dół czy tu nie będzie przypadkiem założone multikonto dla tego reflinka)
             // -----------------------------------------------------------------------------------------------------------------------------------------------------
             // -----------------------------------------------------------------------------------------------------------------------------------------------------
             // MÓJ POMYSŁ NA ALGORYTM PONIŻEJ :)
