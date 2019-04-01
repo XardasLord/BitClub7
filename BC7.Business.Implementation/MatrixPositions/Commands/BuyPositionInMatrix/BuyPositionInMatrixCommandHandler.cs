@@ -18,8 +18,13 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             _userMultiAccountHelper = userMultiAccountHelper;
         }
 
-        public Task<Guid> Handle(BuyPositionInMatrixCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(BuyPositionInMatrixCommand request, CancellationToken cancellationToken)
         {
+            var userMultiAccount = await _userMultiAccountHelper.GetById(request.UserMultiAccountId);
+
+            // TODO: Validation parts:
+            // 1. Check if user paid for the matrix position on this level (available in etap 1)
+            // 2. Check if user from reflink (UserMultiAccountInviting) has space in his matrix in this level
 
             throw new NotImplementedException();
         }
