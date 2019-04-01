@@ -24,7 +24,8 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
             // TODO: Validation parts:
             // 1. Check if user paid for the matrix position on this level (available in etap 1)
-            // 2. Check if user from reflink (UserMultiAccountInviting) has space in his matrix in this level (shouldn't it be pre-validated when multi account is creating ???)
+            // 2. Check if user from reflink (UserMultiAccountInviting) has space in his matrix in this level. (shouldn't it be pre-validated when multi account is creating ???)
+            // We can get UserMultiAccountInviting and take 2 levels below (should be 7 users)
 
             throw new NotImplementedException();
         }
