@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BC7.Api.Controllers
 {
+    [Route("api/[controller]")]
     public class MatrixPositionsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -11,6 +12,8 @@ namespace BC7.Api.Controllers
         {
             _mediator = mediator;
         }
+
+
     }
 }
 
