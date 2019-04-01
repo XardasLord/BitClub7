@@ -62,6 +62,12 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             //    throw new InvalidOperationException("The main account did not pay the membership's fee yet");
             //}
 
+            // TODO: Check if multi account can be created from this reflink:
+            // - multi account cannot be in its main account matrix (other way explanation from the system documentation below)
+            //  "Nasze multikonto nie może znaleźć się w jakiejkolwiek naszej wykupionej matrycy.
+            //   Można stworzyć multikonto jedynie zakładając je z reflinka osoby z poziomu B w naszej matrycy.
+            //   Niedozwolone jest tworzenie multikont z reflinków osób z poziomu A którejkolwiek z naszych matryc."
+
             if (!await CheckIfAllMultiAccountsAreInMatrixPositions(userAccount))
             {
                 throw new ValidationException("Not all user multi accounts are available in matrix positions");
