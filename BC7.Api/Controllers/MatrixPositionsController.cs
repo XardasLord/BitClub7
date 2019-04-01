@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatrix;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,16 @@ namespace BC7.Api.Controllers
 
         [HttpPost("{matrixLevel}/{userMultiAccountId}")]
         [Authorize]
-        public Task<IActionResult> BuyPosition(int matrixLevel, Guid userMultiAccountId)
+        public async Task<IActionResult> BuyPosition(int matrixLevel, Guid userMultiAccountId)
         {
-            throw new NotImplementedException();
+            var command = new BuyPositionInMatrixCommand
+            {
+                UserMultiAccountId = userMultiAccountId,
+                MatrixLevel = matrixLevel
+            };
+
+            // TODO: status 201 maybe?
+            return Ok(new { Id = await _mediator.Send(command) });
         }
     }
 }
