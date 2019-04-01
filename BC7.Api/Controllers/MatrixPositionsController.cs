@@ -1,4 +1,7 @@
-﻿using MediatR;
+﻿using System;
+using System.Threading.Tasks;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BC7.Api.Controllers
@@ -13,8 +16,11 @@ namespace BC7.Api.Controllers
             _mediator = mediator;
         }
 
-
+        [HttpPost("{matrixLevel}/{userMultiAccountId}")]
+        [Authorize]
+        public Task<IActionResult> BuyPosition(int matrixLevel, Guid userMultiAccountId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
-
-// TODO: MatrixPositionsController -> api/matrixPositions/{userMultiAccountId} (query: ?matrixLevel=0) [POST]
