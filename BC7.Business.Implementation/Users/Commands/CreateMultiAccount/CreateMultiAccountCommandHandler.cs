@@ -62,12 +62,6 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             //    throw new InvalidOperationException("The main account did not pay the membership's fee yet");
             //}
 
-            // TODO: Check if multi account can be created from this reflink:
-            // - multi account cannot be in its main account matrix (other way explanation from the system documentation below)
-            //  "Nasze multikonto nie może znaleźć się w jakiejkolwiek naszej wykupionej matrycy.
-            //   Można stworzyć multikonto jedynie zakładając je z reflinka osoby z poziomu B w naszej matrycy.
-            //   Niedozwolone jest tworzenie multikont z reflinków osób z poziomu A którejkolwiek z naszych matryc."
-
             if (!await CheckIfAllMultiAccountsAreInMatrixPositions(userAccount))
             {
                 throw new ValidationException("Not all user multi accounts are available in matrix positions");
@@ -77,6 +71,20 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             {
                 throw new ValidationException("You cannot have more than 20 multi accounts attached to the main account");
             }
+
+            // TODO: Check if multi account can be created from this reflink:
+            // - multi account cannot be in its main account matrix (other way explanation from the system documentation below)
+            //  "Nasze multikonto nie może znaleźć się w jakiejkolwiek naszej wykupionej matrycy.
+            //   Można stworzyć multikonto jedynie zakładając je z reflinka osoby z poziomu B w naszej matrycy.
+            //   Niedozwolone jest tworzenie multikont z reflinków osób z poziomu A którejkolwiek z naszych matryc."
+            // Musimy tutaj sprawdzić, czy zakładane multikonto nie będzie się przypadkiem znajdować w którejkolwiek z istniejącej matrycy multikonta użytkownika
+            // (np. w pętli po każdym multikoncie patrzymy 2 poziomy w dół czy tu nie będzie przypadkiem założone multikonto dla tego reflinka)
+            // -----------------------------------------------------------------------------------------------------------------------------------------------------
+            // -----------------------------------------------------------------------------------------------------------------------------------------------------
+            // MÓJ POMYSŁ NA ALGORYTM PONIŻEJ :)
+            // 1. pobranie pozycji multikonta w matrycy dla reflinka z którego się rejestrujemy
+            // 2. bierzemy rodzica, który znajduje się 2 poziomy w górę od tego znalezionego konta w matrycy i pobieramy dla niego wszystkich potomków (2 poziomy w dół) - powinniśmy mieć w sumie 7 kont/pozycji
+            // 3. sprawdzamy czy istnieje w tych siedmiu pozycjach ID multikonta należące do któregokolwiek z kont użytkownika, który chce założyć teraz multikonto
         }
 
         private static bool CheckIfUserPaidMembershipsFee(UserAccountData userAccount)
