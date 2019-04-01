@@ -83,8 +83,9 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             // -----------------------------------------------------------------------------------------------------------------------------------------------------
             // MÓJ POMYSŁ NA ALGORYTM PONIŻEJ :)
             // 1. pobranie pozycji multikonta w matrycy dla reflinka z którego się rejestrujemy
-            // 2. bierzemy rodzica, który znajduje się 2 poziomy w górę od tego znalezionego konta w matrycy i pobieramy dla niego wszystkich potomków (2 poziomy w dół) - powinniśmy mieć w sumie 7 kont/pozycji
-            // 3. sprawdzamy czy istnieje w tych siedmiu pozycjach ID multikonta należące do któregokolwiek z kont użytkownika, który chce założyć teraz multikonto
+            // 2. pobieramy od tego konta wszystkich potomków 2 poziomy w dół (powinniśmy dostać 7 kont/pozycji)
+            // 3. sprawdzamy czy istnieje w tych siedmiu pozycjach ID multikonta należące do któregokolwiek z kont użytkownika, który chce założyć teraz multikonto (jeśli tak to nie wolno takiego multikonta dodać)
+            // 4. sprawdzamy czy istnieje w tych 7 kontach jakiś NULL w UserMultiAccountId (to oznacza wolne miejsce w matrycy, więc jest okej) 
         }
 
         private static bool CheckIfUserPaidMembershipsFee(UserAccountData userAccount)
