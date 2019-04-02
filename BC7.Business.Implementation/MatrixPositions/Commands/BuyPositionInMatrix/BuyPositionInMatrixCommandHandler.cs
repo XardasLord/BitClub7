@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,10 +45,23 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
                 // Maybe we should find another sponsor instead of throwing an error here?
                 throw new ValidationException("Matrix is full for the user from reflink");
             }
+            
+            var matrixPositionId = await BuyPositionInMatrix(request.UserMultiAccountId, invitingUserMatrix);
 
-            // Buying position in matrix
+            return matrixPositionId;
+        }
 
-            throw new NotImplementedException();
+        private async Task<Guid> BuyPositionInMatrix(Guid multiAccountId, IEnumerable<MatrixPosition> invitingUserMatrix)
+        {
+            var matrixPosition = invitingUserMatrix.First(x => x.UserMultiAccountId == null);
+
+            matrixPosition.UserMultiAccountId = multiAccountId;
+
+            _context.Set<MatrixPosition>().Attach(matrixPosition);
+            await _context.SaveChangesAsync();
+
+
+            return matrixPosition.Id;
         }
 
         private bool CheckIfMatrixHasEmptySpace(System.Collections.Generic.IEnumerable<Entity.MatrixPosition> invitingUserMatrix)
