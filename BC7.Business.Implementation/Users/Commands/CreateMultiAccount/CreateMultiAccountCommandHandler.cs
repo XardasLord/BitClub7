@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -45,13 +46,13 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
                 throw new AccountNotFoundException("User with given ID does not exist");
             }
 
-            var multiAccount = await _userMultiAccountHelper.GetByReflink(_command.RefLink);
-            if (multiAccount == null)
+            var invitingMultiAccount = await _userMultiAccountHelper.GetByReflink(_command.RefLink);
+            if (invitingMultiAccount == null)
             {
                 throw new AccountNotFoundException("Account with given reflink does not exist");
             }
 
-            if (CheckIfReflinkBelongsToRequestedUser(multiAccount))
+            if (CheckIfReflinkBelongsToRequestedUser(invitingMultiAccount))
             {
                 throw new ValidationException("Given reflink belongs to the requested user account");
             }
@@ -72,18 +73,34 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
                 throw new ValidationException("You cannot have more than 20 multi accounts attached to the main account");
             }
 
-            // TODO: Check if multi account can be created from this reflink:
-            // - multi account cannot be in its main account matrix (other way explanation from the system documentation below)
-            //  "Nasze multikonto nie może znaleźć się w jakiejkolwiek naszej wykupionej matrycy.
-            //   Można stworzyć multikonto jedynie zakładając je z reflinka osoby z poziomu B w naszej matrycy.
-            //   Niedozwolone jest tworzenie multikont z reflinków osób z poziomu A którejkolwiek z naszych matryc."
-            // -----------------------------------------------------------------------------------------------------------------------------------------------------
-            // -----------------------------------------------------------------------------------------------------------------------------------------------------
-            // MÓJ POMYSŁ NA ALGORYTM PONIŻEJ :)
-            // 1. pobranie pozycji multikonta w matrycy dla reflinka z którego się rejestrujemy
-            // 2. pobieramy od tego konta wszystkich potomków 2 poziomy w dół (powinniśmy dostać 7 kont/pozycji)
-            // 3. sprawdzamy czy istnieje w tych siedmiu pozycjach ID multikonta należące do któregokolwiek z kont użytkownika, który chce założyć teraz multikonto (jeśli tak to nie wolno takiego multikonta dodać)
-            // 4. sprawdzamy czy istnieje w tych 7 kontach jakiś NULL w UserMultiAccountId (to oznacza wolne miejsce w matrycy, więc jest okej) 
+            var invitingMatrixAccounts = await GetMatrixForUserAccount(invitingMultiAccount);
+            
+            if (CheckIfAnyOfUserMultiAccountsExistInGivenMatrix(userAccount, invitingMatrixAccounts))
+            {
+                // TODO: Probably we should find a random sponsor here instead of throwing an error?
+                throw new ValidationException("You cannot have position in matrix with any of your other multi account");
+            }
+            
+            if (!CheckIfEmptySpaceExistInMatrix(invitingMatrixAccounts))
+            {
+                // TODO: Probably we should find a random sponsor here instead of throwing an error?
+                throw new ValidationException("Matrix is full for this reflink");
+            }
+        }
+
+        private async Task<IEnumerable<MatrixPosition>> GetMatrixForUserAccount(UserMultiAccount invitingMultiAccount)
+        {
+            var invitingMatrixPosition = await _context.Set<MatrixPosition>()
+                .Where(x => x.UserMultiAccountId == invitingMultiAccount.Id).SingleAsync();
+            
+            var invitingMatrixAccounts = await _context.Set<MatrixPosition>()
+                .Where(x => x.Left >= invitingMatrixPosition.Left)
+                .Where(x => x.Right <= invitingMatrixPosition.Right)
+                .Where(x => x.DepthLevel >= invitingMatrixPosition.DepthLevel)
+                .Where(x => x.DepthLevel <= invitingMatrixPosition.DepthLevel + 2)
+                .ToListAsync();
+
+            return invitingMatrixAccounts;
         }
 
         private static bool CheckIfUserPaidMembershipsFee(UserAccountData userAccount)
@@ -109,6 +126,20 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
                 .ToListAsync();
 
             return allUserMultiAccountsInMatrixPositions.ContainsAll(userMultiAccountIds);
+        }
+        
+        private static bool CheckIfEmptySpaceExistInMatrix(IEnumerable<MatrixPosition> invitatorMatrixPositionMatrixAccounts)
+        {
+            return invitatorMatrixPositionMatrixAccounts.Any(x => x.UserMultiAccountId == null);
+        }
+
+        private static bool CheckIfAnyOfUserMultiAccountsExistInGivenMatrix(UserAccountData userAccount, IEnumerable<MatrixPosition> invitatorMatrixPositionMatrixAccounts)
+        {
+            var userMultiAccountIds = userAccount.UserMultiAccounts
+                            .Select(x => x.Id)
+                            .ToList();
+
+            return invitatorMatrixPositionMatrixAccounts.Any(x => userMultiAccountIds.Contains(x.Id));
         }
 
         private Task<UserMultiAccount> CreateMultiAccount()
