@@ -35,8 +35,10 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             var invitingUserMatrix = await _matrixPositionHelper.GetMatrix(userMultiAccount.UserMultiAccountInvitingId.Value);
             if (!CheckIfMatrixHasEmptySpace(invitingUserMatrix))
             {
+                // Maybe we should find another sponsor instead of throwing an error here?
                 throw new ValidationException("Matrix is full for the user from reflink");
             }
+
 
 
             throw new NotImplementedException();
