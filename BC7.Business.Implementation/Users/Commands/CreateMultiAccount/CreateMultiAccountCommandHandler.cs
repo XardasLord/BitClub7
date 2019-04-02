@@ -70,7 +70,8 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
                 //throw new InvalidOperationException("The main account did not pay the membership's fee yet");
             }
 
-            if (!await CheckIfAllMultiAccountsAreInMatrixPositions(userAccount.UserMultiAccounts))
+            var userMultiAccountIds = userAccount.UserMultiAccounts.Select(x => x.Id).ToList();
+            if (!await CheckIfAllMultiAccountsAreInMatrixPositions(userMultiAccountIds))
             {
                 throw new ValidationException("Not all user multi accounts are available in matrix positions");
             }
@@ -81,7 +82,6 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             }
 
             var invitingUserMatrixAccounts = await _matrixPositionHelper.GetMatrixForUserMultiAccount(invitingMultiAccount.Id);
-            var userMultiAccountIds = userAccount.UserMultiAccounts.Select(x => x.Id).ToList();
 
             if (CheckIfAnyOfUserMultiAccountsExistInGivenMatrix(invitingUserMatrixAccounts, userMultiAccountIds))
             {
@@ -106,10 +106,8 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             return multiAccount.UserAccountDataId == _command.UserAccountId;
         }
 
-        private async Task<bool> CheckIfAllMultiAccountsAreInMatrixPositions(IEnumerable<UserMultiAccount> userMultiAccounts)
+        private async Task<bool> CheckIfAllMultiAccountsAreInMatrixPositions(IEnumerable<Guid> userMultiAccountIds)
         {
-            var userMultiAccountIds = userMultiAccounts.Select(x => x.Id).ToList();
-
             // TODO: Move it to helper
             var allUserMultiAccountsInMatrixPositions = await _context.Set<MatrixPosition>()
                 .Where(x => userMultiAccountIds.Contains(x.Id))
