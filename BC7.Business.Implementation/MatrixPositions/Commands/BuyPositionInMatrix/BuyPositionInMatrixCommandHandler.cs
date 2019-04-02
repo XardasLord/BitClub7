@@ -28,7 +28,6 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
         {
             var userMultiAccount = await _userMultiAccountHelper.GetById(request.UserMultiAccountId);
 
-            // TODO: Validation parts:
             // 1. Check if user paid for the matrix position on this level (available in etap 1)
 
             // ReSharper disable once PossibleInvalidOperationException
@@ -39,7 +38,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
                 throw new ValidationException("Matrix is full for the user from reflink");
             }
 
-
+            // Buying position in matrix
 
             throw new NotImplementedException();
         }
