@@ -20,7 +20,7 @@ namespace BC7.Business.Implementation.Helpers
             _context = context;
         }
 
-        public async Task<IEnumerable<MatrixPosition>> GetMatrixForUserMultiAccount(Guid userMultiAccountId)
+        public async Task<IEnumerable<MatrixPosition>> GetMatrix(Guid userMultiAccountId)
         {
             var userMatrixPosition = await _context.Set<MatrixPosition>()
                 .Where(x => x.UserMultiAccountId == userMultiAccountId).SingleAsync();

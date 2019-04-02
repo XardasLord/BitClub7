@@ -81,7 +81,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
                 throw new ValidationException("You cannot have more than 20 multi accounts attached to the main account");
             }
 
-            var invitingUserMatrixAccounts = await _matrixPositionHelper.GetMatrixForUserMultiAccount(invitingMultiAccount.Id);
+            var invitingUserMatrixAccounts = await _matrixPositionHelper.GetMatrix(invitingMultiAccount.Id);
 
             if (CheckIfAnyOfUserMultiAccountsExistInGivenMatrix(invitingUserMatrixAccounts, userMultiAccountIds))
             {
