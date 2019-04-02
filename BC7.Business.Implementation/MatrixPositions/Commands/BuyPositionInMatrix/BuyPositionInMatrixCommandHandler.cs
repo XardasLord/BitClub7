@@ -60,6 +60,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             _context.Set<MatrixPosition>().Attach(matrixPosition);
             await _context.SaveChangesAsync();
 
+            // TODO: Here we should add two more positions with UserMultiAccountId null + recalculate left/right values for the entire table
 
             return matrixPosition.Id;
         }
