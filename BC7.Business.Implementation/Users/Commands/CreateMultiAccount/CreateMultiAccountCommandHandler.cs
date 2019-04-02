@@ -17,12 +17,18 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
     {
         private CreateMultiAccountCommand _command;
         private readonly IBitClub7Context _context;
+        private readonly IUserAccountDataHelper _userAccountDataHelper;
         private readonly IUserMultiAccountHelper _userMultiAccountHelper;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
 
-        public CreateMultiAccountCommandHandler(IBitClub7Context context, IUserMultiAccountHelper userMultiAccountHelper, IMatrixPositionHelper matrixPositionHelper)
+        public CreateMultiAccountCommandHandler(
+            IBitClub7Context context, 
+            IUserAccountDataHelper userAccountDataHelper,
+            IUserMultiAccountHelper userMultiAccountHelper, 
+            IMatrixPositionHelper matrixPositionHelper)
         {
             _context = context;
+            _userAccountDataHelper = userAccountDataHelper;
             _userMultiAccountHelper = userMultiAccountHelper;
             _matrixPositionHelper = matrixPositionHelper;
         }
@@ -40,9 +46,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
 
         private async Task ValidateIfMultiAccountCanBeCreated()
         {
-            var userAccount = await _context.Set<UserAccountData>()
-                .Include(x => x.UserMultiAccounts)
-                .SingleOrDefaultAsync(x => x.Id == _command.UserAccountId);
+            var userAccount = await _userAccountDataHelper.GetById(_command.UserAccountId);
             if (userAccount == null)
             {
                 throw new AccountNotFoundException("User with given ID does not exist");
@@ -59,13 +63,14 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
                 throw new ValidationException("Given reflink belongs to the requested user account");
             }
 
-#warning this validation has to be uncomment in the ETAP 1
-            //if (!CheckIfUserPaidMembershipsFee(userAccount))
-            //{
-            //    throw new InvalidOperationException("The main account did not pay the membership's fee yet");
-            //}
 
-            if (!await CheckIfAllMultiAccountsAreInMatrixPositions(userAccount))
+            if (!CheckIfUserPaidMembershipsFee(userAccount))
+            {
+#warning this validation has to be uncomment in the ETAP 1
+                //throw new InvalidOperationException("The main account did not pay the membership's fee yet");
+            }
+
+            if (!await CheckIfAllMultiAccountsAreInMatrixPositions(userAccount.UserMultiAccounts))
             {
                 throw new ValidationException("Not all user multi accounts are available in matrix positions");
             }
@@ -101,13 +106,11 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             return multiAccount.UserAccountDataId == _command.UserAccountId;
         }
 
-        private async Task<bool> CheckIfAllMultiAccountsAreInMatrixPositions(UserAccountData userAccount)
+        private async Task<bool> CheckIfAllMultiAccountsAreInMatrixPositions(IEnumerable<UserMultiAccount> userMultiAccounts)
         {
-            // TODO: Move it to helper
-            var userMultiAccountIds = userAccount.UserMultiAccounts
-                .Select(x => x.Id)
-                .ToList();
+            var userMultiAccountIds = userMultiAccounts.Select(x => x.Id).ToList();
 
+            // TODO: Move it to helper
             var allUserMultiAccountsInMatrixPositions = await _context.Set<MatrixPosition>()
                 .Where(x => userMultiAccountIds.Contains(x.Id))
                 .Select(x => x.UserMultiAccountId.Value)
