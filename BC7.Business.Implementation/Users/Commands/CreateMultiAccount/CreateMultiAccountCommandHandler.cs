@@ -18,11 +18,13 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
         private CreateMultiAccountCommand _command;
         private readonly IBitClub7Context _context;
         private readonly IUserMultiAccountHelper _userMultiAccountHelper;
+        private readonly IMatrixPositionHelper _matrixPositionHelper;
 
-        public CreateMultiAccountCommandHandler(IBitClub7Context context, IUserMultiAccountHelper userMultiAccountHelper)
+        public CreateMultiAccountCommandHandler(IBitClub7Context context, IUserMultiAccountHelper userMultiAccountHelper, IMatrixPositionHelper matrixPositionHelper)
         {
             _context = context;
             _userMultiAccountHelper = userMultiAccountHelper;
+            _matrixPositionHelper = matrixPositionHelper;
         }
 
         public async Task<Guid> Handle(CreateMultiAccountCommand command, CancellationToken cancellationToken)
@@ -73,34 +75,20 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
                 throw new ValidationException("You cannot have more than 20 multi accounts attached to the main account");
             }
 
-            var invitingMatrixAccounts = await GetMatrixForUserAccount(invitingMultiAccount);
-            
-            if (CheckIfAnyOfUserMultiAccountsExistInGivenMatrix(userAccount, invitingMatrixAccounts))
+            var invitingUserMatrixAccounts = await _matrixPositionHelper.GetMatrixForUserMultiAccount(invitingMultiAccount.Id);
+            var userMultiAccountIds = userAccount.UserMultiAccounts.Select(x => x.Id).ToList();
+
+            if (CheckIfAnyOfUserMultiAccountsExistInGivenMatrix(invitingUserMatrixAccounts, userMultiAccountIds))
             {
                 // TODO: Probably we should find a random sponsor here instead of throwing an error?
                 throw new ValidationException("You cannot have position in matrix with any of your other multi account");
             }
-            
-            if (!CheckIfEmptySpaceExistInMatrix(invitingMatrixAccounts))
+
+            if (!CheckIfEmptySpaceExistInMatrix(invitingUserMatrixAccounts))
             {
                 // TODO: Probably we should find a random sponsor here instead of throwing an error?
                 throw new ValidationException("Matrix is full for this reflink");
             }
-        }
-
-        private async Task<IEnumerable<MatrixPosition>> GetMatrixForUserAccount(UserMultiAccount invitingMultiAccount)
-        {
-            var invitingMatrixPosition = await _context.Set<MatrixPosition>()
-                .Where(x => x.UserMultiAccountId == invitingMultiAccount.Id).SingleAsync();
-            
-            var invitingMatrixAccounts = await _context.Set<MatrixPosition>()
-                .Where(x => x.Left >= invitingMatrixPosition.Left)
-                .Where(x => x.Right <= invitingMatrixPosition.Right)
-                .Where(x => x.DepthLevel >= invitingMatrixPosition.DepthLevel)
-                .Where(x => x.DepthLevel <= invitingMatrixPosition.DepthLevel + 2)
-                .ToListAsync();
-
-            return invitingMatrixAccounts;
         }
 
         private static bool CheckIfUserPaidMembershipsFee(UserAccountData userAccount)
@@ -127,19 +115,15 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
 
             return allUserMultiAccountsInMatrixPositions.ContainsAll(userMultiAccountIds);
         }
-        
-        private static bool CheckIfEmptySpaceExistInMatrix(IEnumerable<MatrixPosition> invitatorMatrixPositionMatrixAccounts)
+
+        private bool CheckIfAnyOfUserMultiAccountsExistInGivenMatrix(IEnumerable<MatrixPosition> invitingMatrixAccounts, IEnumerable<Guid> userMultiAccountIds)
         {
-            return invitatorMatrixPositionMatrixAccounts.Any(x => x.UserMultiAccountId == null);
+            return _matrixPositionHelper.CheckIfAnyAccountExistInMatrix(invitingMatrixAccounts, userMultiAccountIds);
         }
 
-        private static bool CheckIfAnyOfUserMultiAccountsExistInGivenMatrix(UserAccountData userAccount, IEnumerable<MatrixPosition> invitatorMatrixPositionMatrixAccounts)
+        private bool CheckIfEmptySpaceExistInMatrix(IEnumerable<MatrixPosition> invitingUserMatrix)
         {
-            var userMultiAccountIds = userAccount.UserMultiAccounts
-                            .Select(x => x.Id)
-                            .ToList();
-
-            return invitatorMatrixPositionMatrixAccounts.Any(x => userMultiAccountIds.Contains(x.Id));
+            return _matrixPositionHelper.CheckIfMatrixHasEmptySpace(invitingUserMatrix);
         }
 
         private Task<UserMultiAccount> CreateMultiAccount()
