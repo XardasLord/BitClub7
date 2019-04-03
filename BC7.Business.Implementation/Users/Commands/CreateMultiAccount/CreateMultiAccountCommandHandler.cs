@@ -81,6 +81,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
                 throw new ValidationException("You cannot have more than 20 multi accounts attached to the main account");
             }
 
+            // TODO: How to verify the reflink user's matrix level? Is it 0, 1...9?
             var invitingUserMatrixAccounts = await _matrixPositionHelper.GetMatrix(invitingMultiAccount.Id);
 
             if (CheckIfAnyOfUserMultiAccountsExistInGivenMatrix(invitingUserMatrixAccounts, userMultiAccountIds))

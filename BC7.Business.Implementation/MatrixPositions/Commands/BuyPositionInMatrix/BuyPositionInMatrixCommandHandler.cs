@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BC7.Business.Helpers;
+using BC7.Business.Implementation.Events;
 using BC7.Database;
 using BC7.Entity;
 using BC7.Infrastructure.CustomExceptions;
@@ -16,15 +17,18 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
         private readonly IBitClub7Context _context;
         private readonly IUserMultiAccountHelper _userMultiAccountHelper;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
+        private readonly IMediator _mediator;
 
         public BuyPositionInMatrixCommandHandler(
             IBitClub7Context context,
             IUserMultiAccountHelper userMultiAccountHelper,
-            IMatrixPositionHelper matrixPositionHelper)
+            IMatrixPositionHelper matrixPositionHelper,
+            IMediator mediator)
         {
             _context = context;
             _userMultiAccountHelper = userMultiAccountHelper;
             _matrixPositionHelper = matrixPositionHelper;
+            _mediator = mediator;
         }
 
         public async Task<Guid> Handle(BuyPositionInMatrixCommand request, CancellationToken cancellationToken)
@@ -39,14 +43,22 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             // 1. Check if user paid for the matrix position on this level (available in etap 1)
 
             // ReSharper disable once PossibleInvalidOperationException
-            var invitingUserMatrix = await _matrixPositionHelper.GetMatrix(userMultiAccount.UserMultiAccountInvitingId.Value);
+            var invitingUserMatrix = await _matrixPositionHelper.GetMatrix(userMultiAccount.UserMultiAccountInvitingId.Value, request.MatrixLevel);
+
+            if (invitingUserMatrix == null)
+            {
+                throw new ValidationException("The inviting user from reflink does not have matrix on this level");
+            }
+
             if (!CheckIfMatrixHasEmptySpace(invitingUserMatrix))
             {
                 // Maybe we should find another sponsor instead of throwing an error here?
                 throw new ValidationException("Matrix is full for the user from reflink");
             }
-            
+
             var matrixPositionId = await BuyPositionInMatrix(request.UserMultiAccountId, invitingUserMatrix);
+
+            await PublishMatrixPositionBoughtNotification(matrixPositionId);
 
             return matrixPositionId;
         }
@@ -60,14 +72,18 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             _context.Set<MatrixPosition>().Attach(matrixPosition);
             await _context.SaveChangesAsync();
 
-            // TODO: Here we should add two more positions with UserMultiAccountId null + recalculate left/right values for the entire table
-
             return matrixPosition.Id;
         }
 
-        private bool CheckIfMatrixHasEmptySpace(System.Collections.Generic.IEnumerable<Entity.MatrixPosition> invitingUserMatrix)
+        private bool CheckIfMatrixHasEmptySpace(IEnumerable<MatrixPosition> invitingUserMatrix)
         {
             return _matrixPositionHelper.CheckIfMatrixHasEmptySpace(invitingUserMatrix);
+        }
+
+        private async Task PublishMatrixPositionBoughtNotification(Guid matrixPositionId)
+        {
+            var @event = new MatrixPositionBoughtEvent { MatrixPositionId = matrixPositionId };
+            await _mediator.Publish(@event);
         }
     }
 }
