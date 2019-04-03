@@ -15,6 +15,7 @@ namespace BC7.Api.ConfigurationExtensions
             services.AddTransient<IReflinkHelper, ReflinkHelper>();
             services.AddTransient<IUserMultiAccountHelper, UserMultiAccountHelper>();
             services.AddTransient<IUserAccountDataHelper, UserAccountDataHelper>();
+            services.AddTransient<IMatrixPositionHelper, MatrixPositionHelper>();
 
             services.AddDbContext<IBitClub7Context, BitClub7Context>(
                 opts => opts.UseSqlServer(configuration.GetConnectionString("BitClub7DB"),
