@@ -33,7 +33,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             _matrixPositionHelper = matrixPositionHelper;
         }
 
-        public async Task<Guid> Handle(CreateMultiAccountCommand command, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateMultiAccountCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
             _command = command;
 
@@ -111,7 +111,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
         {
             // TODO: Move it to helper
             var allUserMultiAccountsInMatrixPositions = await _context.Set<MatrixPosition>()
-                .Where(x => userMultiAccountIds.Contains(x.Id))
+                .Where(x => userMultiAccountIds.Contains(x.UserMultiAccountId.Value))
                 .Select(x => x.UserMultiAccountId.Value)
                 .ToListAsync();
 
