@@ -58,6 +58,31 @@ namespace BC7.Business.Implementation.Tests.Integration
             multiAccount.UserMultiAccountInviting.MultiAccountName.Should().Be("222");
         }
 
+        [Test]
+        public async Task RegisterNewUserAccountCommandHandler_WhenHandleWithInvitingReflink_CreateUserAccountAndItsMultiAccountToInvitingReflink()
+        {
+            // Arrange
+            _sut = new RegisterNewUserAccountCommandHandler(_context, _mapper, _reflinkHelper, _userMultiAccountHelper);
+            await CreateExistingUsersInDatabase();
+            var command = CreateCommand();
+            command.InvitingRefLink = "reflink333";
+
+            // Act
+            var result = await _sut.Handle(command);
+
+            // Assert
+            var user = await _context.UserAccountsData
+                .SingleOrDefaultAsync(x => x.Id == result);
+            var multiAccount = await _context.UserMultiAccounts
+                .Include(x => x.UserMultiAccountInviting)
+                .SingleOrDefaultAsync(x => x.UserAccountDataId == result);
+
+            user.Should().NotBeNull();
+            multiAccount.Should().NotBeNull();
+            multiAccount.IsMainAccount.Should().BeTrue();
+            multiAccount.UserMultiAccountInviting.MultiAccountName.Should().Be("333");
+        }
+
         private static RegisterNewUserAccountCommand CreateCommand()
         {
             return new RegisterNewUserAccountCommand
