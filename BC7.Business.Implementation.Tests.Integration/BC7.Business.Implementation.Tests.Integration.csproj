@@ -10,9 +10,11 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
     <PackageReference Include="NUnit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
+    <PackageReference Include="Xbehave" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BC7.Business.Implementation\BC7.Business.Implementation.csproj" />
     <ProjectReference Include="..\BC7.Database\BC7.Database.csproj" />
     <ProjectReference Include="..\BC7.Entity\BC7.Entity.csproj" />
   </ItemGroup>
