@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace BC7.Business.Implementation.Tests.Integration
 {
     [TestFixture]
-    public class RegisterNewUserAccountTests : BaseIntegration
+    public class RegisterNewUserAccountCommandHandlerTests : BaseIntegration
     {
         private RegisterNewUserAccountCommandHandler _sut;
 
