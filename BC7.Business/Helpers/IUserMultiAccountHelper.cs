@@ -6,6 +6,8 @@ namespace BC7.Business.Helpers
 {
     public interface IUserMultiAccountHelper
     {
+        Task<UserMultiAccount> GetById(Guid id);
+
         Task<UserMultiAccount> GetByReflink(string reflink);
 
         Task<UserMultiAccount> GetByAccountName(string accountName);
