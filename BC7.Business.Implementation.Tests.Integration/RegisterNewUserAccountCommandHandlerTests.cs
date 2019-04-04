@@ -103,17 +103,20 @@ namespace BC7.Business.Implementation.Tests.Integration
                 new UserMultiAccount
                 {
                     UserAccountDataId = existingUserAccountData.Id,
-                    MultiAccountName = "111"
+                    MultiAccountName = "111",
+                    RefLink = "reflink111"
                 },
                 new UserMultiAccount
                 {
                     UserAccountDataId = existingUserAccountData.Id,
-                    MultiAccountName = "222"
+                    MultiAccountName = "222",
+                    RefLink = "reflink222"
                 },
                 new UserMultiAccount
                 {
                     UserAccountDataId = existingUserAccountData.Id,
-                    MultiAccountName = "333"
+                    MultiAccountName = "333",
+                    RefLink = "reflink333"
                 });
 
             await _context.SaveChangesAsync();
