@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
+using BC7.Business.Helpers;
+using BC7.Business.Implementation.Helpers;
 using BC7.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +13,11 @@ namespace BC7.Business.Implementation.Tests.Integration
     public abstract class BaseIntegration
     {
         protected IBitClub7Context _context;
+        protected IMapper _mapper;
+        protected IReflinkHelper _reflinkHelper;
+        protected IUserMultiAccountHelper _userMultiAccountHelper;
+        protected IUserAccountDataHelper _userAccountDataHelper;
+        protected IMatrixPositionHelper _matrixPositionHelper;
 
         [SetUp]
         public async Task SetUp()
@@ -17,7 +25,7 @@ namespace BC7.Business.Implementation.Tests.Integration
             var serviceProvider = new ServiceCollection()
                 .AddEntityFrameworkSqlServer()
                 .BuildServiceProvider();
-
+           
             var builder = new DbContextOptionsBuilder<BitClub7Context>();
             builder.UseSqlServer($@"Server=XARDASLORD\SQLEXPRESS;Database=BitClub7_integration_tests_{Guid.NewGuid()};Integrated Security=SSPI")
                 .UseInternalServiceProvider(serviceProvider);
@@ -26,6 +34,18 @@ namespace BC7.Business.Implementation.Tests.Integration
             _context.Database.Migrate();
 
             await ClearDatabase();
+            
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var scopedServices = scope.ServiceProvider;
+
+                _mapper = scopedServices.GetRequiredService<Mapper>();
+                _reflinkHelper = scopedServices.GetRequiredService<ReflinkHelper>();
+                _userMultiAccountHelper = scopedServices.GetRequiredService<UserMultiAccountHelper>();
+                _userAccountDataHelper = scopedServices.GetRequiredService<UserAccountDataHelper>();
+                _matrixPositionHelper = scopedServices.GetRequiredService<MatrixPositionHelper>();
+            }
+
         }
 
         public async Task ClearDatabase()
