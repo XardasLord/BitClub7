@@ -5,6 +5,7 @@ using BC7.Business.Helpers;
 using BC7.Business.Implementation.Helpers;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Database;
+using BC7.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
