@@ -3,7 +3,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BC7.Business.Helpers;
 using BC7.Business.Implementation.Helpers;
+using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Database;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
@@ -22,30 +24,32 @@ namespace BC7.Business.Implementation.Tests.Integration
         [SetUp]
         public async Task SetUp()
         {
-            var serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkSqlServer()
+            var services = new ServiceCollection();
+            services.AddTransient<IReflinkHelper, ReflinkHelper>();
+            services.AddTransient<IUserAccountDataHelper, UserAccountDataHelper>();
+            services.AddTransient<IMatrixPositionHelper, MatrixPositionHelper>();
+            services.AddTransient<IUserMultiAccountHelper, UserMultiAccountHelper>();
+
+            services.AddAutoMapper();
+            services.AddMediatR(typeof(RegisterNewUserAccountCommand).Assembly);
+
+            services.AddDbContext<IBitClub7Context, BitClub7Context>(
+                opts => opts.UseSqlServer($@"Server=XARDASLORD\SQLEXPRESS;Database=BitClub7_integration_tests_{Guid.NewGuid()};Integrated Security=SSPI",
+                    b => b.MigrationsAssembly(typeof(IBitClub7Context).Namespace))
+            );
+
+            var serviceProvider = services.AddEntityFrameworkSqlServer()
                 .BuildServiceProvider();
-           
-            var builder = new DbContextOptionsBuilder<BitClub7Context>();
-            builder.UseSqlServer($@"Server=XARDASLORD\SQLEXPRESS;Database=BitClub7_integration_tests_{Guid.NewGuid()};Integrated Security=SSPI")
-                .UseInternalServiceProvider(serviceProvider);
 
-            _context = new BitClub7Context(builder.Options);
+            _context = serviceProvider.GetService<IBitClub7Context>();
+            _mapper = serviceProvider.GetService<IMapper>();
+            _reflinkHelper = serviceProvider.GetService<IReflinkHelper>();
+            _userAccountDataHelper = serviceProvider.GetService<IUserAccountDataHelper>();
+            _matrixPositionHelper = serviceProvider.GetService<IMatrixPositionHelper>();
+            _userMultiAccountHelper = serviceProvider.GetService<IUserMultiAccountHelper>();
+
             _context.Database.Migrate();
-
             await ClearDatabase();
-            
-            using (var scope = serviceProvider.CreateScope())
-            {
-                var scopedServices = scope.ServiceProvider;
-
-                _mapper = scopedServices.GetRequiredService<Mapper>();
-                _reflinkHelper = scopedServices.GetRequiredService<ReflinkHelper>();
-                _userMultiAccountHelper = scopedServices.GetRequiredService<UserMultiAccountHelper>();
-                _userAccountDataHelper = scopedServices.GetRequiredService<UserAccountDataHelper>();
-                _matrixPositionHelper = scopedServices.GetRequiredService<MatrixPositionHelper>();
-            }
-
         }
 
         public async Task ClearDatabase()
