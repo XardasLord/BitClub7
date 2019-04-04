@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace BC7.Business.Implementation.Tests.Integration
 {
-    public class BaseIntegration
+    public abstract class BaseIntegration
     {
         protected IBitClub7Context _context;
 
