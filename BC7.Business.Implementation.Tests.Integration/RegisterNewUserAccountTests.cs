@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BC7.Business.Implementation.Tests.Integration.Base;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Entity;
 using FluentAssertions;

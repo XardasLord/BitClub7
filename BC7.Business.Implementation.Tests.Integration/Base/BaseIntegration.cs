@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace BC7.Business.Implementation.Tests.Integration
+namespace BC7.Business.Implementation.Tests.Integration.Base
 {
     public abstract class BaseIntegration
     {
