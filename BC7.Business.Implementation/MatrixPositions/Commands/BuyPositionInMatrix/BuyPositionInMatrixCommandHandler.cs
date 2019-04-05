@@ -18,17 +18,20 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
         private readonly IBitClub7Context _context;
         private readonly IUserMultiAccountRepository _userMultiAccountRepository;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
+        private readonly IReflinkHelper _reflinkHelper;
         private readonly IMediator _mediator;
 
         public BuyPositionInMatrixCommandHandler(
             IBitClub7Context context,
             IUserMultiAccountRepository userMultiAccountRepository,
             IMatrixPositionHelper matrixPositionHelper,
+            IReflinkHelper reflinkHelper,
             IMediator mediator)
         {
             _context = context;
             _userMultiAccountRepository = userMultiAccountRepository;
             _matrixPositionHelper = matrixPositionHelper;
+            _reflinkHelper = reflinkHelper;
             _mediator = mediator;
         }
 
@@ -60,6 +63,10 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             var matrixPositionId = await BuyPositionInMatrix(request.UserMultiAccountId, invitingUserMatrix);
 
             await PublishMatrixPositionBoughtNotification(matrixPositionId);
+
+            // TODO: Generate reflink in event maybe?
+            userMultiAccount.RefLink = _reflinkHelper.GenerateReflink();
+            await _context.SaveChangesAsync();
 
             return matrixPositionId;
         }
