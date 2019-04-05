@@ -10,18 +10,18 @@ using Z.EntityFramework.Plus;
 
 namespace BC7.Business.Implementation.Events
 {
-    public class MatrixPositionBoughtEventHandler : INotificationHandler<MatrixPositionBoughtEvent>
+    public class MatrixPositionHasBeenBoughtEventHandler : INotificationHandler<MatrixPositionHasBeenBoughtEvent>
     {
         private readonly IBitClub7Context _context;
         private readonly IMatrixPositionRepository _matrixPositionRepository;
 
-        public MatrixPositionBoughtEventHandler(IBitClub7Context context, IMatrixPositionRepository matrixPositionRepository)
+        public MatrixPositionHasBeenBoughtEventHandler(IBitClub7Context context, IMatrixPositionRepository matrixPositionRepository)
         {
             _context = context;
             _matrixPositionRepository = matrixPositionRepository;
         }
 
-        public async Task Handle(MatrixPositionBoughtEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(MatrixPositionHasBeenBoughtEvent notification, CancellationToken cancellationToken)
         {
             var matrixPositionBought = await _matrixPositionRepository.GetAsync(notification.MatrixPositionId);
 
