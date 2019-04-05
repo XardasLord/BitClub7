@@ -6,6 +6,7 @@ using BC7.Business.Helpers;
 using BC7.Database;
 using BC7.Entity;
 using BC7.Infrastructure.CustomExceptions;
+using BC7.Repository;
 using BC7.Security;
 using BC7.Security.PasswordUtilities;
 using MediatR;
@@ -19,17 +20,20 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
         private readonly IMapper _mapper;
         private readonly IReflinkHelper _reflinkHelper;
         private readonly IUserMultiAccountHelper _userMultiAccountHelper;
+        private readonly IUserMultiAccountRepository _userMultiAccountRepository;
 
         public RegisterNewUserAccountCommandHandler(
             IBitClub7Context context,
             IMapper mapper,
             IReflinkHelper reflinkHelper,
-            IUserMultiAccountHelper userMultiAccountHelper)
+            IUserMultiAccountHelper userMultiAccountHelper,
+            IUserMultiAccountRepository userMultiAccountRepository)
         {
             _context = context;
             _mapper = mapper;
             _reflinkHelper = reflinkHelper;
             _userMultiAccountHelper = userMultiAccountHelper;
+            _userMultiAccountRepository = userMultiAccountRepository;
         }
 
         public async Task<Guid> Handle(RegisterNewUserAccountCommand command, CancellationToken cancellationToken = default(CancellationToken))
@@ -104,7 +108,7 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
 
         private async Task<Guid> GetInvitingUserIdByRefLink(string reflink)
         {
-            var invitingUser = await _userMultiAccountHelper.GetByReflink(reflink);
+            var invitingUser = await _userMultiAccountRepository.GetByReflinkAsync(reflink);
 
             if (invitingUser == null)
             {

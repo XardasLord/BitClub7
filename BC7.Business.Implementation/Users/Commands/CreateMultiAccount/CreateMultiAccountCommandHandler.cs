@@ -19,17 +19,20 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
         private CreateMultiAccountCommand _command;
         private readonly IBitClub7Context _context;
         private readonly IUserAccountDataRepository _userAccountDataRepository;
+        private readonly IUserMultiAccountRepository _userMultiAccountRepository;
         private readonly IUserMultiAccountHelper _userMultiAccountHelper;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
 
         public CreateMultiAccountCommandHandler(
             IBitClub7Context context, 
             IUserAccountDataRepository userAccountDataRepository,
+            IUserMultiAccountRepository userMultiAccountRepository,
             IUserMultiAccountHelper userMultiAccountHelper, 
             IMatrixPositionHelper matrixPositionHelper)
         {
             _context = context;
             _userAccountDataRepository = userAccountDataRepository;
+            _userMultiAccountRepository = userMultiAccountRepository;
             _userMultiAccountHelper = userMultiAccountHelper;
             _matrixPositionHelper = matrixPositionHelper;
         }
@@ -53,7 +56,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
                 throw new AccountNotFoundException("User with given ID does not exist");
             }
 
-            var invitingMultiAccount = await _userMultiAccountHelper.GetByReflink(_command.RefLink);
+            var invitingMultiAccount = await _userMultiAccountRepository.GetByReflinkAsync(_command.RefLink);
             if (invitingMultiAccount == null)
             {
                 throw new AccountNotFoundException("Account with given reflink does not exist");

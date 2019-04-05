@@ -20,6 +20,7 @@ namespace BC7.Business.Implementation.Helpers
             _context = context;
         }
 
+#warning Move to repository
         public async Task<IEnumerable<MatrixPosition>> GetMatrix(Guid userMultiAccountId, int matrixLevel = 0)
         {
             var userMatrixPosition = await _context.Set<MatrixPosition>()

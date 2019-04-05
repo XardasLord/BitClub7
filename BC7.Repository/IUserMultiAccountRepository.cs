@@ -7,5 +7,6 @@ namespace BC7.Repository
     public interface IUserMultiAccountRepository
     {
         Task<UserMultiAccount> GetAsync(Guid id);
+        Task<UserMultiAccount> GetByReflinkAsync(string reflink);
     }
 }

@@ -21,5 +21,11 @@ namespace BC7.Repository.Implementation
                 .Include(x => x.MatrixPositions)
                 .SingleOrDefaultAsync(x => x.Id == id);
         }
+
+        // TODO: Some BrowseAsync with Func/Expression maybe?
+        public Task<UserMultiAccount> GetByReflinkAsync(string reflink)
+        {
+            return _context.Set<UserMultiAccount>().SingleOrDefaultAsync(x => x.RefLink == reflink);
+        }
     }
 }
