@@ -8,6 +8,7 @@ using BC7.Business.Implementation.Events;
 using BC7.Database;
 using BC7.Entity;
 using BC7.Infrastructure.CustomExceptions;
+using BC7.Repository;
 using MediatR;
 
 namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatrix
@@ -15,25 +16,25 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
     public class BuyPositionInMatrixCommandHandler : IRequestHandler<BuyPositionInMatrixCommand, Guid>
     {
         private readonly IBitClub7Context _context;
-        private readonly IUserMultiAccountHelper _userMultiAccountHelper;
+        private readonly IUserMultiAccountRepository _userMultiAccountRepository;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
         private readonly IMediator _mediator;
 
         public BuyPositionInMatrixCommandHandler(
             IBitClub7Context context,
-            IUserMultiAccountHelper userMultiAccountHelper,
+            IUserMultiAccountRepository userMultiAccountRepository,
             IMatrixPositionHelper matrixPositionHelper,
             IMediator mediator)
         {
             _context = context;
-            _userMultiAccountHelper = userMultiAccountHelper;
+            _userMultiAccountRepository = userMultiAccountRepository;
             _matrixPositionHelper = matrixPositionHelper;
             _mediator = mediator;
         }
 
         public async Task<Guid> Handle(BuyPositionInMatrixCommand request, CancellationToken cancellationToken)
         {
-            var userMultiAccount = await _userMultiAccountHelper.GetById(request.UserMultiAccountId);
+            var userMultiAccount = await _userMultiAccountRepository.GetAsync(request.UserMultiAccountId);
 
             if (userMultiAccount.MatrixPositions.Any())
             {

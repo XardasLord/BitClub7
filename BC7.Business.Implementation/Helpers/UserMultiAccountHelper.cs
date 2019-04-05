@@ -19,13 +19,7 @@ namespace BC7.Business.Implementation.Helpers
             _reflinkHelper = reflinkHelper;
         }
 
-        public Task<UserMultiAccount> GetById(Guid id)
-        {
-            return _context.Set<UserMultiAccount>()
-                .Include(x => x.MatrixPositions)
-                .SingleOrDefaultAsync(x => x.Id == id);
-        }
-
+#warning Move to repository
         public Task<UserMultiAccount> GetByReflink(string reflink)
         {
             return _context.Set<UserMultiAccount>().SingleOrDefaultAsync(x => x.RefLink == reflink);
