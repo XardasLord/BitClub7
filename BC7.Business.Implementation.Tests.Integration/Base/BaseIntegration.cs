@@ -24,6 +24,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
         protected IMatrixPositionHelper _matrixPositionHelper;
         protected IUserAccountDataRepository _userAccountDataRepository;
         protected IUserMultiAccountRepository _userMultiAccountRepository;
+        protected IMatrixPositionRepository _matrixPositionRepository;
 
         [SetUp]
         public async Task SetUp()
@@ -35,6 +36,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             services.AddTransient<IUserMultiAccountHelper, UserMultiAccountHelper>();
             services.AddTransient<IUserAccountDataRepository, UserAccountDataRepository>();
             services.AddTransient<IUserMultiAccountRepository, UserMultiAccountRepository>();
+            services.AddTransient<IMatrixPositionRepository, MatrixPositionRepository>();
 
             services.AddAutoMapper();
             services.AddMediatR(typeof(RegisterNewUserAccountCommand).Assembly);
@@ -55,6 +57,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             _userMultiAccountHelper = serviceProvider.GetService<IUserMultiAccountHelper>();
             _userAccountDataRepository = serviceProvider.GetService<IUserAccountDataRepository>();
             _userMultiAccountRepository = serviceProvider.GetService<IUserMultiAccountRepository>();
+            _matrixPositionRepository = serviceProvider.GetService<IMatrixPositionRepository>();
             
             _context.Database.Migrate();
             await ClearDatabase();

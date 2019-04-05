@@ -7,8 +7,6 @@ namespace BC7.Business.Helpers
 {
     public interface IMatrixPositionHelper
     {
-        Task<MatrixPosition> Get(Guid id);
-
         Task<IEnumerable<MatrixPosition>> GetMatrix(Guid userMultiAccountId, int matrixLevel = 0);
 
         bool CheckIfAnyAccountExistInMatrix(IEnumerable<MatrixPosition> matrix, IEnumerable<Guid> accountIds);
