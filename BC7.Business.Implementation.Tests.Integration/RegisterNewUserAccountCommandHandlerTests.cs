@@ -18,7 +18,7 @@ namespace BC7.Business.Implementation.Tests.Integration
         public async Task RegisterNewUserAccountCommandHandler_WhenHandleWithoutReflinkOrLogin_CreateUserAccountAndItsMultiAccountToRandomUser()
         {
             // Arrange
-            _sut = new RegisterNewUserAccountCommandHandler(_context, _mapper, _reflinkHelper, _userMultiAccountHelper, _userMultiAccountRepository);
+            _sut = new RegisterNewUserAccountCommandHandler(_context, _mapper, _userMultiAccountHelper, _userMultiAccountRepository);
             await CreateExistingUsersInDatabase();
             var command = CreateCommand();
 
@@ -37,7 +37,7 @@ namespace BC7.Business.Implementation.Tests.Integration
         public async Task RegisterNewUserAccountCommandHandler_WhenHandleWithInvitingLogin_CreateUserAccountAndItsMultiAccountToInvitingUser()
         {
             // Arrange
-            _sut = new RegisterNewUserAccountCommandHandler(_context, _mapper, _reflinkHelper, _userMultiAccountHelper, _userMultiAccountRepository);
+            _sut = new RegisterNewUserAccountCommandHandler(_context, _mapper, _userMultiAccountHelper, _userMultiAccountRepository);
             await CreateExistingUsersInDatabase();
             var command = CreateCommand();
             command.InvitingUserLogin = "222";
@@ -62,7 +62,7 @@ namespace BC7.Business.Implementation.Tests.Integration
         public async Task RegisterNewUserAccountCommandHandler_WhenHandleWithInvitingReflink_CreateUserAccountAndItsMultiAccountToInvitingReflink()
         {
             // Arrange
-            _sut = new RegisterNewUserAccountCommandHandler(_context, _mapper, _reflinkHelper, _userMultiAccountHelper, _userMultiAccountRepository);
+            _sut = new RegisterNewUserAccountCommandHandler(_context, _mapper, _userMultiAccountHelper, _userMultiAccountRepository);
             await CreateExistingUsersInDatabase();
             var command = CreateCommand();
             command.InvitingRefLink = "reflink333";

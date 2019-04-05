@@ -22,12 +22,6 @@ namespace BC7.Business.Implementation.Helpers
             _userMultiAccountRepository = userMultiAccountRepository;
         }
 
-#warning Move to repository
-        public Task<UserMultiAccount> GetByAccountName(string accountName)
-        {
-            return _context.Set<UserMultiAccount>().SingleOrDefaultAsync(x => x.MultiAccountName == accountName);
-        }
-
         public Task<UserMultiAccount> GetRandomUserMultiAccount()
         {
             return _context.Set<UserMultiAccount>()
@@ -36,6 +30,7 @@ namespace BC7.Business.Implementation.Helpers
                 .FirstAsync();
         }
 
+#warning Move to repository
         public async Task<UserMultiAccount> Create(Guid userAccountId, string reflink)
         {
             var userMultiAccountInviting = await _userMultiAccountRepository.GetByReflinkAsync(reflink);

@@ -18,20 +18,17 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
     {
         private readonly IBitClub7Context _context;
         private readonly IMapper _mapper;
-        private readonly IReflinkHelper _reflinkHelper;
         private readonly IUserMultiAccountHelper _userMultiAccountHelper;
         private readonly IUserMultiAccountRepository _userMultiAccountRepository;
 
         public RegisterNewUserAccountCommandHandler(
             IBitClub7Context context,
             IMapper mapper,
-            IReflinkHelper reflinkHelper,
             IUserMultiAccountHelper userMultiAccountHelper,
             IUserMultiAccountRepository userMultiAccountRepository)
         {
             _context = context;
             _mapper = mapper;
-            _reflinkHelper = reflinkHelper;
             _userMultiAccountHelper = userMultiAccountHelper;
             _userMultiAccountRepository = userMultiAccountRepository;
         }
@@ -59,7 +56,7 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
                 UserAccountDataId = userAccountData.Id,
                 UserMultiAccountInvitingId = invitingUserMultiAccountId,
                 MultiAccountName = userAccountData.Login,
-                RefLink = _reflinkHelper.GenerateReflink(), // TODO: This should be empty on first account creating - it should be generated after buying the lvl0 matrix position
+                RefLink = "",
                 IsMainAccount = true
             };
             await _context.Set<UserMultiAccount>().AddAsync(userMultiAccount);
@@ -96,7 +93,7 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
 
         private async Task<Guid> GetInvitingUserIdByLogin(string login)
         {
-            var invitingUser = await _userMultiAccountHelper.GetByAccountName(login);
+            var invitingUser = await _userMultiAccountRepository.GetByAccountNameAsync(login);
 
             if (invitingUser == null)
             {

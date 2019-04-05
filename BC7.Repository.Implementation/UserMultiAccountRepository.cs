@@ -22,10 +22,15 @@ namespace BC7.Repository.Implementation
                 .SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        // TODO: Some BrowseAsync with Func/Expression maybe?
+        // TODO: Some BrowseAsync with Func/Expression for these two functions below maybe?
         public Task<UserMultiAccount> GetByReflinkAsync(string reflink)
         {
             return _context.Set<UserMultiAccount>().SingleOrDefaultAsync(x => x.RefLink == reflink);
+        }
+
+        public Task<UserMultiAccount> GetByAccountNameAsync(string accountName)
+        {
+            return _context.Set<UserMultiAccount>().SingleOrDefaultAsync(x => x.MultiAccountName == accountName);
         }
     }
 }
