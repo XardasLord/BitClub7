@@ -1,33 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using BC7.Business.Helpers;
 using BC7.Business.Models;
-using BC7.Database;
 using BC7.Infrastructure.CustomExceptions;
+using BC7.Repository;
 using MediatR;
 
 namespace BC7.Business.Implementation.Users.Requests.GetMultiAccounts
 {
     public class GetMultiAccountsRequestHandler : IRequestHandler<GetMultiAccountsRequest, IEnumerable<UserMultiAccountModel>>
     {
-        private readonly IBitClub7Context _context;
         private readonly IMapper _mapper;
-        private readonly IUserAccountDataHelper _userAccountDataHelper;
+        private readonly IUserAccountDataRepository _userAccountDataRepository;
 
-        public GetMultiAccountsRequestHandler(IBitClub7Context context, IMapper mapper, IUserAccountDataHelper userAccountDataHelper)
+        public GetMultiAccountsRequestHandler(IMapper mapper, IUserAccountDataRepository userAccountDataRepository)
         {
-            _context = context;
             _mapper = mapper;
-            _userAccountDataHelper = userAccountDataHelper;
+            _userAccountDataRepository = userAccountDataRepository;
         }
 
         public async Task<IEnumerable<UserMultiAccountModel>> Handle(GetMultiAccountsRequest request, CancellationToken cancellationToken)
         {
-            var userAccount = await _userAccountDataHelper.GetById(request.UserAccountId);
+            var userAccount = await _userAccountDataRepository.GetAsync(request.UserAccountId);
             if (userAccount == null)
             {
                 throw new AccountNotFoundException("User with given ID does not exist");

@@ -6,6 +6,6 @@ namespace BC7.Repository
 {
     public interface IUserAccountDataRepository
     {
-        Task<UserAccountData> Get(Guid id);
+        Task<UserAccountData> GetAsync(Guid id);
     }
 }

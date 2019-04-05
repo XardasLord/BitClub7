@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BC7.Database\BC7.Database.csproj" />
     <ProjectReference Include="..\BC7.Repository\BC7.Repository.csproj" />
   </ItemGroup>
 

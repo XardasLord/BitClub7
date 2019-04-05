@@ -8,6 +8,7 @@ using BC7.Common.Extensions;
 using BC7.Database;
 using BC7.Entity;
 using BC7.Infrastructure.CustomExceptions;
+using BC7.Repository;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,18 +18,18 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
     {
         private CreateMultiAccountCommand _command;
         private readonly IBitClub7Context _context;
-        private readonly IUserAccountDataHelper _userAccountDataHelper;
+        private readonly IUserAccountDataRepository _userAccountDataRepository;
         private readonly IUserMultiAccountHelper _userMultiAccountHelper;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
 
         public CreateMultiAccountCommandHandler(
             IBitClub7Context context, 
-            IUserAccountDataHelper userAccountDataHelper,
+            IUserAccountDataRepository userAccountDataRepository,
             IUserMultiAccountHelper userMultiAccountHelper, 
             IMatrixPositionHelper matrixPositionHelper)
         {
             _context = context;
-            _userAccountDataHelper = userAccountDataHelper;
+            _userAccountDataRepository = userAccountDataRepository;
             _userMultiAccountHelper = userMultiAccountHelper;
             _matrixPositionHelper = matrixPositionHelper;
         }
@@ -46,7 +47,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
 
         private async Task ValidateIfMultiAccountCanBeCreated()
         {
-            var userAccount = await _userAccountDataHelper.GetById(_command.UserAccountId);
+            var userAccount = await _userAccountDataRepository.GetAsync(_command.UserAccountId);
             if (userAccount == null)
             {
                 throw new AccountNotFoundException("User with given ID does not exist");
