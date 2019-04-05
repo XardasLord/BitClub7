@@ -56,7 +56,7 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
                 UserAccountDataId = userAccountData.Id,
                 UserMultiAccountInvitingId = invitingUserMultiAccountId,
                 MultiAccountName = userAccountData.Login,
-                RefLink = "",
+                RefLink = null,
                 IsMainAccount = true
             };
             await _context.Set<UserMultiAccount>().AddAsync(userMultiAccount);
