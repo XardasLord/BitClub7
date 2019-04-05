@@ -20,11 +20,7 @@ namespace BC7.Business.Implementation.Helpers
             _context = context;
         }
 
-        public Task<MatrixPosition> Get(Guid id)
-        {
-            return _context.Set<MatrixPosition>().SingleOrDefaultAsync(x => x.Id == id);
-        }
-
+#warning Move to repository
         public async Task<IEnumerable<MatrixPosition>> GetMatrix(Guid userMultiAccountId, int matrixLevel = 0)
         {
             var userMatrixPosition = await _context.Set<MatrixPosition>()

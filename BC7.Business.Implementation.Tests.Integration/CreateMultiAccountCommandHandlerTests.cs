@@ -15,7 +15,7 @@ namespace BC7.Business.Implementation.Tests.Integration
         [Test]
         public async Task CreateMultiAccountCommandHandler_WhenHandle_CreateMultiAccountForTheUser()
         {
-            _sut = new CreateMultiAccountCommandHandler(_context, _userAccountDataHelper, _userMultiAccountHelper, _matrixPositionHelper);
+            _sut = new CreateMultiAccountCommandHandler(_context, _userAccountDataRepository, _userMultiAccountRepository, _userMultiAccountHelper, _matrixPositionHelper);
             await CreateUserAndMultiAccountAndMatrixPositionsInDatabase();
             var command = new CreateMultiAccountCommand
             {

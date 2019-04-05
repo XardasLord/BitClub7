@@ -18,6 +18,7 @@
     <ProjectReference Include="..\BC7.Common\BC7.Common.csproj" />
     <ProjectReference Include="..\BC7.Database\BC7.Database.csproj" />
     <ProjectReference Include="..\BC7.Infrastructure\BC7.Infrastructure.csproj" />
+    <ProjectReference Include="..\BC7.Repository\BC7.Repository.csproj" />
     <ProjectReference Include="..\BC7.Security\BC7.Security.csproj" />
   </ItemGroup>
 

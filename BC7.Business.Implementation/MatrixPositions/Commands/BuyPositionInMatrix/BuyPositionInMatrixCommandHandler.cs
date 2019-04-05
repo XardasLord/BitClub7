@@ -8,6 +8,7 @@ using BC7.Business.Implementation.Events;
 using BC7.Database;
 using BC7.Entity;
 using BC7.Infrastructure.CustomExceptions;
+using BC7.Repository;
 using MediatR;
 
 namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatrix
@@ -15,25 +16,25 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
     public class BuyPositionInMatrixCommandHandler : IRequestHandler<BuyPositionInMatrixCommand, Guid>
     {
         private readonly IBitClub7Context _context;
-        private readonly IUserMultiAccountHelper _userMultiAccountHelper;
+        private readonly IUserMultiAccountRepository _userMultiAccountRepository;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
         private readonly IMediator _mediator;
 
         public BuyPositionInMatrixCommandHandler(
             IBitClub7Context context,
-            IUserMultiAccountHelper userMultiAccountHelper,
+            IUserMultiAccountRepository userMultiAccountRepository,
             IMatrixPositionHelper matrixPositionHelper,
             IMediator mediator)
         {
             _context = context;
-            _userMultiAccountHelper = userMultiAccountHelper;
+            _userMultiAccountRepository = userMultiAccountRepository;
             _matrixPositionHelper = matrixPositionHelper;
             _mediator = mediator;
         }
 
         public async Task<Guid> Handle(BuyPositionInMatrixCommand request, CancellationToken cancellationToken)
         {
-            var userMultiAccount = await _userMultiAccountHelper.GetById(request.UserMultiAccountId);
+            var userMultiAccount = await _userMultiAccountRepository.GetAsync(request.UserMultiAccountId);
 
             if (userMultiAccount.MatrixPositions.Any())
             {
@@ -42,7 +43,11 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
             // 1. Check if user paid for the matrix position on this level (available in etap 1)
 
-            // ReSharper disable once PossibleInvalidOperationException
+            if (!userMultiAccount.UserMultiAccountInvitingId.HasValue)
+            {
+                throw new ValidationException("This account does not have inviting multi account set");
+            }
+
             var invitingUserMatrix = await _matrixPositionHelper.GetMatrix(userMultiAccount.UserMultiAccountInvitingId.Value, request.MatrixLevel);
 
             if (invitingUserMatrix == null)
@@ -50,7 +55,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
                 throw new ValidationException("The inviting user from reflink does not have matrix on this level");
             }
 
-            if (!CheckIfMatrixHasEmptySpace(invitingUserMatrix))
+            if (!_matrixPositionHelper.CheckIfMatrixHasEmptySpace(invitingUserMatrix))
             {
                 // Maybe we should find another sponsor instead of throwing an error here?
                 throw new ValidationException("Matrix is full for the user from reflink");
@@ -58,13 +63,15 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
             var matrixPositionId = await BuyPositionInMatrix(request.UserMultiAccountId, invitingUserMatrix);
 
-            await PublishMatrixPositionBoughtNotification(matrixPositionId);
+            await PublishMatrixPositionHasBeenBoughtNotification(matrixPositionId);
+            await PublishUserBoughtMatrixPositionNotification(userMultiAccount.Id);
 
             return matrixPositionId;
         }
 
         private async Task<Guid> BuyPositionInMatrix(Guid multiAccountId, IEnumerable<MatrixPosition> invitingUserMatrix)
         {
+            // TODO: This Update on MatrixPosition should be done in repository instead of here
             var matrixPosition = invitingUserMatrix.First(x => x.UserMultiAccountId == null);
 
             matrixPosition.UserMultiAccountId = multiAccountId;
@@ -75,14 +82,15 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             return matrixPosition.Id;
         }
 
-        private bool CheckIfMatrixHasEmptySpace(IEnumerable<MatrixPosition> invitingUserMatrix)
+        private async Task PublishMatrixPositionHasBeenBoughtNotification(Guid matrixPositionId)
         {
-            return _matrixPositionHelper.CheckIfMatrixHasEmptySpace(invitingUserMatrix);
+            var @event = new MatrixPositionHasBeenBoughtEvent { MatrixPositionId = matrixPositionId };
+            await _mediator.Publish(@event);
         }
 
-        private async Task PublishMatrixPositionBoughtNotification(Guid matrixPositionId)
+        private async Task PublishUserBoughtMatrixPositionNotification(Guid userMultiAccountId)
         {
-            var @event = new MatrixPositionBoughtEvent { MatrixPositionId = matrixPositionId };
+            var @event = new UserBoughtMatrixPositionEvent { MultiAccountId = userMultiAccountId };
             await _mediator.Publish(@event);
         }
     }

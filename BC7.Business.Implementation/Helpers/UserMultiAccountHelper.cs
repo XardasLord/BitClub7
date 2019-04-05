@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using BC7.Business.Helpers;
 using BC7.Database;
 using BC7.Entity;
+using BC7.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace BC7.Business.Implementation.Helpers
@@ -12,28 +13,13 @@ namespace BC7.Business.Implementation.Helpers
     {
         private readonly IBitClub7Context _context;
         private readonly IReflinkHelper _reflinkHelper;
+        private readonly IUserMultiAccountRepository _userMultiAccountRepository;
 
-        public UserMultiAccountHelper(IBitClub7Context context, IReflinkHelper reflinkHelper)
+        public UserMultiAccountHelper(IBitClub7Context context, IReflinkHelper reflinkHelper, IUserMultiAccountRepository userMultiAccountRepository)
         {
             _context = context;
             _reflinkHelper = reflinkHelper;
-        }
-
-        public Task<UserMultiAccount> GetById(Guid id)
-        {
-            return _context.Set<UserMultiAccount>()
-                .Include(x => x.MatrixPositions)
-                .SingleOrDefaultAsync(x => x.Id == id);
-        }
-
-        public Task<UserMultiAccount> GetByReflink(string reflink)
-        {
-            return _context.Set<UserMultiAccount>().SingleOrDefaultAsync(x => x.RefLink == reflink);
-        }
-
-        public Task<UserMultiAccount> GetByAccountName(string accountName)
-        {
-            return _context.Set<UserMultiAccount>().SingleOrDefaultAsync(x => x.MultiAccountName == accountName);
+            _userMultiAccountRepository = userMultiAccountRepository;
         }
 
         public Task<UserMultiAccount> GetRandomUserMultiAccount()
@@ -44,9 +30,10 @@ namespace BC7.Business.Implementation.Helpers
                 .FirstAsync();
         }
 
+#warning Move to repository
         public async Task<UserMultiAccount> Create(Guid userAccountId, string reflink)
         {
-            var userMultiAccountInviting = await GetByReflink(reflink);
+            var userMultiAccountInviting = await _userMultiAccountRepository.GetByReflinkAsync(reflink);
             var multiAccountName = await GenerateNextMultiAccountName(userAccountId);
 
             var userMultiAccount = new UserMultiAccount

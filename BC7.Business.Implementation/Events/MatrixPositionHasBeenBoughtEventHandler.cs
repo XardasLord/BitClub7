@@ -2,28 +2,28 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using BC7.Business.Helpers;
 using BC7.Database;
 using BC7.Entity;
+using BC7.Repository;
 using MediatR;
 using Z.EntityFramework.Plus;
 
 namespace BC7.Business.Implementation.Events
 {
-    public class MatrixPositionBoughtEventHandler : INotificationHandler<MatrixPositionBoughtEvent>
+    public class MatrixPositionHasBeenBoughtEventHandler : INotificationHandler<MatrixPositionHasBeenBoughtEvent>
     {
         private readonly IBitClub7Context _context;
-        private readonly IMatrixPositionHelper _matrixPositionHelper;
+        private readonly IMatrixPositionRepository _matrixPositionRepository;
 
-        public MatrixPositionBoughtEventHandler(IBitClub7Context context, IMatrixPositionHelper matrixPositionHelper)
+        public MatrixPositionHasBeenBoughtEventHandler(IBitClub7Context context, IMatrixPositionRepository matrixPositionRepository)
         {
             _context = context;
-            _matrixPositionHelper = matrixPositionHelper;
+            _matrixPositionRepository = matrixPositionRepository;
         }
 
-        public async Task Handle(MatrixPositionBoughtEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(MatrixPositionHasBeenBoughtEvent notification, CancellationToken cancellationToken)
         {
-            var matrixPositionBought = await _matrixPositionHelper.Get(notification.MatrixPositionId);
+            var matrixPositionBought = await _matrixPositionRepository.GetAsync(notification.MatrixPositionId);
 
             await LeftRightValuesReindexation(matrixPositionBought);
             await AddTwoEmptyChildToBoughtPosition(matrixPositionBought);
