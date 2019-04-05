@@ -15,11 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Business", "BC7.Busines
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Business.Implementation", "BC7.Business.Implementation\BC7.Business.Implementation.csproj", "{0505D15E-CE15-4842-BD99-4ABE48181C21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BC7.Common", "BC7.Common\BC7.Common.csproj", "{57D45249-88A7-49F2-BF78-BD16D3931382}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Common", "BC7.Common\BC7.Common.csproj", "{57D45249-88A7-49F2-BF78-BD16D3931382}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BC7.Infrastructure", "BC7.Infrastructure\BC7.Infrastructure.csproj", "{CC0774FF-B753-459F-A331-161EBFE077CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Infrastructure", "BC7.Infrastructure\BC7.Infrastructure.csproj", "{CC0774FF-B753-459F-A331-161EBFE077CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BC7.Infrastructure.Implementation", "BC7.Infrastructure.Implementation\BC7.Infrastructure.Implementation.csproj", "{1C244B24-44AD-45C9-BF90-756AC11E3DE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Infrastructure.Implementation", "BC7.Infrastructure.Implementation\BC7.Infrastructure.Implementation.csproj", "{1C244B24-44AD-45C9-BF90-756AC11E3DE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BC7.Business.Implementation.Tests.Integration", "BC7.Business.Implementation.Tests.Integration\BC7.Business.Implementation.Tests.Integration.csproj", "{8B91CB74-3530-4DC2-A94E-48CADE4A5B93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{1C244B24-44AD-45C9-BF90-756AC11E3DE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C244B24-44AD-45C9-BF90-756AC11E3DE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C244B24-44AD-45C9-BF90-756AC11E3DE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B91CB74-3530-4DC2-A94E-48CADE4A5B93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B91CB74-3530-4DC2-A94E-48CADE4A5B93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B91CB74-3530-4DC2-A94E-48CADE4A5B93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B91CB74-3530-4DC2-A94E-48CADE4A5B93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
