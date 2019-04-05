@@ -64,7 +64,7 @@ namespace BC7.Api.Controllers
         }
 
         /// <summary>
-        /// Get multi accounts for given User ID
+        /// GetAsync multi accounts for given User ID
         /// </summary>
         /// <param name="userId">User ID for whom multi accounts will be returned</param>
         /// <returns>Returns list of multi accounts</returns>
