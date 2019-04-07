@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using BC7.Business.Helpers;
 using BC7.Business.Implementation.Events;
-using BC7.Database;
 using BC7.Entity;
 using BC7.Infrastructure.CustomExceptions;
 using BC7.Repository;
@@ -15,29 +14,26 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 {
     public class BuyPositionInMatrixCommandHandler : IRequestHandler<BuyPositionInMatrixCommand, Guid>
     {
-        private readonly IBitClub7Context _context;
         private readonly IUserMultiAccountRepository _userMultiAccountRepository;
         private readonly IMatrixPositionRepository _matrixPositionRepository;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
         private readonly IMediator _mediator;
 
         public BuyPositionInMatrixCommandHandler(
-            IBitClub7Context context,
             IUserMultiAccountRepository userMultiAccountRepository,
             IMatrixPositionRepository matrixPositionRepository,
             IMatrixPositionHelper matrixPositionHelper,
             IMediator mediator)
         {
-            _context = context;
             _userMultiAccountRepository = userMultiAccountRepository;
             _matrixPositionRepository = matrixPositionRepository;
             _matrixPositionHelper = matrixPositionHelper;
             _mediator = mediator;
         }
 
-        public async Task<Guid> Handle(BuyPositionInMatrixCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(BuyPositionInMatrixCommand command, CancellationToken cancellationToken)
         {
-            var userMultiAccount = await _userMultiAccountRepository.GetAsync(request.UserMultiAccountId);
+            var userMultiAccount = await _userMultiAccountRepository.GetAsync(command.UserMultiAccountId);
 
             if (userMultiAccount.MatrixPositions.Any())
             {
@@ -51,7 +47,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
                 throw new ValidationException("This account does not have inviting multi account set");
             }
 
-            var invitingUserMatrix = await _matrixPositionRepository.GetMatrix(userMultiAccount.UserMultiAccountInvitingId.Value, request.MatrixLevel);
+            var invitingUserMatrix = await _matrixPositionRepository.GetMatrixAsync(userMultiAccount.UserMultiAccountInvitingId.Value, command.MatrixLevel);
 
             if (invitingUserMatrix == null)
             {
@@ -64,7 +60,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
                 throw new ValidationException("Matrix is full for the user from reflink");
             }
 
-            var matrixPositionId = await BuyPositionInMatrix(request.UserMultiAccountId, invitingUserMatrix);
+            var matrixPositionId = await BuyPositionInMatrix(command.UserMultiAccountId, invitingUserMatrix);
 
             await PublishMatrixPositionHasBeenBoughtNotification(matrixPositionId);
             await PublishUserBoughtMatrixPositionNotification(userMultiAccount.Id);
@@ -74,13 +70,11 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
         private async Task<Guid> BuyPositionInMatrix(Guid multiAccountId, IEnumerable<MatrixPosition> invitingUserMatrix)
         {
-            // TODO: This Update on MatrixPosition should be done in repository instead of here
+            // TODO: This UpdateAsync on MatrixPosition should be done in repository instead of here
             var matrixPosition = invitingUserMatrix.First(x => x.UserMultiAccountId == null);
-
             matrixPosition.UserMultiAccountId = multiAccountId;
 
-            _context.Set<MatrixPosition>().Attach(matrixPosition);
-            await _context.SaveChangesAsync();
+            await _matrixPositionRepository.UpdateAsync(matrixPosition);
 
             return matrixPosition.Id;
         }

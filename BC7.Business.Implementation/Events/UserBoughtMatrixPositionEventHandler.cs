@@ -25,7 +25,7 @@ namespace BC7.Business.Implementation.Events
             var multiAccount = await _userMultiAccountRepository.GetAsync(notification.MultiAccountId);
             multiAccount.RefLink = _reflinkHelper.GenerateReflink();
 
-            // TODO: Update in repository
+            // TODO: UpdateAsync in repository
             await _context.SaveChangesAsync();
         }
     }

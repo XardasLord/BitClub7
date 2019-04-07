@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BC7.Business.Models
+﻿namespace BC7.Business.Models
 {
     public class LoginModel
     {

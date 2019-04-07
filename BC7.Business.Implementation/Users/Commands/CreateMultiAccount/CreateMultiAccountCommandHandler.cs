@@ -102,7 +102,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             }
 
             // TODO: How to verify the reflink user's matrix level? Is it 0, 1...9?
-            var invitingUserMatrixAccounts = await _matrixPositionRepository.GetMatrix(invitingMultiAccount.Id);
+            var invitingUserMatrixAccounts = await _matrixPositionRepository.GetMatrixAsync(invitingMultiAccount.Id);
 
             if (_matrixPositionHelper.CheckIfAnyAccountExistInMatrix(invitingUserMatrixAccounts, userMultiAccountIds))
             {

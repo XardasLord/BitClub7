@@ -22,7 +22,7 @@ namespace BC7.Repository.Implementation
             return _context.Set<MatrixPosition>().SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<MatrixPosition>> GetMatrix(Guid userMultiAccountId, int matrixLevel = 0)
+        public async Task<IEnumerable<MatrixPosition>> GetMatrixAsync(Guid userMultiAccountId, int matrixLevel = 0)
         {
             var userMatrixPosition = await _context.Set<MatrixPosition>()
                 .Where(x => x.UserMultiAccountId == userMultiAccountId)
@@ -42,6 +42,12 @@ namespace BC7.Repository.Implementation
                 .ToListAsync();
 
             return matrixAccounts;
+        }
+
+        public async Task UpdateAsync(MatrixPosition matrixPosition)
+        {
+            _context.Set<MatrixPosition>().Attach(matrixPosition);
+            await _context.SaveChangesAsync();
         }
     }
 }
