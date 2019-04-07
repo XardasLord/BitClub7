@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BC7.Business.Helpers;
+using BC7.Database;
 using BC7.Entity;
 using BC7.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace BC7.Business.Implementation.Helpers
 {
     public class MatrixPositionHelper : IMatrixPositionHelper
     {
+        private readonly IBitClub7Context _context;
         private readonly IMatrixPositionRepository _matrixPositionRepository;
 
-        public MatrixPositionHelper(IMatrixPositionRepository matrixPositionRepository)
+        public MatrixPositionHelper(IBitClub7Context context, IMatrixPositionRepository matrixPositionRepository)
         {
+            _context = context;
             _matrixPositionRepository = matrixPositionRepository;
         }
 
@@ -32,9 +36,12 @@ namespace BC7.Business.Implementation.Helpers
             var userMatrixPosition = await _matrixPositionRepository.GetPositionForAccountAtLevel(userMultiAccountId, matrixLevel);
             if (userMatrixPosition == null) throw new ArgumentNullException(nameof(userMatrixPosition));
             
-            // TODO: Find the nearest empty position from the given account :)
-
-            throw new NotImplementedException();
+            return await _context.Set<MatrixPosition>()
+                .Where(x => x.Left >= userMatrixPosition.Left)
+                .Where(x => x.Right <= userMatrixPosition.Right)
+                .Where(x => x.DepthLevel >= userMatrixPosition.DepthLevel)
+                .Where(x => x.UserMultiAccountId == null)
+                .FirstAsync();
         }
     }
 }
