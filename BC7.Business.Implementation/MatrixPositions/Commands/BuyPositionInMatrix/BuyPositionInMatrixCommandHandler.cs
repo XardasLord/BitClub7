@@ -56,7 +56,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
             if (!_matrixPositionHelper.CheckIfMatrixHasEmptySpace(invitingUserMatrix))
             {
-                // Maybe we should find another sponsor instead of throwing an error here?
+                // TODO: We should find the nearest available position in the deeper level instead of throwing an error here
                 throw new ValidationException("Matrix is full for the user from reflink");
             }
 
