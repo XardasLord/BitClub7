@@ -43,9 +43,22 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
 
             await ValidateIfMultiAccountCanBeCreated();
 
-            var createdMultiAccount = await CreateMultiAccount();
+            var userMultiAccountInviting = await _userMultiAccountRepository.GetByReflinkAsync(_command.RefLink);
+            var multiAccountName = await _userMultiAccountHelper.GenerateNextMultiAccountName(_command.UserAccountId);
 
-            return createdMultiAccount.Id;
+            var userMultiAccount = new UserMultiAccount
+            {
+                Id = Guid.NewGuid(),
+                UserAccountDataId = _command.UserAccountId,
+                UserMultiAccountInvitingId = userMultiAccountInviting.Id,
+                MultiAccountName = multiAccountName,
+                RefLink = "",
+                IsMainAccount = false
+            };
+
+            await _userMultiAccountRepository.CreateAsync(userMultiAccount);
+
+            return userMultiAccount.Id;
         }
 
         private async Task ValidateIfMultiAccountCanBeCreated()
@@ -88,13 +101,13 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             // TODO: How to verify the reflink user's matrix level? Is it 0, 1...9?
             var invitingUserMatrixAccounts = await _matrixPositionHelper.GetMatrix(invitingMultiAccount.Id);
 
-            if (CheckIfAnyOfUserMultiAccountsExistInGivenMatrix(invitingUserMatrixAccounts, userMultiAccountIds))
+            if (_matrixPositionHelper.CheckIfAnyAccountExistInMatrix(invitingUserMatrixAccounts, userMultiAccountIds))
             {
                 // TODO: Probably we should find a random sponsor here instead of throwing an error?
                 throw new ValidationException("You cannot have position in matrix with any of your other multi account");
             }
 
-            if (!CheckIfEmptySpaceExistInMatrix(invitingUserMatrixAccounts))
+            if (!_matrixPositionHelper.CheckIfMatrixHasEmptySpace(invitingUserMatrixAccounts))
             {
                 // TODO: Probably we should find a random sponsor here instead of throwing an error?
                 throw new ValidationException("Matrix is full for this reflink");
@@ -120,21 +133,6 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
                 .ToListAsync();
 
             return allUserMultiAccountsInMatrixPositions.ContainsAll(userMultiAccountIds);
-        }
-
-        private bool CheckIfAnyOfUserMultiAccountsExistInGivenMatrix(IEnumerable<MatrixPosition> invitingMatrixAccounts, IEnumerable<Guid> userMultiAccountIds)
-        {
-            return _matrixPositionHelper.CheckIfAnyAccountExistInMatrix(invitingMatrixAccounts, userMultiAccountIds);
-        }
-
-        private bool CheckIfEmptySpaceExistInMatrix(IEnumerable<MatrixPosition> invitingUserMatrix)
-        {
-            return _matrixPositionHelper.CheckIfMatrixHasEmptySpace(invitingUserMatrix);
-        }
-
-        private Task<UserMultiAccount> CreateMultiAccount()
-        {
-            return _userMultiAccountHelper.Create(_command.UserAccountId, _command.RefLink);
         }
     }
 }
