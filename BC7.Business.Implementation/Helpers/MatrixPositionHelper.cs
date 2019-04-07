@@ -4,13 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using BC7.Business.Helpers;
 using BC7.Entity;
+using BC7.Repository;
 
 namespace BC7.Business.Implementation.Helpers
 {
     public class MatrixPositionHelper : IMatrixPositionHelper
     {
-        public MatrixPositionHelper()
+        private readonly IMatrixPositionRepository _matrixPositionRepository;
+
+        public MatrixPositionHelper(IMatrixPositionRepository matrixPositionRepository)
         {
+            _matrixPositionRepository = matrixPositionRepository;
         }
 
         public bool CheckIfAnyAccountExistInMatrix(IEnumerable<MatrixPosition> matrix, IEnumerable<Guid> accountIds)
@@ -23,8 +27,13 @@ namespace BC7.Business.Implementation.Helpers
             return matrix.Any(x => x.UserMultiAccountId == null);
         }
 
-        public Task<MatrixPosition> FindTheNearestEmptyPosition(Guid userMultiAccountId, int matrixLevel = 0)
+        public async Task<MatrixPosition> FindTheNearestEmptyPositionFromGivenAccount(Guid userMultiAccountId, int matrixLevel = 0)
         {
+            var userMatrixPosition = await _matrixPositionRepository.GetPositionForAccountAtLevel(userMultiAccountId, matrixLevel);
+            if (userMatrixPosition == null) throw new ArgumentNullException(nameof(userMatrixPosition));
+            
+            // TODO: Find the nearest empty position from the given account :)
+
             throw new NotImplementedException();
         }
     }

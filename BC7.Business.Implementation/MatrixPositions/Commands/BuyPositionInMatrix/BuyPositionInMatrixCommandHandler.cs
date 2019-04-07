@@ -8,6 +8,8 @@ using BC7.Entity;
 using BC7.Infrastructure.CustomExceptions;
 using BC7.Repository;
 using MediatR;
+// ReSharper disable PossibleInvalidOperationException
+// ReSharper disable PossibleMultipleEnumeration
 
 namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatrix
 {
@@ -36,25 +38,25 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
             ValidateUserMultiAccount(userMultiAccount);
 
-            var invitingUserMatrix = await _matrixPositionRepository.GetMatrixAsync(userMultiAccount.UserMultiAccountInvitingId.Value, command.MatrixLevel);
+            var sponsorAccountId = userMultiAccount.UserMultiAccountInvitingId.Value;
+
+            var invitingUserMatrix = await _matrixPositionRepository.GetMatrixAsync(sponsorAccountId, command.MatrixLevel);
             if (invitingUserMatrix == null)
             {
-                throw new ValidationException("The inviting user from reflink does not have matrix on this level");
+                throw new ValidationException($"The inviting user from reflink does not have matrix on level: {command.MatrixLevel}");
             }
 
             MatrixPosition matrixPosition;
-            if (!_matrixPositionHelper.CheckIfMatrixHasEmptySpace(invitingUserMatrix))
+            if (_matrixPositionHelper.CheckIfMatrixHasEmptySpace(invitingUserMatrix))
             {
-                // TODO: We should find the nearest available position in the deeper level instead of throwing an error here
-                throw new ValidationException("Matrix is full for the user from reflink");
+                matrixPosition = invitingUserMatrix.First(x => x.UserMultiAccountId == null);
             }
             else
             {
-                matrixPosition = invitingUserMatrix.First(x => x.UserMultiAccountId == null);
-                matrixPosition.UserMultiAccountId = command.UserMultiAccountId;
+                matrixPosition = await _matrixPositionHelper.FindTheNearestEmptyPositionFromGivenAccount(sponsorAccountId, command.MatrixLevel);
             }
-
-
+            
+            matrixPosition.UserMultiAccountId = command.UserMultiAccountId;
             await _matrixPositionRepository.UpdateAsync(matrixPosition);
 
             await PublishMatrixPositionHasBeenBoughtNotification(matrixPosition.Id);
