@@ -22,13 +22,17 @@ namespace BC7.Repository.Implementation
             return _context.Set<MatrixPosition>().SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<MatrixPosition>> GetMatrixAsync(Guid userMultiAccountId, int matrixLevel = 0)
+        public Task<MatrixPosition> GetPositionForAccountAtLevel(Guid userMultiAccountId, int matrixLevel = 0)
         {
-            var userMatrixPosition = await _context.Set<MatrixPosition>()
+            return _context.Set<MatrixPosition>()
                 .Where(x => x.UserMultiAccountId == userMultiAccountId)
                 .Where(x => x.MatrixLevel == matrixLevel)
                 .SingleOrDefaultAsync(); // Cycles available later
+        }
 
+        public async Task<IEnumerable<MatrixPosition>> GetMatrixAsync(Guid userMultiAccountId, int matrixLevel = 0)
+        {
+            var userMatrixPosition = await GetPositionForAccountAtLevel(userMultiAccountId, matrixLevel);
             if (userMatrixPosition == null)
             {
                 return null;
