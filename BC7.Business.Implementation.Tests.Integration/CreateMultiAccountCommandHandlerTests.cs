@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using BC7.Business.Implementation.Tests.Integration.Base;
 using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
@@ -26,6 +27,8 @@ namespace BC7.Business.Implementation.Tests.Integration
             var result = await _sut.Handle(command);
 
             result.Should().NotBe(Guid.Empty);
+            var multiAccount = _context.UserMultiAccounts.Where(x => x.UserAccountDataId == Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499")).ToList();
+            multiAccount.Count.Should().Be(2);
         }
 
         private async Task CreateUserAndMultiAccountAndMatrixPositionsInDatabase()
