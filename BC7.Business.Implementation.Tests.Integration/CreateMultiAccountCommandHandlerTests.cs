@@ -26,8 +26,8 @@ namespace BC7.Business.Implementation.Tests.Integration
 
             var result = await _sut.Handle(command);
 
-            result.Should().NotBe(Guid.Empty);
             var multiAccount = _context.UserMultiAccounts.Where(x => x.UserAccountDataId == Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499")).ToList();
+            result.Should().NotBe(Guid.Empty);
             multiAccount.Count.Should().Be(2);
         }
 
