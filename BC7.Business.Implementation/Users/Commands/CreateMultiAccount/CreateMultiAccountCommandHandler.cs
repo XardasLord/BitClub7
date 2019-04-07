@@ -20,6 +20,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
         private readonly IBitClub7Context _context;
         private readonly IUserAccountDataRepository _userAccountDataRepository;
         private readonly IUserMultiAccountRepository _userMultiAccountRepository;
+        private readonly IMatrixPositionRepository _matrixPositionRepository;
         private readonly IUserMultiAccountHelper _userMultiAccountHelper;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
 
@@ -27,12 +28,14 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             IBitClub7Context context, 
             IUserAccountDataRepository userAccountDataRepository,
             IUserMultiAccountRepository userMultiAccountRepository,
+            IMatrixPositionRepository matrixPositionRepository,
             IUserMultiAccountHelper userMultiAccountHelper, 
             IMatrixPositionHelper matrixPositionHelper)
         {
             _context = context;
             _userAccountDataRepository = userAccountDataRepository;
             _userMultiAccountRepository = userMultiAccountRepository;
+            _matrixPositionRepository = matrixPositionRepository;
             _userMultiAccountHelper = userMultiAccountHelper;
             _matrixPositionHelper = matrixPositionHelper;
         }
@@ -99,7 +102,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             }
 
             // TODO: How to verify the reflink user's matrix level? Is it 0, 1...9?
-            var invitingUserMatrixAccounts = await _matrixPositionHelper.GetMatrix(invitingMultiAccount.Id);
+            var invitingUserMatrixAccounts = await _matrixPositionRepository.GetMatrix(invitingMultiAccount.Id);
 
             if (_matrixPositionHelper.CheckIfAnyAccountExistInMatrix(invitingUserMatrixAccounts, userMultiAccountIds))
             {

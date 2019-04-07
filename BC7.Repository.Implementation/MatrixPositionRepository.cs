@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BC7.Database;
 using BC7.Entity;
@@ -18,6 +20,28 @@ namespace BC7.Repository.Implementation
         public Task<MatrixPosition> GetAsync(Guid id)
         {
             return _context.Set<MatrixPosition>().SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<IEnumerable<MatrixPosition>> GetMatrix(Guid userMultiAccountId, int matrixLevel = 0)
+        {
+            var userMatrixPosition = await _context.Set<MatrixPosition>()
+                .Where(x => x.UserMultiAccountId == userMultiAccountId)
+                .Where(x => x.MatrixLevel == matrixLevel)
+                .SingleOrDefaultAsync(); // Cycles available later
+
+            if (userMatrixPosition == null)
+            {
+                return null;
+            }
+
+            var matrixAccounts = await _context.Set<MatrixPosition>()
+                .Where(x => x.Left >= userMatrixPosition.Left)
+                .Where(x => x.Right <= userMatrixPosition.Right)
+                .Where(x => x.DepthLevel >= userMatrixPosition.DepthLevel)
+                .Where(x => x.DepthLevel <= userMatrixPosition.DepthLevel + 2) // Each matrix has 2 depth level
+                .ToListAsync();
+
+            return matrixAccounts;
         }
     }
 }

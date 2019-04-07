@@ -17,17 +17,20 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
     {
         private readonly IBitClub7Context _context;
         private readonly IUserMultiAccountRepository _userMultiAccountRepository;
+        private readonly IMatrixPositionRepository _matrixPositionRepository;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
         private readonly IMediator _mediator;
 
         public BuyPositionInMatrixCommandHandler(
             IBitClub7Context context,
             IUserMultiAccountRepository userMultiAccountRepository,
+            IMatrixPositionRepository matrixPositionRepository,
             IMatrixPositionHelper matrixPositionHelper,
             IMediator mediator)
         {
             _context = context;
             _userMultiAccountRepository = userMultiAccountRepository;
+            _matrixPositionRepository = matrixPositionRepository;
             _matrixPositionHelper = matrixPositionHelper;
             _mediator = mediator;
         }
@@ -48,7 +51,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
                 throw new ValidationException("This account does not have inviting multi account set");
             }
 
-            var invitingUserMatrix = await _matrixPositionHelper.GetMatrix(userMultiAccount.UserMultiAccountInvitingId.Value, request.MatrixLevel);
+            var invitingUserMatrix = await _matrixPositionRepository.GetMatrix(userMultiAccount.UserMultiAccountInvitingId.Value, request.MatrixLevel);
 
             if (invitingUserMatrix == null)
             {
