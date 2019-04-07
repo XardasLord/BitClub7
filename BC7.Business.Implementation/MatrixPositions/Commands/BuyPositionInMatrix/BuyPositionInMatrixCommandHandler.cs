@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,48 +34,49 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
         {
             var userMultiAccount = await _userMultiAccountRepository.GetAsync(command.UserMultiAccountId);
 
-            if (userMultiAccount.MatrixPositions.Any())
-            {
-                throw new ValidationException("This account already exists in a matrix");
-            }
-
-            // 1. Check if user paid for the matrix position on this level (available in etap 1)
-
-            if (!userMultiAccount.UserMultiAccountInvitingId.HasValue)
-            {
-                throw new ValidationException("This account does not have inviting multi account set");
-            }
+            ValidateUserMultiAccount(userMultiAccount);
 
             var invitingUserMatrix = await _matrixPositionRepository.GetMatrixAsync(userMultiAccount.UserMultiAccountInvitingId.Value, command.MatrixLevel);
-
             if (invitingUserMatrix == null)
             {
                 throw new ValidationException("The inviting user from reflink does not have matrix on this level");
             }
 
+            MatrixPosition matrixPosition;
             if (!_matrixPositionHelper.CheckIfMatrixHasEmptySpace(invitingUserMatrix))
             {
                 // TODO: We should find the nearest available position in the deeper level instead of throwing an error here
                 throw new ValidationException("Matrix is full for the user from reflink");
             }
+            else
+            {
+                matrixPosition = invitingUserMatrix.First(x => x.UserMultiAccountId == null);
+                matrixPosition.UserMultiAccountId = command.UserMultiAccountId;
+            }
 
-            var matrixPositionId = await BuyPositionInMatrix(command.UserMultiAccountId, invitingUserMatrix);
-
-            await PublishMatrixPositionHasBeenBoughtNotification(matrixPositionId);
-            await PublishUserBoughtMatrixPositionNotification(userMultiAccount.Id);
-
-            return matrixPositionId;
-        }
-
-        private async Task<Guid> BuyPositionInMatrix(Guid multiAccountId, IEnumerable<MatrixPosition> invitingUserMatrix)
-        {
-            // TODO: This UpdateAsync on MatrixPosition should be done in repository instead of here
-            var matrixPosition = invitingUserMatrix.First(x => x.UserMultiAccountId == null);
-            matrixPosition.UserMultiAccountId = multiAccountId;
 
             await _matrixPositionRepository.UpdateAsync(matrixPosition);
 
+            await PublishMatrixPositionHasBeenBoughtNotification(matrixPosition.Id);
+            await PublishUserBoughtMatrixPositionNotification(userMultiAccount.Id);
+
             return matrixPosition.Id;
+        }
+
+        private static void ValidateUserMultiAccount(UserMultiAccount userMultiAccount)
+        {
+            if (userMultiAccount == null) throw new ArgumentNullException(nameof(userMultiAccount));
+            if (userMultiAccount.MatrixPositions.Any())
+            {
+                throw new ValidationException("This account already exists in a matrix");
+            }
+
+            // TODO: Add check if user paid for the matrix position on this level (available in etap 1)
+
+            if (!userMultiAccount.UserMultiAccountInvitingId.HasValue)
+            {
+                throw new ValidationException("This account does not have inviting multi account set");
+            }
         }
 
         private async Task PublishMatrixPositionHasBeenBoughtNotification(Guid matrixPositionId)
