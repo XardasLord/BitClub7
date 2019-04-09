@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BC7.Business.Helpers;
 using BC7.Business.Implementation.Events;
-using BC7.Entity;
+using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
 using BC7.Repository;
 using MediatR;
@@ -55,12 +55,13 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             {
                 matrixPosition = await _matrixPositionHelper.FindTheNearestEmptyPositionFromGivenAccount(sponsorAccountId, command.MatrixLevel);
                 // TODO: We should probably validate again to check if this founded position is not in the any of another owner multiAccounts (command.UserMultiAccountId other accounts)
+                // Or do it somehow in that `FindTheNearestEmptyPositionFromGivenAccount` helper maybe?
 
                 // TODO: Should we also change the sponsor for the founder of founded matrix?
                 // If yes than helper should has a method called like `GetSponsorForGivenPosition()`
             }
 
-            matrixPosition.UserMultiAccountId = command.UserMultiAccountId;
+            matrixPosition.AssignMultiAccount(command.UserMultiAccountId);
             await _matrixPositionRepository.UpdateAsync(matrixPosition);
 
             await PublishMatrixPositionHasBeenBoughtNotification(matrixPosition.Id);

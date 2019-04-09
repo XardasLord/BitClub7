@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using BC7.Business.Implementation.Tests.Integration.Base;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
-using BC7.Entity;
+using BC7.Domain;
+using BC7.Security;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -18,7 +19,7 @@ namespace BC7.Business.Implementation.Tests.Integration
         public async Task RegisterNewUserAccountCommandHandler_WhenHandleWithoutReflinkOrLogin_CreateUserAccountAndItsMultiAccountToRandomUser()
         {
             // Arrange
-            _sut = new RegisterNewUserAccountCommandHandler(_context, _mapper, _userMultiAccountHelper, _userMultiAccountRepository);
+            _sut = new RegisterNewUserAccountCommandHandler(_context, _userMultiAccountHelper, _userMultiAccountRepository);
             await CreateExistingUsersInDatabase();
             var command = CreateCommand();
 
@@ -37,7 +38,7 @@ namespace BC7.Business.Implementation.Tests.Integration
         public async Task RegisterNewUserAccountCommandHandler_WhenHandleWithInvitingLogin_CreateUserAccountAndItsMultiAccountToInvitingUser()
         {
             // Arrange
-            _sut = new RegisterNewUserAccountCommandHandler(_context, _mapper, _userMultiAccountHelper, _userMultiAccountRepository);
+            _sut = new RegisterNewUserAccountCommandHandler(_context, _userMultiAccountHelper, _userMultiAccountRepository);
             await CreateExistingUsersInDatabase();
             var command = CreateCommand();
             command.InvitingUserLogin = "222";
@@ -62,7 +63,7 @@ namespace BC7.Business.Implementation.Tests.Integration
         public async Task RegisterNewUserAccountCommandHandler_WhenHandleWithInvitingReflink_CreateUserAccountAndItsMultiAccountToInvitingReflink()
         {
             // Arrange
-            _sut = new RegisterNewUserAccountCommandHandler(_context, _mapper, _userMultiAccountHelper, _userMultiAccountRepository);
+            _sut = new RegisterNewUserAccountCommandHandler(_context, _userMultiAccountHelper, _userMultiAccountRepository);
             await CreateExistingUsersInDatabase();
             var command = CreateCommand();
             command.InvitingRefLink = "reflink333";
@@ -105,44 +106,53 @@ namespace BC7.Business.Implementation.Tests.Integration
         private async Task CreateExistingUsersInDatabase()
         {
             var existingUserAccountData = new UserAccountData
-            {
-                Id = Guid.NewGuid(),
-                Login = "ExistingLogin",
-                Email = "Email",
-                Salt = "salt",
-                Hash = "hash",
-                FirstName = "FirstName",
-                LastName = "LastName",
-                Street = "Street",
-                City = "City",
-                Country = "Country",
-                ZipCode = "ZipCode",
-                BtcWalletAddress = "BtcWalletAddress",
-                Role = "Admin"
-            };
+            (
+                id: Guid.NewGuid(),
+                login: "ExistingLogin",
+                email: "Email",
+                firstName: "FirstName",
+                lastName: "LastName",
+                street: "Street",
+                city: "City",
+                country: "Country",
+                zipCode: "ZipCode",
+                btcWalletAddress: "BtcWalletAddress",
+                role: UserRolesHelper.Admin
+            );
+            existingUserAccountData.SetPassword("salt", "hash");
+
             _context.UserAccountsData.Add(existingUserAccountData);
 
             await _context.SaveChangesAsync();
 
-            _context.UserMultiAccounts.AddRange(
-                new UserMultiAccount
-                {
-                    UserAccountDataId = existingUserAccountData.Id,
-                    MultiAccountName = "111",
-                    RefLink = "reflink111"
-                },
-                new UserMultiAccount
-                {
-                    UserAccountDataId = existingUserAccountData.Id,
-                    MultiAccountName = "222",
-                    RefLink = "reflink222"
-                },
-                new UserMultiAccount
-                {
-                    UserAccountDataId = existingUserAccountData.Id,
-                    MultiAccountName = "333",
-                    RefLink = "reflink333"
-                });
+            var multiAccount1 = new UserMultiAccount
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: existingUserAccountData.Id,
+                userMultiAccountInvitingId: null,
+                multiAccountName: "111"
+            );
+            multiAccount1.SetReflink("reflink111");
+
+            var multiAccount2 = new UserMultiAccount
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: existingUserAccountData.Id,
+                userMultiAccountInvitingId: null,
+                multiAccountName: "222"
+            );
+            multiAccount2.SetReflink("reflink222");
+
+            var multiAccount3 = new UserMultiAccount
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: existingUserAccountData.Id,
+                userMultiAccountInvitingId: null,
+                multiAccountName: "333"
+            );
+            multiAccount3.SetReflink("reflink333");
+
+            _context.UserMultiAccounts.AddRange(multiAccount1, multiAccount2, multiAccount3);
 
             await _context.SaveChangesAsync();
         }

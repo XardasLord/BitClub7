@@ -2,7 +2,7 @@
 using BC7.Business.Implementation.Authentications.Commands.Login;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Business.Models;
-using BC7.Entity;
+using BC7.Domain;
 
 namespace BC7.Api.Mappings
 {
@@ -12,8 +12,6 @@ namespace BC7.Api.Mappings
         {
             CreateMap<RegisterNewUserModel, RegisterNewUserAccountCommand>();
             CreateMap<LoginModel, LoginCommand>();
-
-            CreateMap<RegisterNewUserAccountCommand, UserAccountData>(); // TODO: Maybe commands -> entities should be mapper manually?
 
             CreateMap<UserMultiAccount, UserMultiAccountModel>();
             CreateMap<MatrixPosition, MatrixPositionModel>();

@@ -1,5 +1,5 @@
 ﻿using System;
-using BC7.Entity;
+using BC7.Domain;
 using BC7.Security;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,171 +9,174 @@ namespace BC7.Database.Extensions
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            var root1Id = Guid.NewGuid();
-            var root2Id = Guid.NewGuid();
-            var root3Id = Guid.NewGuid();
-
-            modelBuilder.Entity<UserAccountData>().HasData(
-                new UserAccountData
-                {
-                    Id = root1Id,
-                    Hash = "", // TODO
-                    Salt = "", // TODO
-                    Login = "LoginRoot1",
-                    Email = "EmailRoot1",
-                    FirstName = "FirstNameRoot1",
-                    LastName = "LastNameRoot1",
-                    Street = "StreetRoot1",
-                    City = "CityRoot1",
-                    ZipCode = "ZipCodeRoot1",
-                    Country = "CountryRoot1",
-                    BtcWalletAddress = "BtcWalletAddressRoot1",
-                    IsMembershipFeePaid = true,
-                    Role = UserRolesHelper.Root
-
-                },
-                new UserAccountData
-                {
-                    Id = root2Id,
-                    Hash = "", // TODO
-                    Salt = "", // TODO
-                    Login = "LoginRoot2",
-                    Email = "EmailRoot2",
-                    FirstName = "FirstNameRoot2",
-                    LastName = "LastNameRoot2",
-                    Street = "StreetRoot2",
-                    City = "CityRoot2",
-                    ZipCode = "ZipCodeRoot2",
-                    Country = "CountryRoot2",
-                    BtcWalletAddress = "BtcWalletAddressRoot2",
-                    IsMembershipFeePaid = true,
-                    Role = UserRolesHelper.Root
-                },
-                new UserAccountData
-                {
-                    Id = root3Id,
-                    Hash = "", // TODO
-                    Salt = "", // TODO
-                    Login = "LoginRoot3",
-                    Email = "EmailRoot3",
-                    FirstName = "FirstNameRoot3",
-                    LastName = "LastNameRoot3",
-                    Street = "StreetRoot3",
-                    City = "CityRoot3",
-                    ZipCode = "ZipCodeRoot3",
-                    Country = "CountryRoot3",
-                    BtcWalletAddress = "BtcWalletAddressRoot3",
-                    IsMembershipFeePaid = true,
-                    Role = UserRolesHelper.Root
-                }
+            // TODO: Hash and salt for roots
+            var root1 = new UserAccountData
+            (
+                Guid.NewGuid(),
+                login: "LoginRoot1",
+                email: "EmailRoot1",
+                firstName: "FirstNameRoot1",
+                lastName: "LastNameRoot1",
+                street: "StreetRoot1",
+                city: "CityRoot1",
+                zipCode: "ZipCodeRoot1",
+                country: "CountryRoot1",
+                btcWalletAddress: "BtcWalletAddressRoot1",
+                role: UserRolesHelper.Root
             );
-
-            var root1MultiAccountId = Guid.NewGuid();
-            var root2MultiAccountId = Guid.NewGuid();
-            var root3MultiAccountId = Guid.NewGuid();
-
-            modelBuilder.Entity<UserMultiAccount>().HasData(
-                new UserMultiAccount
-                {
-                    Id = root1MultiAccountId,
-                    UserAccountDataId = root1Id,
-                    MultiAccountName = "LoginRoot1",
-                    RefLink = "111111",
-                    IsMainAccount = true
-                },
-                new UserMultiAccount
-                {
-                    Id = root2MultiAccountId,
-                    UserAccountDataId = root2Id,
-                    MultiAccountName = "LoginRoot2",
-                    RefLink = "222222",
-                    IsMainAccount = true
-                },
-                new UserMultiAccount
-                {
-                    Id = root3MultiAccountId,
-                    UserAccountDataId = root3Id,
-                    MultiAccountName = "LoginRoot3",
-                    RefLink = "333333",
-                    IsMainAccount = true
-                }
+            var root2 = new UserAccountData
+            (
+                Guid.NewGuid(),
+                login: "LoginRoot2",
+                email: "EmailRoot2",
+                firstName: "FirstNameRoot2",
+                lastName: "LastNameRoot2",
+                street: "StreetRoot2",
+                city: "CityRoot2",
+                zipCode: "ZipCodeRoot2",
+                country: "CountryRoot2",
+                btcWalletAddress: "BtcWalletAddressRoot2",
+                role: UserRolesHelper.Root
             );
+            var root3 = new UserAccountData
+            (
+                Guid.NewGuid(),
+                login: "LoginRoot3",
+                email: "EmailRoot3",
+                firstName: "FirstNameRoot3",
+                lastName: "LastNameRoot3",
+                street: "StreetRoot3",
+                city: "CityRoot3",
+                zipCode: "ZipCodeRoot3",
+                country: "CountryRoot3",
+                btcWalletAddress: "BtcWalletAddressRoot3",
+                role: UserRolesHelper.Root
+            );
+            root1.SetPassword("salt1", "hash1");
+            root2.SetPassword("salt2", "hash2");
+            root3.SetPassword("salt3", "hash3");
+            root1.PaidMembershipFee();
+            root2.PaidMembershipFee();
+            root3.PaidMembershipFee();
 
-            var root1MatrixPositionId = Guid.NewGuid();
-            var root2MatrixPositionId = Guid.NewGuid();
-            var root3MatrixPositionId = Guid.NewGuid();
+            modelBuilder.Entity<UserAccountData>().HasData(root1, root2, root3);
+
+
+            var root1MultiAccount = new UserMultiAccount
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: root1.Id,
+                userMultiAccountInvitingId: null,
+                multiAccountName: "LoginRoot1"
+            );
+            root1MultiAccount.SetAsMainAccount();
+            root1MultiAccount.SetReflink("111111");
+
+            var root2MultiAccount = new UserMultiAccount
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: root2.Id,
+                userMultiAccountInvitingId: null,
+                multiAccountName: "LoginRoot2"
+            );
+            root2MultiAccount.SetAsMainAccount();
+            root2MultiAccount.SetReflink("222222");
+
+            var root3MultiAccount = new UserMultiAccount
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: root3.Id,
+                userMultiAccountInvitingId: null,
+                multiAccountName: "LoginRoot3"
+            );
+            root3MultiAccount.SetAsMainAccount();
+            root3MultiAccount.SetReflink("333333");
+
+            modelBuilder.Entity<UserMultiAccount>().HasData(root1MultiAccount, root2MultiAccount, root3MultiAccount);
+
+
+            var root1MatrixPosition = new MatrixPosition
+            (
+                // root1
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: null,
+                userMultiAccountId: root1MultiAccount.Id,
+                depthLevel: 0,
+                left: 1,
+                right: 14
+            );
+            var root2MatrixPosition = new MatrixPosition
+            (
+                // root2
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: root1MatrixPosition.Id,
+                userMultiAccountId: root2MultiAccount.Id,
+                depthLevel: 1,
+                left: 2,
+                right: 7
+            );
+            var root3MatrixPosition = new MatrixPosition
+            (
+                // root3
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: root1MatrixPosition.Id,
+                userMultiAccountId: root3MultiAccount.Id,
+                depthLevel: 1,
+                left: 8,
+                right: 13
+            );
+            var empty1MatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: root2MatrixPosition.Id,
+                userMultiAccountId: null,
+                depthLevel: 2,
+                left: 3,
+                right: 4
+            );
+            var empty2MatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: root2MatrixPosition.Id,
+                userMultiAccountId: null,
+                depthLevel: 2,
+                left: 5,
+                right: 6
+            );
+            var empty3MatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: root3MatrixPosition.Id,
+                userMultiAccountId: null,
+                depthLevel: 2,
+                left: 9,
+                right: 10
+            );
+            var empty4MatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: root3MatrixPosition.Id,
+                userMultiAccountId: null,
+                depthLevel: 2,
+                left: 11,
+                right: 12
+            );
 
             modelBuilder.Entity<MatrixPosition>().HasData(
-                new MatrixPosition
-                { // root1
-                    Id = root1MatrixPositionId,
-                    MatrixLevel = 0,
-                    ParentId = null,
-                    UserMultiAccountId = root1MultiAccountId,
-                    DepthLevel = 0,
-                    Left = 1,
-                    Right = 14
-                },
-                new MatrixPosition
-                { // root2
-                    Id = root2MatrixPositionId,
-                    MatrixLevel = 0,
-                    ParentId = root1MatrixPositionId,
-                    UserMultiAccountId = root2MultiAccountId,
-                    DepthLevel = 1,
-                    Left = 2,
-                    Right = 7
-                },
-                new MatrixPosition
-                { // root3
-                    Id = root3MatrixPositionId,
-                    MatrixLevel = 0,
-                    ParentId = root1MatrixPositionId,
-                    UserMultiAccountId = root3MultiAccountId,
-                    DepthLevel = 1,
-                    Left = 8,
-                    Right = 13
-                },
-                new MatrixPosition
-                { // free space
-                    Id = Guid.NewGuid(),
-                    MatrixLevel = 0,
-                    ParentId = root2MatrixPositionId,
-                    UserMultiAccountId = null,
-                    DepthLevel = 2,
-                    Left = 3,
-                    Right = 4
-                },
-                new MatrixPosition
-                { // free space
-                    Id = Guid.NewGuid(),
-                    MatrixLevel = 0,
-                    ParentId = root2MatrixPositionId,
-                    UserMultiAccountId = null,
-                    DepthLevel = 2,
-                    Left = 5,
-                    Right = 6
-                },
-                new MatrixPosition
-                { // free space
-                    Id = Guid.NewGuid(),
-                    MatrixLevel = 0,
-                    ParentId = root3MatrixPositionId,
-                    UserMultiAccountId = null,
-                    DepthLevel = 2,
-                    Left = 9,
-                    Right = 10
-                },
-                new MatrixPosition
-                { // free space
-                    Id = Guid.NewGuid(),
-                    MatrixLevel = 0,
-                    ParentId = root3MatrixPositionId,
-                    UserMultiAccountId = null,
-                    DepthLevel = 2,
-                    Left = 11,
-                    Right = 12
-                }
+                root1MatrixPosition,
+                root2MatrixPosition,
+                root3MatrixPosition,
+                empty1MatrixPosition,
+                empty2MatrixPosition,
+                empty3MatrixPosition,
+                empty4MatrixPosition
             );
         }
 
