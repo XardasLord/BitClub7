@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Api", "BC7.Api\BC7.Api.csproj", "{A63C5622-2621-46F4-98C4-3B78DD2CF492}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Entity", "BC7.Entity\BC7.Entity.csproj", "{396DD052-B650-4B7F-8E72-6265E81CEA95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Domain", "BC7.Domain\BC7.Domain.csproj", "{396DD052-B650-4B7F-8E72-6265E81CEA95}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Database", "BC7.Database\BC7.Database.csproj", "{4A8A93F7-15D3-4786-A49B-7EB5D1CFA9E2}"
 EndProject
@@ -23,9 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Infrastructure.Implemen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Business.Implementation.Tests.Integration", "BC7.Business.Implementation.Tests.Integration\BC7.Business.Implementation.Tests.Integration.csproj", "{8B91CB74-3530-4DC2-A94E-48CADE4A5B93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BC7.Repository", "BC7.Repository\BC7.Repository.csproj", "{F27E26FE-822F-4951-A64D-B2144612913B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Repository", "BC7.Repository\BC7.Repository.csproj", "{F27E26FE-822F-4951-A64D-B2144612913B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BC7.Repository.Implementation", "BC7.Repository.Implementation\BC7.Repository.Implementation.csproj", "{E0D24F97-A2DD-412A-BE5D-DE2D4C97B1E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Repository.Implementation", "BC7.Repository.Implementation\BC7.Repository.Implementation.csproj", "{E0D24F97-A2DD-412A-BE5D-DE2D4C97B1E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

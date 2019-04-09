@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BC7.Business.Helpers;
 using BC7.Business.Implementation.Events;
-using BC7.Entity;
+using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
 using BC7.Repository;
 using MediatR;

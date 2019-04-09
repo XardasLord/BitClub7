@@ -1,5 +1,5 @@
 ﻿using System;
-using BC7.Entity;
+using BC7.Domain;
 using BC7.Security;
 using Microsoft.EntityFrameworkCore;
 

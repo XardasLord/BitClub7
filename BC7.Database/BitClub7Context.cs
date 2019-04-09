@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using BC7.Database.Extensions;
-using BC7.Entity;
+using BC7.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace BC7.Database

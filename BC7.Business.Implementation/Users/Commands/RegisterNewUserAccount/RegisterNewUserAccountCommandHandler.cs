@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BC7.Business.Helpers;
 using BC7.Database;
-using BC7.Entity;
+using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
 using BC7.Repository;
 using BC7.Security;

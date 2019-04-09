@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BC7.Entity
+namespace BC7.Domain
 {
     public class MatrixPosition
     {

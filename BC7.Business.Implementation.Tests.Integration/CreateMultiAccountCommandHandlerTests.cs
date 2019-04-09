@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BC7.Business.Implementation.Tests.Integration.Base;
 using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
-using BC7.Entity;
+using BC7.Domain;
 using BC7.Security;
 using FluentAssertions;
 using NUnit.Framework;

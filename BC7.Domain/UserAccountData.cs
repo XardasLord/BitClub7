@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BC7.Common.Extensions;
 using BC7.Infrastructure.CustomExceptions;
 
-namespace BC7.Entity
+namespace BC7.Domain
 {
     public class UserAccountData
     {
