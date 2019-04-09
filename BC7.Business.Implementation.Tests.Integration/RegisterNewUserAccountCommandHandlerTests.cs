@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BC7.Business.Implementation.Tests.Integration.Base;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Entity;
+using BC7.Security;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -105,21 +106,21 @@ namespace BC7.Business.Implementation.Tests.Integration
         private async Task CreateExistingUsersInDatabase()
         {
             var existingUserAccountData = new UserAccountData
-            {
-                Id = Guid.NewGuid(),
-                Login = "ExistingLogin",
-                Email = "Email",
-                Salt = "salt",
-                Hash = "hash",
-                FirstName = "FirstName",
-                LastName = "LastName",
-                Street = "Street",
-                City = "City",
-                Country = "Country",
-                ZipCode = "ZipCode",
-                BtcWalletAddress = "BtcWalletAddress",
-                Role = "Admin"
-            };
+            (
+                id: Guid.NewGuid(),
+                login: "ExistingLogin",
+                email: "Email",
+                firstName: "FirstName",
+                lastName: "LastName",
+                street: "Street",
+                city: "City",
+                country: "Country",
+                zipCode: "ZipCode",
+                btcWalletAddress: "BtcWalletAddress",
+                role: UserRolesHelper.Admin
+            );
+            existingUserAccountData.SetPassword("salt", "hash");
+
             _context.UserAccountsData.Add(existingUserAccountData);
 
             await _context.SaveChangesAsync();

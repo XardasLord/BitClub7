@@ -38,14 +38,22 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
             await ValidateForUniqueness(command);
 
             var invitingUserMultiAccountId = await GetInvitingUserId(command);
-
-            var userAccountData = _mapper.Map<UserAccountData>(command);
-
             var hashSalt = PasswordEncryptionUtilities.GenerateSaltedHash(command.Password);
-            userAccountData.Salt = hashSalt.Salt;
-            userAccountData.Hash = hashSalt.Hash;
-            userAccountData.Role = UserRolesHelper.User;
-            userAccountData.IsMembershipFeePaid = false;
+            
+            var userAccountData = new UserAccountData(
+                id: Guid.NewGuid(),
+                email: command.Email,
+                login: command.Login,
+                firstName: command.FirstName,
+                lastName: command.LastName,
+                street: command.Street,
+                city: command.City,
+                zipCode: command.ZipCode,
+                country: command.Country,
+                btcWalletAddress: command.BtcWalletAddress,
+                role: UserRolesHelper.User);
+
+            userAccountData.SetPassword(hashSalt.Salt, hashSalt.Hash);
 
             await _context.Set<UserAccountData>().AddAsync(userAccountData);
             await _context.SaveChangesAsync();

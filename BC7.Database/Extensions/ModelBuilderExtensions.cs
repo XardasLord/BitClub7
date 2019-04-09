@@ -9,64 +9,57 @@ namespace BC7.Database.Extensions
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            var root1Id = Guid.NewGuid();
-            var root2Id = Guid.NewGuid();
-            var root3Id = Guid.NewGuid();
-
-            modelBuilder.Entity<UserAccountData>().HasData(
-                new UserAccountData
-                {
-                    Id = root1Id,
-                    Hash = "", // TODO
-                    Salt = "", // TODO
-                    Login = "LoginRoot1",
-                    Email = "EmailRoot1",
-                    FirstName = "FirstNameRoot1",
-                    LastName = "LastNameRoot1",
-                    Street = "StreetRoot1",
-                    City = "CityRoot1",
-                    ZipCode = "ZipCodeRoot1",
-                    Country = "CountryRoot1",
-                    BtcWalletAddress = "BtcWalletAddressRoot1",
-                    IsMembershipFeePaid = true,
-                    Role = UserRolesHelper.Root
-
-                },
-                new UserAccountData
-                {
-                    Id = root2Id,
-                    Hash = "", // TODO
-                    Salt = "", // TODO
-                    Login = "LoginRoot2",
-                    Email = "EmailRoot2",
-                    FirstName = "FirstNameRoot2",
-                    LastName = "LastNameRoot2",
-                    Street = "StreetRoot2",
-                    City = "CityRoot2",
-                    ZipCode = "ZipCodeRoot2",
-                    Country = "CountryRoot2",
-                    BtcWalletAddress = "BtcWalletAddressRoot2",
-                    IsMembershipFeePaid = true,
-                    Role = UserRolesHelper.Root
-                },
-                new UserAccountData
-                {
-                    Id = root3Id,
-                    Hash = "", // TODO
-                    Salt = "", // TODO
-                    Login = "LoginRoot3",
-                    Email = "EmailRoot3",
-                    FirstName = "FirstNameRoot3",
-                    LastName = "LastNameRoot3",
-                    Street = "StreetRoot3",
-                    City = "CityRoot3",
-                    ZipCode = "ZipCodeRoot3",
-                    Country = "CountryRoot3",
-                    BtcWalletAddress = "BtcWalletAddressRoot3",
-                    IsMembershipFeePaid = true,
-                    Role = UserRolesHelper.Root
-                }
+            // TODO: Hash and salt for roots
+            var root1 = new UserAccountData
+            (
+                Guid.NewGuid(),
+                login: "LoginRoot1",
+                email: "EmailRoot1",
+                firstName: "FirstNameRoot1",
+                lastName: "LastNameRoot1",
+                street: "StreetRoot1",
+                city: "CityRoot1",
+                zipCode: "ZipCodeRoot1",
+                country: "CountryRoot1",
+                btcWalletAddress: "BtcWalletAddressRoot1",
+                role: UserRolesHelper.Root
             );
+            var root2 = new UserAccountData
+            (
+                Guid.NewGuid(),
+                login: "LoginRoot2",
+                email: "EmailRoot2",
+                firstName: "FirstNameRoot2",
+                lastName: "LastNameRoot2",
+                street: "StreetRoot2",
+                city: "CityRoot2",
+                zipCode: "ZipCodeRoot2",
+                country: "CountryRoot2",
+                btcWalletAddress: "BtcWalletAddressRoot2",
+                role: UserRolesHelper.Root
+            );
+            var root3 = new UserAccountData
+            (
+                Guid.NewGuid(),
+                login: "LoginRoot3",
+                email: "EmailRoot3",
+                firstName: "FirstNameRoot3",
+                lastName: "LastNameRoot3",
+                street: "StreetRoot3",
+                city: "CityRoot3",
+                zipCode: "ZipCodeRoot3",
+                country: "CountryRoot3",
+                btcWalletAddress: "BtcWalletAddressRoot3",
+                role: UserRolesHelper.Root
+            );
+            root1.SetPassword("salt1", "hash1");
+            root2.SetPassword("salt2", "hash2");
+            root3.SetPassword("salt3", "hash3");
+            root1.PaidMembershipFee();
+            root2.PaidMembershipFee();
+            root3.PaidMembershipFee();
+            
+            modelBuilder.Entity<UserAccountData>().HasData(root1, root2, root3);
 
             var root1MultiAccountId = Guid.NewGuid();
             var root2MultiAccountId = Guid.NewGuid();
@@ -76,7 +69,7 @@ namespace BC7.Database.Extensions
                 new UserMultiAccount
                 {
                     Id = root1MultiAccountId,
-                    UserAccountDataId = root1Id,
+                    UserAccountDataId = root1.Id,
                     MultiAccountName = "LoginRoot1",
                     RefLink = "111111",
                     IsMainAccount = true
@@ -84,7 +77,7 @@ namespace BC7.Database.Extensions
                 new UserMultiAccount
                 {
                     Id = root2MultiAccountId,
-                    UserAccountDataId = root2Id,
+                    UserAccountDataId = root2.Id,
                     MultiAccountName = "LoginRoot2",
                     RefLink = "222222",
                     IsMainAccount = true
@@ -92,7 +85,7 @@ namespace BC7.Database.Extensions
                 new UserMultiAccount
                 {
                     Id = root3MultiAccountId,
-                    UserAccountDataId = root3Id,
+                    UserAccountDataId = root3.Id,
                     MultiAccountName = "LoginRoot3",
                     RefLink = "333333",
                     IsMainAccount = true

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using BC7.Business.Implementation.Tests.Integration.Base;
 using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
 using BC7.Entity;
+using BC7.Security;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -34,38 +35,35 @@ namespace BC7.Business.Implementation.Tests.Integration
         private async Task CreateUserAndMultiAccountAndMatrixPositionsInDatabase()
         {
             var existingUserAccountData = new UserAccountData
-            {
-                Id = Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499"),
-                Login = "ExistingLogin",
-                Email = "Email",
-                Salt = "salt",
-                Hash = "hash",
-                FirstName = "FirstName",
-                LastName = "LastName",
-                Street = "Street",
-                City = "City",
-                Country = "Country",
-                ZipCode = "ZipCode",
-                BtcWalletAddress = "BtcWalletAddress",
-                Role = "User"
-            };
+            (
+                id: Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499"),
+                login: "ExistingLogin",
+                email: "Email",
+                firstName: "FirstName",
+                lastName: "LastName",
+                street: "Street",
+                city: "City",
+                country: "Country",
+                zipCode: "ZipCode",
+                btcWalletAddress: "BtcWalletAddress",
+                role: UserRolesHelper.User
+            );
+            existingUserAccountData.SetPassword("salt", "hash");
 
-            var otherUser = new UserAccountData
-            {
-                Id = Guid.NewGuid(),
-                Login = "OtherLogin",
-                Email = "OtherEmail",
-                Salt = "OtherSalt",
-                Hash = "OtherHash",
-                FirstName = "OtherFirstName",
-                LastName = "OtherLastName",
-                Street = "OtherStreet",
-                City = "OtherCity",
-                Country = "OtherCountry",
-                ZipCode = "OtherZipCode",
-                BtcWalletAddress = "OtherBtcWalletAddress",
-                Role = "OtherAdmin"
-            };
+            var otherUser = new UserAccountData(
+                id: Guid.NewGuid(),
+                login: "OtherLogin",
+                email: "OtherEmail",
+                firstName: "OtherFirstName",
+                lastName: "OtherLastName",
+                street: "OtherStreet",
+                city: "OtherCity",
+                country: "OtherCountry",
+                zipCode: "OtherZipCode",
+                btcWalletAddress: "OtherBtcWalletAddress",
+                role: UserRolesHelper.User
+            );
+            otherUser.SetPassword("salt", "hash");
 
             _context.UserAccountsData.AddRange(existingUserAccountData, otherUser);
             await _context.SaveChangesAsync();
@@ -100,7 +98,7 @@ namespace BC7.Business.Implementation.Tests.Integration
             };
             _context.MatrixPositions.Add(myMatrixPosition);
             await _context.SaveChangesAsync();
-            
+
             var otherMatrixPosition = new MatrixPosition()
             {
                 Id = Guid.NewGuid(),
