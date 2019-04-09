@@ -61,36 +61,39 @@ namespace BC7.Database.Extensions
             
             modelBuilder.Entity<UserAccountData>().HasData(root1, root2, root3);
 
-            var root1MultiAccountId = Guid.NewGuid();
-            var root2MultiAccountId = Guid.NewGuid();
-            var root3MultiAccountId = Guid.NewGuid();
 
-            modelBuilder.Entity<UserMultiAccount>().HasData(
-                new UserMultiAccount
-                {
-                    Id = root1MultiAccountId,
-                    UserAccountDataId = root1.Id,
-                    MultiAccountName = "LoginRoot1",
-                    RefLink = "111111",
-                    IsMainAccount = true
-                },
-                new UserMultiAccount
-                {
-                    Id = root2MultiAccountId,
-                    UserAccountDataId = root2.Id,
-                    MultiAccountName = "LoginRoot2",
-                    RefLink = "222222",
-                    IsMainAccount = true
-                },
-                new UserMultiAccount
-                {
-                    Id = root3MultiAccountId,
-                    UserAccountDataId = root3.Id,
-                    MultiAccountName = "LoginRoot3",
-                    RefLink = "333333",
-                    IsMainAccount = true
-                }
+            var root1MultiAccount = new UserMultiAccount
+            (
+                id: Guid.NewGuid(), 
+                userAccountDataId: root1.Id,
+                userMultiAccountInvitingId: null,
+                multiAccountName: "LoginRoot1"
             );
+            root1MultiAccount.SetAsMainAccount();
+            root1MultiAccount.SetReflink("111111");
+
+            var root2MultiAccount = new UserMultiAccount
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: root2.Id,
+                userMultiAccountInvitingId: null,
+                multiAccountName: "LoginRoot2"
+            );
+            root2MultiAccount.SetAsMainAccount();
+            root2MultiAccount.SetReflink("222222");
+
+            var root3MultiAccount = new UserMultiAccount
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: root3.Id,
+                userMultiAccountInvitingId: null,
+                multiAccountName: "LoginRoot3"
+            );
+            root3MultiAccount.SetAsMainAccount();
+            root3MultiAccount.SetReflink("333333");
+
+            modelBuilder.Entity<UserMultiAccount>().HasData(root1MultiAccount, root2MultiAccount, root3MultiAccount);
+
 
             var root1MatrixPositionId = Guid.NewGuid();
             var root2MatrixPositionId = Guid.NewGuid();
@@ -102,7 +105,7 @@ namespace BC7.Database.Extensions
                     Id = root1MatrixPositionId,
                     MatrixLevel = 0,
                     ParentId = null,
-                    UserMultiAccountId = root1MultiAccountId,
+                    UserMultiAccountId = root1MultiAccount.Id,
                     DepthLevel = 0,
                     Left = 1,
                     Right = 14
@@ -112,7 +115,7 @@ namespace BC7.Database.Extensions
                     Id = root2MatrixPositionId,
                     MatrixLevel = 0,
                     ParentId = root1MatrixPositionId,
-                    UserMultiAccountId = root2MultiAccountId,
+                    UserMultiAccountId = root2MultiAccount.Id,
                     DepthLevel = 1,
                     Left = 2,
                     Right = 7
@@ -122,7 +125,7 @@ namespace BC7.Database.Extensions
                     Id = root3MatrixPositionId,
                     MatrixLevel = 0,
                     ParentId = root1MatrixPositionId,
-                    UserMultiAccountId = root3MultiAccountId,
+                    UserMultiAccountId = root3MultiAccount.Id,
                     DepthLevel = 1,
                     Left = 8,
                     Right = 13

@@ -17,18 +17,15 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
     public class RegisterNewUserAccountCommandHandler : IRequestHandler<RegisterNewUserAccountCommand, Guid>
     {
         private readonly IBitClub7Context _context;
-        private readonly IMapper _mapper;
         private readonly IUserMultiAccountHelper _userMultiAccountHelper;
         private readonly IUserMultiAccountRepository _userMultiAccountRepository;
 
         public RegisterNewUserAccountCommandHandler(
             IBitClub7Context context,
-            IMapper mapper,
             IUserMultiAccountHelper userMultiAccountHelper,
             IUserMultiAccountRepository userMultiAccountRepository)
         {
             _context = context;
-            _mapper = mapper;
             _userMultiAccountHelper = userMultiAccountHelper;
             _userMultiAccountRepository = userMultiAccountRepository;
         }
@@ -39,8 +36,9 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
 
             var invitingUserMultiAccountId = await GetInvitingUserId(command);
             var hashSalt = PasswordEncryptionUtilities.GenerateSaltedHash(command.Password);
-            
-            var userAccountData = new UserAccountData(
+
+            var userAccountData = new UserAccountData
+            (
                 id: Guid.NewGuid(),
                 email: command.Email,
                 login: command.Login,
@@ -51,7 +49,8 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
                 zipCode: command.ZipCode,
                 country: command.Country,
                 btcWalletAddress: command.BtcWalletAddress,
-                role: UserRolesHelper.User);
+                role: UserRolesHelper.User
+            );
 
             userAccountData.SetPassword(hashSalt.Salt, hashSalt.Hash);
 
@@ -60,15 +59,15 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
 
             // TODO: Event that user was created: eventhandler should create new multiaccount for him
             var userMultiAccount = new UserMultiAccount
-            {
-                UserAccountDataId = userAccountData.Id,
-                UserMultiAccountInvitingId = invitingUserMultiAccountId,
-                MultiAccountName = userAccountData.Login,
-                RefLink = null,
-                IsMainAccount = true
-            };
-            await _context.Set<UserMultiAccount>().AddAsync(userMultiAccount);
-            await _context.SaveChangesAsync();
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: userAccountData.Id,
+                userMultiAccountInvitingId: invitingUserMultiAccountId,
+                multiAccountName: userAccountData.Login
+            );
+            userMultiAccount.SetAsMainAccount();
+
+            await _userMultiAccountRepository.CreateAsync(userMultiAccount);
 
             return userAccountData.Id;
         }

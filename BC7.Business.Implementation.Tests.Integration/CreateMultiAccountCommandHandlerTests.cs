@@ -69,19 +69,24 @@ namespace BC7.Business.Implementation.Tests.Integration
             await _context.SaveChangesAsync();
 
             var myMultiAccount = new UserMultiAccount
-            {
-                UserAccountDataId = existingUserAccountData.Id,
-                MultiAccountName = "myMultiAccountName",
-                RefLink = "myReflink12345",
-                IsMainAccount = true
-            };
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: existingUserAccountData.Id,
+                userMultiAccountInvitingId: null,
+                multiAccountName: "myMultiAccountName"
+            );
+            myMultiAccount.SetReflink("myReflink12345");
+            myMultiAccount.SetAsMainAccount();
+
             var otherMultiAccount = new UserMultiAccount
-            {
-                UserAccountDataId = otherUser.Id,
-                MultiAccountName = "otherMultiAccountName",
-                RefLink = "otherUserReflink12345",
-                IsMainAccount = true
-            };
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: otherUser.Id,
+                userMultiAccountInvitingId: null,
+                multiAccountName: "otherMultiAccountName"
+            );
+            otherMultiAccount.SetReflink("otherUserReflink12345");
+            otherMultiAccount.SetAsMainAccount();
 
             _context.UserMultiAccounts.AddRange(myMultiAccount, otherMultiAccount);
             await _context.SaveChangesAsync();
