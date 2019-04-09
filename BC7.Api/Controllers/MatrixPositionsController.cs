@@ -17,6 +17,13 @@ namespace BC7.Api.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Buy position in matrix
+        /// </summary>
+        /// <param name="matrixLevel">Matrix level where user would like to buy a position in matrix</param>
+        /// <param name="userMultiAccountId">User multi account ID who wants to buy a position in matrix</param>
+        /// <returns>Returns the Id of the bought matrix position</returns>
+        /// <response code="200">Returns the Id of the bought matrix position</response>
         [HttpPost("{matrixLevel}/{userMultiAccountId}")]
         [Authorize]
         public async Task<IActionResult> BuyPosition(int matrixLevel, Guid userMultiAccountId)

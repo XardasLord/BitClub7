@@ -7,10 +7,8 @@ namespace BC7.Business.Helpers
 {
     public interface IMatrixPositionHelper
     {
-        Task<IEnumerable<MatrixPosition>> GetMatrix(Guid userMultiAccountId, int matrixLevel = 0);
-
         bool CheckIfAnyAccountExistInMatrix(IEnumerable<MatrixPosition> matrix, IEnumerable<Guid> accountIds);
-
         bool CheckIfMatrixHasEmptySpace(IEnumerable<MatrixPosition> matrix);
+        Task<MatrixPosition> FindTheNearestEmptyPositionFromGivenAccount(Guid userMultiAccountId, int matrixLevel = 0);
     }
 }

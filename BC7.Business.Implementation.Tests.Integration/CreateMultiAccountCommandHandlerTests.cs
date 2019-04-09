@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using BC7.Business.Implementation.Tests.Integration.Base;
 using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
@@ -15,7 +16,7 @@ namespace BC7.Business.Implementation.Tests.Integration
         [Test]
         public async Task CreateMultiAccountCommandHandler_WhenHandle_CreateMultiAccountForTheUser()
         {
-            _sut = new CreateMultiAccountCommandHandler(_context, _userAccountDataRepository, _userMultiAccountRepository, _userMultiAccountHelper, _matrixPositionHelper);
+            _sut = new CreateMultiAccountCommandHandler(_context, _userAccountDataRepository, _userMultiAccountRepository, _matrixPositionRepository, _userMultiAccountHelper, _matrixPositionHelper);
             await CreateUserAndMultiAccountAndMatrixPositionsInDatabase();
             var command = new CreateMultiAccountCommand
             {
@@ -25,7 +26,9 @@ namespace BC7.Business.Implementation.Tests.Integration
 
             var result = await _sut.Handle(command);
 
+            var multiAccount = _context.UserMultiAccounts.Where(x => x.UserAccountDataId == Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499")).ToList();
             result.Should().NotBe(Guid.Empty);
+            multiAccount.Count.Should().Be(2);
         }
 
         private async Task CreateUserAndMultiAccountAndMatrixPositionsInDatabase()
