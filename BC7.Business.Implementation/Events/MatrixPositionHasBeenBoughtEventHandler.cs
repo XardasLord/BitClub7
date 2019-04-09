@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BC7.Database;
-using BC7.Entity;
+using BC7.Domain;
 using BC7.Repository;
 using MediatR;
 using Z.EntityFramework.Plus;
@@ -52,24 +53,26 @@ namespace BC7.Business.Implementation.Events
 
             var matricesToAdd = new List<MatrixPosition>()
             {
-                new MatrixPosition()
-                {
-                    MatrixLevel = matrixPositionBought.MatrixLevel,
-                    DepthLevel = newDepthLevel,
-                    Left = matrixPositionBought.Left + 1,
-                    Right = matrixPositionBought.Left + 2,
-                    ParentId = matrixPositionBought.Id,
-                    UserMultiAccountId = null
-                },
-                new MatrixPosition()
-                {
-                    MatrixLevel = matrixPositionBought.MatrixLevel,
-                    DepthLevel = newDepthLevel,
-                    Left = matrixPositionBought.Left + 3,
-                    Right = matrixPositionBought.Left + 4,
-                    ParentId = matrixPositionBought.Id,
-                    UserMultiAccountId = null
-                }
+                new MatrixPosition
+                (
+                    id: Guid.NewGuid(),
+                    matrixLevel: matrixPositionBought.MatrixLevel,
+                    depthLevel: newDepthLevel,
+                    left: matrixPositionBought.Left + 1,
+                    right: matrixPositionBought.Left + 2,
+                    parentId: matrixPositionBought.Id,
+                    userMultiAccountId: null
+                ),
+                new MatrixPosition
+                (
+                    id: Guid.NewGuid(),
+                    matrixLevel: matrixPositionBought.MatrixLevel,
+                    depthLevel: newDepthLevel,
+                    left : matrixPositionBought.Left + 3,
+                    right : matrixPositionBought.Left + 4,
+                    parentId: matrixPositionBought.Id,
+                    userMultiAccountId: null
+                )
             };
 
             await _context.Set<MatrixPosition>().AddRangeAsync(matricesToAdd);

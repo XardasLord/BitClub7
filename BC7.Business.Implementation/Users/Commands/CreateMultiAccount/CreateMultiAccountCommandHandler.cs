@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using BC7.Business.Helpers;
 using BC7.Common.Extensions;
 using BC7.Database;
-using BC7.Entity;
+using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
 using BC7.Repository;
 using MediatR;
@@ -50,14 +50,12 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             var multiAccountName = await _userMultiAccountHelper.GenerateNextMultiAccountName(_command.UserAccountId);
 
             var userMultiAccount = new UserMultiAccount
-            {
-                Id = Guid.NewGuid(),
-                UserAccountDataId = _command.UserAccountId,
-                UserMultiAccountInvitingId = userMultiAccountInviting.Id,
-                MultiAccountName = multiAccountName,
-                RefLink = "",
-                IsMainAccount = false
-            };
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: _command.UserAccountId,
+                userMultiAccountInvitingId: userMultiAccountInviting.Id,
+                multiAccountName: multiAccountName
+            );
 
             await _userMultiAccountRepository.CreateAsync(userMultiAccount);
 

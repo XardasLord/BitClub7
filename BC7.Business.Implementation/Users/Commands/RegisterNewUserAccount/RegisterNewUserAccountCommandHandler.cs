@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BC7.Business.Helpers;
 using BC7.Database;
-using BC7.Entity;
+using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
 using BC7.Repository;
 using BC7.Security;
@@ -17,18 +17,15 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
     public class RegisterNewUserAccountCommandHandler : IRequestHandler<RegisterNewUserAccountCommand, Guid>
     {
         private readonly IBitClub7Context _context;
-        private readonly IMapper _mapper;
         private readonly IUserMultiAccountHelper _userMultiAccountHelper;
         private readonly IUserMultiAccountRepository _userMultiAccountRepository;
 
         public RegisterNewUserAccountCommandHandler(
             IBitClub7Context context,
-            IMapper mapper,
             IUserMultiAccountHelper userMultiAccountHelper,
             IUserMultiAccountRepository userMultiAccountRepository)
         {
             _context = context;
-            _mapper = mapper;
             _userMultiAccountHelper = userMultiAccountHelper;
             _userMultiAccountRepository = userMultiAccountRepository;
         }
@@ -38,29 +35,39 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
             await ValidateForUniqueness(command);
 
             var invitingUserMultiAccountId = await GetInvitingUserId(command);
-
-            var userAccountData = _mapper.Map<UserAccountData>(command);
-
             var hashSalt = PasswordEncryptionUtilities.GenerateSaltedHash(command.Password);
-            userAccountData.Salt = hashSalt.Salt;
-            userAccountData.Hash = hashSalt.Hash;
-            userAccountData.Role = UserRolesHelper.User;
-            userAccountData.IsMembershipFeePaid = false;
+
+            var userAccountData = new UserAccountData
+            (
+                id: Guid.NewGuid(),
+                email: command.Email,
+                login: command.Login,
+                firstName: command.FirstName,
+                lastName: command.LastName,
+                street: command.Street,
+                city: command.City,
+                zipCode: command.ZipCode,
+                country: command.Country,
+                btcWalletAddress: command.BtcWalletAddress,
+                role: UserRolesHelper.User
+            );
+
+            userAccountData.SetPassword(hashSalt.Salt, hashSalt.Hash);
 
             await _context.Set<UserAccountData>().AddAsync(userAccountData);
             await _context.SaveChangesAsync();
 
             // TODO: Event that user was created: eventhandler should create new multiaccount for him
             var userMultiAccount = new UserMultiAccount
-            {
-                UserAccountDataId = userAccountData.Id,
-                UserMultiAccountInvitingId = invitingUserMultiAccountId,
-                MultiAccountName = userAccountData.Login,
-                RefLink = null,
-                IsMainAccount = true
-            };
-            await _context.Set<UserMultiAccount>().AddAsync(userMultiAccount);
-            await _context.SaveChangesAsync();
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: userAccountData.Id,
+                userMultiAccountInvitingId: invitingUserMultiAccountId,
+                multiAccountName: userAccountData.Login
+            );
+            userMultiAccount.SetAsMainAccount();
+
+            await _userMultiAccountRepository.CreateAsync(userMultiAccount);
 
             return userAccountData.Id;
         }

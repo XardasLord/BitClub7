@@ -17,7 +17,7 @@
     <ProjectReference Include="..\BC7.Api\BC7.Api.csproj" />
     <ProjectReference Include="..\BC7.Business.Implementation\BC7.Business.Implementation.csproj" />
     <ProjectReference Include="..\BC7.Database\BC7.Database.csproj" />
-    <ProjectReference Include="..\BC7.Entity\BC7.Entity.csproj" />
+    <ProjectReference Include="..\BC7.Domain\BC7.Domain.csproj" />
   </ItemGroup>
 
 </Project>
