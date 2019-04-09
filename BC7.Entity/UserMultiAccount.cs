@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using BC7.Entity.AbstractBase;
 
 namespace BC7.Entity
 {
-    public class UserMultiAccount : BaseEntity
+    public class UserMultiAccount
     {
+        public Guid Id { get; set; }
         public Guid UserAccountDataId { get; set; }
         public virtual UserAccountData UserAccountData { get; set; }
 
@@ -15,6 +15,7 @@ namespace BC7.Entity
         public string MultiAccountName { get; set; }
         public string RefLink { get; set; }
         public bool IsMainAccount { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         public virtual ICollection<MatrixPosition> MatrixPositions { get; set; }
     }

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using BC7.Entity.AbstractBase;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BC7.Entity
 {
-    public class UserAccountData : BaseEntity
+    public class UserAccountData
     {
+        public Guid Id { get; set; }
         public string Email { get; set; }
         public string Login { get; set; }
         public string Salt { get; set; }
@@ -18,6 +19,7 @@ namespace BC7.Entity
         public string BtcWalletAddress { get; set; }
         public string Role { get; set; }
         public bool IsMembershipFeePaid { get; set; }
+        public DateTime CreatedAt { get; set; }
         public virtual ICollection<UserMultiAccount> UserMultiAccounts { get; set; }
     }
 }

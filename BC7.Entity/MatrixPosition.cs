@@ -1,10 +1,11 @@
 ﻿using System;
-using BC7.Entity.AbstractBase;
 
 namespace BC7.Entity
 {
-    public class MatrixPosition : BaseEntity
+    public class MatrixPosition
     {
+        public Guid Id { get; set; }
+        public DateTime CreatedAt { get; set; }
         public Guid? UserMultiAccountId { get; set; }
         public virtual UserMultiAccount UserMultiAccount { get; set; }
         public Guid? ParentId { get; set; }
