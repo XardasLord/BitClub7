@@ -60,7 +60,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
                 // If yes than helper should has a method called like `GetSponsorForGivenPosition()`
             }
 
-            matrixPosition.UserMultiAccountId = command.UserMultiAccountId;
+            matrixPosition.AssignMultiAccount(command.UserMultiAccountId);
             await _matrixPositionRepository.UpdateAsync(matrixPosition);
 
             await PublishMatrixPositionHasBeenBoughtNotification(matrixPosition.Id);

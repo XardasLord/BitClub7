@@ -91,42 +91,43 @@ namespace BC7.Business.Implementation.Tests.Integration
             _context.UserMultiAccounts.AddRange(myMultiAccount, otherMultiAccount);
             await _context.SaveChangesAsync();
 
+            // Matrices
             var myMatrixPosition = new MatrixPosition
-            {
-                Id = Guid.NewGuid(),
-                UserMultiAccountId = myMultiAccount.Id,
-                ParentId = null,
-                MatrixLevel = 0,
-                DepthLevel = 0,
-                Left = 1,
-                Right = 6
-            };
+            (
+                id: Guid.NewGuid(),
+                userMultiAccountId: myMultiAccount.Id,
+                parentId: null,
+                matrixLevel: 0,
+                depthLevel: 0,
+                left: 1,
+                right: 6
+            );
             _context.MatrixPositions.Add(myMatrixPosition);
             await _context.SaveChangesAsync();
 
-            var otherMatrixPosition = new MatrixPosition()
-            {
-                Id = Guid.NewGuid(),
-                UserMultiAccountId = otherMultiAccount.Id,
-                ParentId = myMatrixPosition.Id,
-                MatrixLevel = 0,
-                DepthLevel = 2, // Level 2 (Line B of the main Acc so it's ok)
-                Left = 2,
-                Right = 5
-            };
+            var otherMatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                userMultiAccountId: otherMultiAccount.Id,
+                parentId: myMatrixPosition.Id,
+                matrixLevel: 0,
+                depthLevel: 2, // Level 2 (Line B of the main account so it's ok)
+                left: 2,
+                right: 5
+            );
             _context.MatrixPositions.Add(otherMatrixPosition);
             await _context.SaveChangesAsync();
 
-            var otherMatrixPosition2 = new MatrixPosition()
-            {
-                Id = Guid.NewGuid(),
-                UserMultiAccountId = null,
-                ParentId = otherMatrixPosition.Id,
-                MatrixLevel = 0,
-                DepthLevel = 3, // Line C
-                Left = 3,
-                Right = 4
-            };
+            var otherMatrixPosition2 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                userMultiAccountId: null,
+                parentId: otherMatrixPosition.Id,
+                matrixLevel: 0,
+                depthLevel: 3, // Line C
+                left: 3,
+                right: 4
+            );
             _context.MatrixPositions.Add(otherMatrixPosition2);
             await _context.SaveChangesAsync();
         }

@@ -58,13 +58,13 @@ namespace BC7.Database.Extensions
             root1.PaidMembershipFee();
             root2.PaidMembershipFee();
             root3.PaidMembershipFee();
-            
+
             modelBuilder.Entity<UserAccountData>().HasData(root1, root2, root3);
 
 
             var root1MultiAccount = new UserMultiAccount
             (
-                id: Guid.NewGuid(), 
+                id: Guid.NewGuid(),
                 userAccountDataId: root1.Id,
                 userMultiAccountInvitingId: null,
                 multiAccountName: "LoginRoot1"
@@ -95,81 +95,88 @@ namespace BC7.Database.Extensions
             modelBuilder.Entity<UserMultiAccount>().HasData(root1MultiAccount, root2MultiAccount, root3MultiAccount);
 
 
-            var root1MatrixPositionId = Guid.NewGuid();
-            var root2MatrixPositionId = Guid.NewGuid();
-            var root3MatrixPositionId = Guid.NewGuid();
+            var root1MatrixPosition = new MatrixPosition
+            (
+                // root1
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: null,
+                userMultiAccountId: root1MultiAccount.Id,
+                depthLevel: 0,
+                left: 1,
+                right: 14
+            );
+            var root2MatrixPosition = new MatrixPosition
+            (
+                // root2
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: root1MatrixPosition.Id,
+                userMultiAccountId: root2MultiAccount.Id,
+                depthLevel: 1,
+                left: 2,
+                right: 7
+            );
+            var root3MatrixPosition = new MatrixPosition
+            (
+                // root3
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: root1MatrixPosition.Id,
+                userMultiAccountId: root3MultiAccount.Id,
+                depthLevel: 1,
+                left: 8,
+                right: 13
+            );
+            var empty1MatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: root2MatrixPosition.Id,
+                userMultiAccountId: null,
+                depthLevel: 2,
+                left: 3,
+                right: 4
+            );
+            var empty2MatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: root2MatrixPosition.Id,
+                userMultiAccountId: null,
+                depthLevel: 2,
+                left: 5,
+                right: 6
+            );
+            var empty3MatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: root3MatrixPosition.Id,
+                userMultiAccountId: null,
+                depthLevel: 2,
+                left: 9,
+                right: 10
+            );
+            var empty4MatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: root3MatrixPosition.Id,
+                userMultiAccountId: null,
+                depthLevel: 2,
+                left: 11,
+                right: 12
+            );
 
             modelBuilder.Entity<MatrixPosition>().HasData(
-                new MatrixPosition
-                { // root1
-                    Id = root1MatrixPositionId,
-                    MatrixLevel = 0,
-                    ParentId = null,
-                    UserMultiAccountId = root1MultiAccount.Id,
-                    DepthLevel = 0,
-                    Left = 1,
-                    Right = 14
-                },
-                new MatrixPosition
-                { // root2
-                    Id = root2MatrixPositionId,
-                    MatrixLevel = 0,
-                    ParentId = root1MatrixPositionId,
-                    UserMultiAccountId = root2MultiAccount.Id,
-                    DepthLevel = 1,
-                    Left = 2,
-                    Right = 7
-                },
-                new MatrixPosition
-                { // root3
-                    Id = root3MatrixPositionId,
-                    MatrixLevel = 0,
-                    ParentId = root1MatrixPositionId,
-                    UserMultiAccountId = root3MultiAccount.Id,
-                    DepthLevel = 1,
-                    Left = 8,
-                    Right = 13
-                },
-                new MatrixPosition
-                { // free space
-                    Id = Guid.NewGuid(),
-                    MatrixLevel = 0,
-                    ParentId = root2MatrixPositionId,
-                    UserMultiAccountId = null,
-                    DepthLevel = 2,
-                    Left = 3,
-                    Right = 4
-                },
-                new MatrixPosition
-                { // free space
-                    Id = Guid.NewGuid(),
-                    MatrixLevel = 0,
-                    ParentId = root2MatrixPositionId,
-                    UserMultiAccountId = null,
-                    DepthLevel = 2,
-                    Left = 5,
-                    Right = 6
-                },
-                new MatrixPosition
-                { // free space
-                    Id = Guid.NewGuid(),
-                    MatrixLevel = 0,
-                    ParentId = root3MatrixPositionId,
-                    UserMultiAccountId = null,
-                    DepthLevel = 2,
-                    Left = 9,
-                    Right = 10
-                },
-                new MatrixPosition
-                { // free space
-                    Id = Guid.NewGuid(),
-                    MatrixLevel = 0,
-                    ParentId = root3MatrixPositionId,
-                    UserMultiAccountId = null,
-                    DepthLevel = 2,
-                    Left = 11,
-                    Right = 12
-                }
+                root1MatrixPosition,
+                root2MatrixPosition,
+                root3MatrixPosition,
+                empty1MatrixPosition,
+                empty2MatrixPosition,
+                empty3MatrixPosition,
+                empty4MatrixPosition
             );
         }
 
