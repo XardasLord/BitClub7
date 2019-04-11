@@ -59,11 +59,11 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
                 matrixPosition = await _matrixPositionHelper.FindTheNearestEmptyPositionFromGivenAccountAsync(sponsorAccountId, command.MatrixLevel);
 
                 // TODO: Refactor this in some while od something...
-                var matrixPositionFreePositionIsInLineB = await _matrixPositionHelper.GetMatrixPositionWhereGivenPositionIsInLineBAsync(matrixPosition, command.MatrixLevel);
+                var matrixPositionWhereFreePositionIsInLineB = await _matrixPositionHelper.GetMatrixPositionWhereGivenPositionIsInLineBAsync(matrixPosition, command.MatrixLevel);
                 var userAccount = await _userAccountDataRepository.GetAsync(userMultiAccount.UserAccountDataId);
                 var userMultiAccountIds = userAccount.UserMultiAccounts.Select(x => x.Id).ToList();
 
-                if (_matrixPositionHelper.CheckIfAnyAccountExistInMatrix(matrixPositionFreePositionIsInLineB, userMultiAccountIds))
+                if (_matrixPositionHelper.CheckIfAnyAccountExistInMatrix(matrixPositionWhereFreePositionIsInLineB, userMultiAccountIds))
                 {
                     throw new ValidationException("INFO DO ZMIANY: W znalezionej najbliższej wolnej pozycji w matrycy, nie może zostać przypisane multikonto, ponieważ ta pozycja znajduje się w matrycy razem z którymś z multikont użytkownika");
                 }
