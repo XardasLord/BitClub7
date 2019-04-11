@@ -64,11 +64,10 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
                 if (matrixPosition is null)
                 {
-                    throw  new ValidationException("There is no empty space in matrix where account can be assigned");
+                    throw new ValidationException("There is no empty space in matrix where account can be assigned");
                 }
 
-                // TODO: Should we also change the sponsor for the founder of founded matrix?
-                // If yes than helper should has a method called like `GetSponsorForGivenPosition()`
+                await ChangeUserSponsor(userMultiAccount, matrixPosition);
             }
 
             matrixPosition.AssignMultiAccount(command.UserMultiAccountId);
@@ -79,6 +78,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
             return matrixPosition.Id;
         }
+
 
         private static void ValidateUserMultiAccount(UserMultiAccount userMultiAccount)
         {
@@ -94,6 +94,14 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             {
                 throw new ValidationException("This account does not have inviting multi account set");
             }
+        }
+
+        private async Task ChangeUserSponsor(UserMultiAccount userMultiAccount, MatrixPosition matrixPosition)
+        {
+            var parentPosition = await _matrixPositionRepository.GetAsync(matrixPosition.ParentId.Value);
+
+            userMultiAccount.ChangeSponsor(parentPosition.UserMultiAccountId.Value);
+            await _userMultiAccountRepository.UpdateAsync(userMultiAccount);
         }
 
         private async Task PublishMatrixPositionHasBeenBoughtNotification(Guid matrixPositionId)

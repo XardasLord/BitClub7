@@ -11,6 +11,7 @@ namespace BC7.Domain
         public Guid UserAccountDataId { get; set; }
         public virtual UserAccountData UserAccountData { get; set; }
 
+        // TODO: Change it to SponsorId
         public Guid? UserMultiAccountInvitingId { get; set; }
         public virtual UserMultiAccount UserMultiAccountInviting { get; set; }
 
@@ -72,6 +73,11 @@ namespace BC7.Domain
             }
 
             RefLink = reflink;
+        }
+
+        public void ChangeSponsor(Guid sponsorId)
+        {
+            UserMultiAccountInvitingId = sponsorId;
         }
     }
 }
