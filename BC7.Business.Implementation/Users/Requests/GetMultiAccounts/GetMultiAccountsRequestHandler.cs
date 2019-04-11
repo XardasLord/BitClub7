@@ -23,7 +23,7 @@ namespace BC7.Business.Implementation.Users.Requests.GetMultiAccounts
         public async Task<IEnumerable<UserMultiAccountModel>> Handle(GetMultiAccountsRequest request, CancellationToken cancellationToken)
         {
             var userAccount = await _userAccountDataRepository.GetAsync(request.UserAccountId);
-            if (userAccount == null)
+            if (userAccount is null)
             {
                 throw new AccountNotFoundException("User with given ID does not exist");
             }

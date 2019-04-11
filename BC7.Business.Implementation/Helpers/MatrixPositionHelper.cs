@@ -35,7 +35,7 @@ namespace BC7.Business.Implementation.Helpers
             Guid userMultiAccountId, IReadOnlyCollection<Guid> multiAccountIds, int matrixLevel = 0)
         {
             var userMatrixPosition = await _matrixPositionRepository.GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
-            if (userMatrixPosition == null) throw new ArgumentNullException(nameof(userMatrixPosition));
+            if (userMatrixPosition is null) throw new ArgumentNullException(nameof(userMatrixPosition));
 
             var allEmptyPositions = await _context.Set<MatrixPosition>()
                 .Where(x => x.Left >= userMatrixPosition.Left)
