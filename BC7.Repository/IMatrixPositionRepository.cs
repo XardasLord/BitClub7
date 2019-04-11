@@ -10,6 +10,7 @@ namespace BC7.Repository
         Task<MatrixPosition> GetAsync(Guid id);
         Task<MatrixPosition> GetPositionForAccountAtLevel(Guid userMultiAccountId, int matrixLevel = 0);
         Task<IEnumerable<MatrixPosition>> GetMatrixAsync(Guid userMultiAccountId, int matrixLevel = 0);
+        Task<IEnumerable<MatrixPosition>> GetOwnerMatrixBelongsForGivenPosition(MatrixPosition matrixPosition, int matrixLevel = 0);
         Task UpdateAsync(MatrixPosition matrixPosition);
     }
 }

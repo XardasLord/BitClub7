@@ -48,6 +48,12 @@ namespace BC7.Repository.Implementation
             return matrixAccounts;
         }
 
+        public Task<IEnumerable<MatrixPosition>> GetOwnerMatrixBelongsForGivenPosition(MatrixPosition matrixPosition, int matrixLevel = 0)
+        {
+            // Pobranie matrycy, gdzie przekazany MatrixPosition jest w linii B
+            throw new NotImplementedException();
+        }
+
         public async Task UpdateAsync(MatrixPosition matrixPosition)
         {
             _context.Set<MatrixPosition>().Attach(matrixPosition);
