@@ -30,6 +30,16 @@ namespace BC7.Repository.Implementation
                 .SingleOrDefaultAsync(); // Cycles available later
         }
 
+        public Task<MatrixPosition> GetTopParent(MatrixPosition matrixPosition, int matrixLevel = 0)
+        {
+            return _context.Set<MatrixPosition>()
+                .Where(x => x.Left < matrixPosition.Left)
+                .Where(x => x.Right > matrixPosition.Right)
+                .Where(x => x.DepthLevel == matrixPosition.DepthLevel - 2)
+                .Where(x => x.MatrixLevel == matrixLevel)
+                .SingleOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<MatrixPosition>> GetMatrixAsync(Guid userMultiAccountId, int matrixLevel = 0)
         {
             var userMatrixPosition = await GetPositionForAccountAtLevel(userMultiAccountId, matrixLevel);
@@ -51,6 +61,13 @@ namespace BC7.Repository.Implementation
         public Task<IEnumerable<MatrixPosition>> GetOwnerMatrixBelongsForGivenPosition(MatrixPosition matrixPosition, int matrixLevel = 0)
         {
             // Pobranie matrycy, gdzie przekazany MatrixPosition jest w linii B
+            // GET PARENT TOP
+            // GET HIS MATRIX
+
+            return _context.Set<MatrixPosition>()
+                .Where(x => x.DepthLevel <= matrixPosition.DepthLevel)
+                .Where(x => x.DepthLevel >= matrixPosition.DepthLevel - 2)
+                .ToListAsync();
             throw new NotImplementedException();
         }
 
