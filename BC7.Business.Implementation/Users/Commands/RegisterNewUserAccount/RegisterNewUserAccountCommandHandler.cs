@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using BC7.Business.Helpers;
 using BC7.Database;
 using BC7.Domain;
