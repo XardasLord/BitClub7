@@ -13,10 +13,10 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
 {
     [Story(
         AsA = "As a multi account owner",
-        IWant = "I want to buy a position in matrix",
-        SoThat = "So I will have position in matrix"
-        )]
-    public class BuyPositionInMatrixTest : BaseIntegration
+        IWant = "I want to buy a position in matrix which is already full",
+        SoThat = "So I will have position in newly founded matrix in new sponsor"
+    )]
+    public class BuyPositionInMatrixWhereIsNoEmptySpaceTest : BaseIntegration
     {
         private BuyPositionInMatrixCommandHandler _sut;
         private BuyPositionInMatrixCommand _command;
@@ -84,6 +84,15 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
             );
             otherMultiAccount2.SetReflink("otherUserReflink123456789");
 
+            var otherMultiAccount3 = new UserMultiAccount
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: otherUser.Id,
+                userMultiAccountInvitingId: null,
+                multiAccountName: "otherMultiAccountName3"
+            );
+            otherMultiAccount3.SetReflink("3");
+
             var myMultiAccount = new UserMultiAccount
             (
                 id: Guid.Parse("032d748c-9cef-4a5a-92bd-3fd9a4a0e499"),
@@ -93,47 +102,125 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
             );
             myMultiAccount.SetAsMainAccount();
 
-            _context.UserMultiAccounts.AddRange(myMultiAccount, otherMultiAccount, otherMultiAccount2);
+            _context.UserMultiAccounts.AddRange(myMultiAccount, otherMultiAccount, otherMultiAccount2, otherMultiAccount3);
             await _context.SaveChangesAsync();
 
             // Matrices
-            var myMatrixPosition = new MatrixPosition
+            var topMatrixPosition = new MatrixPosition
             (
                 id: Guid.NewGuid(),
-                userMultiAccountId: otherMultiAccount2.Id,
+                userMultiAccountId: otherMultiAccount.Id,
                 parentId: null,
                 matrixLevel: 0,
                 depthLevel: 0,
                 left: 1,
-                right: 6
+                right: 18
             );
-            _context.MatrixPositions.Add(myMatrixPosition);
+            _context.MatrixPositions.Add(topMatrixPosition);
             await _context.SaveChangesAsync();
 
-            var otherMatrixPosition = new MatrixPosition
+            var positionLineA1 = new MatrixPosition
             (
                 id: Guid.NewGuid(),
-                userMultiAccountId: otherMultiAccount.Id,
-                parentId: myMatrixPosition.Id,
+                userMultiAccountId: otherMultiAccount2.Id,
+                parentId: topMatrixPosition.Id,
                 matrixLevel: 0,
-                depthLevel: 2, // Level 2 (Line B of the main account so it's ok)
+                depthLevel: 1,
                 left: 2,
-                right: 5
+                right: 11
             );
-            _context.MatrixPositions.Add(otherMatrixPosition);
+            _context.MatrixPositions.Add(positionLineA1);
             await _context.SaveChangesAsync();
 
-            var otherMatrixPosition2 = new MatrixPosition
+            var positionLineA2 = new MatrixPosition
             (
                 id: Guid.NewGuid(),
-                userMultiAccountId: null,
-                parentId: otherMatrixPosition.Id,
+                userMultiAccountId: otherMultiAccount2.Id,
+                parentId: topMatrixPosition.Id,
                 matrixLevel: 0,
-                depthLevel: 3, // Line C
+                depthLevel: 1,
+                left: 12,
+                right: 17
+            );
+            _context.MatrixPositions.Add(positionLineA2);
+            await _context.SaveChangesAsync();
+
+            var positionLineB1 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                userMultiAccountId: otherMultiAccount3.Id,
+                parentId: positionLineA1.Id,
+                matrixLevel: 0,
+                depthLevel: 2,
                 left: 3,
                 right: 4
             );
-            _context.MatrixPositions.Add(otherMatrixPosition2);
+            _context.MatrixPositions.Add(positionLineB1);
+            await _context.SaveChangesAsync();
+
+            var positionLineB2 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                userMultiAccountId: otherMultiAccount3.Id,
+                parentId: positionLineA1.Id,
+                matrixLevel: 0,
+                depthLevel: 2,
+                left: 5,
+                right: 8
+            );
+            _context.MatrixPositions.Add(positionLineB2);
+            await _context.SaveChangesAsync();
+
+            var positionLineC1 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                userMultiAccountId: null,
+                parentId: positionLineB2.Id,
+                matrixLevel: 0,
+                depthLevel: 3,
+                left: 6,
+                right: 7
+            );
+            _context.MatrixPositions.Add(positionLineC1);
+            await _context.SaveChangesAsync();
+
+            var positionLineC2 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                userMultiAccountId: null,
+                parentId: positionLineB2.Id,
+                matrixLevel: 0,
+                depthLevel: 3,
+                left: 8,
+                right: 9
+            );
+            _context.MatrixPositions.Add(positionLineC2);
+            await _context.SaveChangesAsync();
+
+            var positionLineB3 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                userMultiAccountId: otherMultiAccount3.Id,
+                parentId: positionLineA2.Id,
+                matrixLevel: 0,
+                depthLevel: 3,
+                left: 13,
+                right: 14
+            );
+            _context.MatrixPositions.Add(positionLineB3);
+            await _context.SaveChangesAsync();
+
+            var positionLineB4 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                userMultiAccountId: otherMultiAccount3.Id,
+                parentId: positionLineA2.Id,
+                matrixLevel: 0,
+                depthLevel: 3,
+                left: 15,
+                right: 16
+            );
+            _context.MatrixPositions.Add(positionLineB4);
             await _context.SaveChangesAsync();
         }
 
@@ -145,10 +232,10 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
                 MatrixLevel = 0
             };
         }
-        
+
         async Task WhenHandlerHandlesTheCommand()
         {
-           _result = await _sut.Handle(_command);
+            _result = await _sut.Handle(_command);
         }
 
         void ThenResultShouldBeGuidWithMatrixPositionBought()
@@ -162,12 +249,12 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
             matrixPosition.UserMultiAccountId.Should().Be(_command.UserMultiAccountId);
         }
 
-        async Task AndUserHasTheSameSponsor()
+        async Task AndUserHasNewSponsor()
         {
             var userMultiAccount = await _context.UserMultiAccounts.SingleAsync(x => x.Id == _command.UserMultiAccountId);
-            userMultiAccount.UserMultiAccountInvitingId.Should().Be("d4887060-fb76-429b-95db-113fef65d68d");
+            userMultiAccount.UserMultiAccountInvitingId.Should().NotBe(Guid.Parse("d4887060-fb76-429b-95db-113fef65d68d"));
         }
-        
+
         [Test]
         public void BuyPositionInMatrix()
         {
@@ -177,7 +264,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
                 .When(x => x.WhenHandlerHandlesTheCommand())
                 .Then(x => x.ThenResultShouldBeGuidWithMatrixPositionBought())
                     .And(x => x.AndPositionShouldHasAssignedAccountId())
-                    .And(x => x.AndUserHasTheSameSponsor())
+                    .And(x => x.AndUserHasNewSponsor())
                 .BDDfy();
         }
     }
