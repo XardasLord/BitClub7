@@ -23,7 +23,7 @@ namespace BC7.Business.Implementation.Helpers
 
         public bool CheckIfAnyAccountExistInMatrix(IEnumerable<MatrixPosition> matrix, IEnumerable<Guid> accountIds)
         {
-            return matrix.Any(x => accountIds.Contains(x.Id));
+            return matrix.Any(x => x.UserMultiAccountId != null && accountIds.Contains(x.UserMultiAccountId.Value));
         }
 
         public bool CheckIfMatrixHasEmptySpace(IEnumerable<MatrixPosition> matrix)
