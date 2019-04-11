@@ -56,16 +56,15 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             }
             else
             {
-                matrixPosition = await _matrixPositionHelper.FindTheNearestEmptyPositionFromGivenAccountAsync(sponsorAccountId, command.MatrixLevel);
-
-                // TODO: Refactor this in some while od something...
-                var matrixPositionWhereFreePositionIsInLineB = await _matrixPositionHelper.GetMatrixPositionWhereGivenPositionIsInLineBAsync(matrixPosition, command.MatrixLevel);
                 var userAccount = await _userAccountDataRepository.GetAsync(userMultiAccount.UserAccountDataId);
                 var userMultiAccountIds = userAccount.UserMultiAccounts.Select(x => x.Id).ToList();
 
-                if (_matrixPositionHelper.CheckIfAnyAccountExistInMatrix(matrixPositionWhereFreePositionIsInLineB, userMultiAccountIds))
+                matrixPosition = await _matrixPositionHelper.FindTheNearestEmptyPositionFromGivenAccountWhereInParentsMatrixThereIsNoAnyMultiAccountAsync(
+                            sponsorAccountId, userMultiAccountIds, command.MatrixLevel);
+
+                if (matrixPosition is null)
                 {
-                    throw new ValidationException("INFO DO ZMIANY: W znalezionej najbliższej wolnej pozycji w matrycy, nie może zostać przypisane multikonto, ponieważ ta pozycja znajduje się w matrycy razem z którymś z multikont użytkownika");
+                    throw  new ValidationException("There is no empty space in matrix where account can be assigned");
                 }
 
                 // TODO: Should we also change the sponsor for the founder of founded matrix?

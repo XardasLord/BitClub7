@@ -31,20 +31,32 @@ namespace BC7.Business.Implementation.Helpers
             return matrix.Any(x => x.UserMultiAccountId == null);
         }
 
-        public async Task<MatrixPosition> FindTheNearestEmptyPositionFromGivenAccountAsync(Guid userMultiAccountId, int matrixLevel = 0)
+        public async Task<MatrixPosition> FindTheNearestEmptyPositionFromGivenAccountWhereInParentsMatrixThereIsNoAnyMultiAccountAsync(
+            Guid userMultiAccountId, IReadOnlyCollection<Guid> multiAccountIds, int matrixLevel = 0)
         {
             var userMatrixPosition = await _matrixPositionRepository.GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
             if (userMatrixPosition == null) throw new ArgumentNullException(nameof(userMatrixPosition));
-            
-            return await _context.Set<MatrixPosition>()
+
+            var allEmptyPositions = await _context.Set<MatrixPosition>()
                 .Where(x => x.Left >= userMatrixPosition.Left)
                 .Where(x => x.Right <= userMatrixPosition.Right)
                 .Where(x => x.DepthLevel >= userMatrixPosition.DepthLevel)
                 .Where(x => x.UserMultiAccountId == null)
-                .FirstAsync();
+                .ToListAsync();
+            
+            foreach (var emptyPosition in allEmptyPositions)
+            {
+                var matrix = await GetMatrixPositionWhereGivenPositionIsInLineBAsync(emptyPosition, matrixLevel);
+                if (!CheckIfAnyAccountExistInMatrix(matrix, multiAccountIds))
+                {
+                    return emptyPosition;
+                }
+            }
+
+            return null;
         }
 
-        public async Task<IEnumerable<MatrixPosition>> GetMatrixPositionWhereGivenPositionIsInLineBAsync(MatrixPosition matrixPosition, int matrixLevel = 0)
+        private async Task<IEnumerable<MatrixPosition>> GetMatrixPositionWhereGivenPositionIsInLineBAsync(MatrixPosition matrixPosition, int matrixLevel = 0)
         {
             var parentPosition = await _matrixPositionRepository.GetTopParentAsync(matrixPosition, matrixLevel);
             var parentsMatrix = await _matrixPositionRepository.GetMatrixAsync(parentPosition, matrixLevel);
