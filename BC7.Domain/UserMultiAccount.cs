@@ -7,19 +7,20 @@ namespace BC7.Domain
 {
     public class UserMultiAccount
     {
-        public Guid Id { get; set; }
-        public Guid UserAccountDataId { get; set; }
-        public virtual UserAccountData UserAccountData { get; set; }
+        public Guid Id { get; private set; }
+        public Guid UserAccountDataId { get; private set; }
+        public virtual UserAccountData UserAccountData { get; private set; }
 
-        public Guid? UserMultiAccountInvitingId { get; set; }
-        public virtual UserMultiAccount UserMultiAccountInviting { get; set; }
+        // TODO: Change it to SponsorId
+        public Guid? UserMultiAccountInvitingId { get; private set; }
+        public virtual UserMultiAccount UserMultiAccountInviting { get; private set; }
 
-        public string MultiAccountName { get; set; }
-        public string RefLink { get; set; }
-        public bool IsMainAccount { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public string MultiAccountName { get; private set; }
+        public string RefLink { get; private set; }
+        public bool IsMainAccount { get; private set; }
+        public DateTime CreatedAt { get; private set; }
 
-        public virtual ICollection<MatrixPosition> MatrixPositions { get; set; }
+        public virtual ICollection<MatrixPosition> MatrixPositions { get; private set; }
 
         private UserMultiAccount()
         {
@@ -71,7 +72,17 @@ namespace BC7.Domain
                 throw new DomainException("Invalid reflink.");
             }
 
+            if (!RefLink.IsNullOrWhiteSpace())
+            {
+                throw new DomainException("This account has a reflink already set.");
+            }
+
             RefLink = reflink;
+        }
+
+        public void ChangeSponsor(Guid sponsorId)
+        {
+            UserMultiAccountInvitingId = sponsorId;
         }
     }
 }

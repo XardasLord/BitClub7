@@ -8,8 +8,10 @@ namespace BC7.Repository
     public interface IMatrixPositionRepository
     {
         Task<MatrixPosition> GetAsync(Guid id);
-        Task<MatrixPosition> GetPositionForAccountAtLevel(Guid userMultiAccountId, int matrixLevel = 0);
-        Task<IEnumerable<MatrixPosition>> GetMatrixAsync(Guid userMultiAccountId, int matrixLevel = 0);
+        Task<MatrixPosition> GetPositionForAccountAtLevelAsync(Guid userMultiAccountId, int matrixLevel = 0);
+        Task<MatrixPosition> GetTopParentAsync(MatrixPosition matrixPosition, int matrixLevel = 0);
+        Task<IEnumerable<MatrixPosition>> GetMatrixAsync(MatrixPosition matrixPosition, int matrixLevel = 0);
+        Task<IEnumerable<MatrixPosition>> GetMatrixForGivenMultiAccountAsync(Guid userMultiAccountId, int matrixLevel = 0);
         Task UpdateAsync(MatrixPosition matrixPosition);
     }
 }

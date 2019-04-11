@@ -18,6 +18,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
     {
         protected IBitClub7Context _context;
         protected IMapper _mapper;
+        protected IMediator _mediator;
         protected IReflinkHelper _reflinkHelper;
         protected IUserMultiAccountHelper _userMultiAccountHelper;
         protected IUserAccountDataHelper _userAccountDataHelper;
@@ -51,6 +52,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
 
             _context = serviceProvider.GetService<IBitClub7Context>();
             _mapper = serviceProvider.GetService<IMapper>();
+            _mediator = serviceProvider.GetService<IMediator>();
             _reflinkHelper = serviceProvider.GetService<IReflinkHelper>();
             _userAccountDataHelper = serviceProvider.GetService<IUserAccountDataHelper>();
             _matrixPositionHelper = serviceProvider.GetService<IMatrixPositionHelper>();

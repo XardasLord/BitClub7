@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using BC7.Business.Helpers;
 using BC7.Database;
 using BC7.Domain;
@@ -102,7 +101,7 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
         {
             var invitingUser = await _userMultiAccountRepository.GetByAccountNameAsync(login);
 
-            if (invitingUser == null)
+            if (invitingUser is null)
             {
                 throw new InvalidOperationException("User with multi account name does not exist");
             }
@@ -114,7 +113,7 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
         {
             var invitingUser = await _userMultiAccountRepository.GetByReflinkAsync(reflink);
 
-            if (invitingUser == null)
+            if (invitingUser is null)
             {
                 throw new InvalidOperationException("User with given reflink does not exist");
             }

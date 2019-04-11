@@ -10,5 +10,6 @@ namespace BC7.Repository
         Task<UserMultiAccount> GetByReflinkAsync(string reflink);
         Task<UserMultiAccount> GetByAccountNameAsync(string accountName);
         Task CreateAsync(UserMultiAccount userMultiAccount);
+        Task UpdateAsync(UserMultiAccount userMultiAccount);
     }
 }

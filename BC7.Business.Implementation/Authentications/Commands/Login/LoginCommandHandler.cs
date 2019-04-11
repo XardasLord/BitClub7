@@ -31,7 +31,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.Login
         public async Task<string> Handle(LoginCommand command, CancellationToken cancellationToken)
         {
             var user = await _context.Set<UserAccountData>().SingleOrDefaultAsync(x => x.Login == command.LoginOrEmail || x.Email == command.LoginOrEmail);
-            if (user == null)
+            if (user is null)
             {
                 throw new ValidationException("Invalid credentials");
             }

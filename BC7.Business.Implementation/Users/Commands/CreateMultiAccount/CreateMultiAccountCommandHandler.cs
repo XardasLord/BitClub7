@@ -65,13 +65,13 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
         private async Task ValidateIfMultiAccountCanBeCreated()
         {
             var userAccount = await _userAccountDataRepository.GetAsync(_command.UserAccountId);
-            if (userAccount == null)
+            if (userAccount is null)
             {
                 throw new AccountNotFoundException("User with given ID does not exist");
             }
 
             var invitingMultiAccount = await _userMultiAccountRepository.GetByReflinkAsync(_command.RefLink);
-            if (invitingMultiAccount == null)
+            if (invitingMultiAccount is null)
             {
                 throw new AccountNotFoundException("Account with given reflink does not exist");
             }
@@ -100,7 +100,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             }
 
             // TODO: How to verify the reflink user's matrix level? Is it 0, 1...9?
-            var invitingUserMatrixAccounts = await _matrixPositionRepository.GetMatrixAsync(invitingMultiAccount.Id);
+            var invitingUserMatrixAccounts = await _matrixPositionRepository.GetMatrixForGivenMultiAccountAsync(invitingMultiAccount.Id);
 
             if (_matrixPositionHelper.CheckIfAnyAccountExistInMatrix(invitingUserMatrixAccounts, userMultiAccountIds))
             {

@@ -16,23 +16,26 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
     public class BuyPositionInMatrixCommandHandler : IRequestHandler<BuyPositionInMatrixCommand, Guid>
     {
         private readonly IUserMultiAccountRepository _userMultiAccountRepository;
+        private readonly IUserAccountDataRepository _userAccountDataRepository;
         private readonly IMatrixPositionRepository _matrixPositionRepository;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
         private readonly IMediator _mediator;
 
         public BuyPositionInMatrixCommandHandler(
             IUserMultiAccountRepository userMultiAccountRepository,
+            IUserAccountDataRepository userAccountDataRepository,
             IMatrixPositionRepository matrixPositionRepository,
             IMatrixPositionHelper matrixPositionHelper,
             IMediator mediator)
         {
             _userMultiAccountRepository = userMultiAccountRepository;
+            _userAccountDataRepository = userAccountDataRepository;
             _matrixPositionRepository = matrixPositionRepository;
             _matrixPositionHelper = matrixPositionHelper;
             _mediator = mediator;
         }
 
-        public async Task<Guid> Handle(BuyPositionInMatrixCommand command, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(BuyPositionInMatrixCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
             var userMultiAccount = await _userMultiAccountRepository.GetAsync(command.UserMultiAccountId);
 
@@ -40,8 +43,8 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
             var sponsorAccountId = userMultiAccount.UserMultiAccountInvitingId.Value;
 
-            var invitingUserMatrix = await _matrixPositionRepository.GetMatrixAsync(sponsorAccountId, command.MatrixLevel);
-            if (invitingUserMatrix == null)
+            var invitingUserMatrix = await _matrixPositionRepository.GetMatrixForGivenMultiAccountAsync(sponsorAccountId, command.MatrixLevel);
+            if (invitingUserMatrix is null)
             {
                 throw new ValidationException($"The inviting user from reflink does not have matrix on level: {command.MatrixLevel}");
             }
@@ -53,12 +56,18 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             }
             else
             {
-                matrixPosition = await _matrixPositionHelper.FindTheNearestEmptyPositionFromGivenAccount(sponsorAccountId, command.MatrixLevel);
-                // TODO: We should probably validate again to check if this founded position is not in the any of another owner multiAccounts (command.UserMultiAccountId other accounts)
-                // Or do it somehow in that `FindTheNearestEmptyPositionFromGivenAccount` helper maybe?
+                var userAccount = await _userAccountDataRepository.GetAsync(userMultiAccount.UserAccountDataId);
+                var userMultiAccountIds = userAccount.UserMultiAccounts.Select(x => x.Id).ToList();
 
-                // TODO: Should we also change the sponsor for the founder of founded matrix?
-                // If yes than helper should has a method called like `GetSponsorForGivenPosition()`
+                matrixPosition = await _matrixPositionHelper.FindTheNearestEmptyPositionFromGivenAccountWhereInParentsMatrixThereIsNoAnyMultiAccountAsync(
+                            sponsorAccountId, userMultiAccountIds, command.MatrixLevel);
+
+                if (matrixPosition is null)
+                {
+                    throw new ValidationException("There is no empty space in matrix where account can be assigned");
+                }
+
+                await ChangeUserSponsor(userMultiAccount, matrixPosition);
             }
 
             matrixPosition.AssignMultiAccount(command.UserMultiAccountId);
@@ -70,9 +79,10 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             return matrixPosition.Id;
         }
 
+
         private static void ValidateUserMultiAccount(UserMultiAccount userMultiAccount)
         {
-            if (userMultiAccount == null) throw new ArgumentNullException(nameof(userMultiAccount));
+            if (userMultiAccount is null) throw new ArgumentNullException(nameof(userMultiAccount));
             if (userMultiAccount.MatrixPositions.Any())
             {
                 throw new ValidationException("This account already exists in a matrix");
@@ -84,6 +94,14 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             {
                 throw new ValidationException("This account does not have inviting multi account set");
             }
+        }
+
+        private async Task ChangeUserSponsor(UserMultiAccount userMultiAccount, MatrixPosition matrixPosition)
+        {
+            var parentPosition = await _matrixPositionRepository.GetAsync(matrixPosition.ParentId.Value);
+
+            userMultiAccount.ChangeSponsor(parentPosition.UserMultiAccountId.Value);
+            await _userMultiAccountRepository.UpdateAsync(userMultiAccount);
         }
 
         private async Task PublishMatrixPositionHasBeenBoughtNotification(Guid matrixPositionId)
