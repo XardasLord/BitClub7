@@ -16,17 +16,20 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
     public class BuyPositionInMatrixCommandHandler : IRequestHandler<BuyPositionInMatrixCommand, Guid>
     {
         private readonly IUserMultiAccountRepository _userMultiAccountRepository;
+        private readonly IUserAccountDataRepository _userAccountDataRepository;
         private readonly IMatrixPositionRepository _matrixPositionRepository;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
         private readonly IMediator _mediator;
 
         public BuyPositionInMatrixCommandHandler(
             IUserMultiAccountRepository userMultiAccountRepository,
+            IUserAccountDataRepository userAccountDataRepository,
             IMatrixPositionRepository matrixPositionRepository,
             IMatrixPositionHelper matrixPositionHelper,
             IMediator mediator)
         {
             _userMultiAccountRepository = userMultiAccountRepository;
+            _userAccountDataRepository = userAccountDataRepository;
             _matrixPositionRepository = matrixPositionRepository;
             _matrixPositionHelper = matrixPositionHelper;
             _mediator = mediator;
@@ -54,8 +57,16 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             else
             {
                 matrixPosition = await _matrixPositionHelper.FindTheNearestEmptyPositionFromGivenAccountAsync(sponsorAccountId, command.MatrixLevel);
-                // TODO: We should probably validate again to check if this founded position is not in the any of another owner multiAccounts (command.UserMultiAccountId other accounts)
-                // Or do it somehow in that `FindTheNearestEmptyPositionFromGivenAccountAsync` helper maybe?
+
+                // TODO: Refactor this in some while od something...
+                var matrixPositionFreePositionIsInLineB = await _matrixPositionHelper.GetMatrixPositionWhereGivenPositionIsInLineBAsync(matrixPosition, command.MatrixLevel);
+                var userAccount = await _userAccountDataRepository.GetAsync(userMultiAccount.UserAccountDataId);
+                var userMultiAccountIds = userAccount.UserMultiAccounts.Select(x => x.Id).ToList();
+
+                if (_matrixPositionHelper.CheckIfAnyAccountExistInMatrix(matrixPositionFreePositionIsInLineB, userMultiAccountIds))
+                {
+                    throw new ValidationException("INFO DO ZMIANY: W znalezionej najbliższej wolnej pozycji w matrycy, nie może zostać przypisane multikonto, ponieważ ta pozycja znajduje się w matrycy razem z którymś z multikont użytkownika");
+                }
 
                 // TODO: Should we also change the sponsor for the founder of founded matrix?
                 // If yes than helper should has a method called like `GetSponsorForGivenPosition()`
