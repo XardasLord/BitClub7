@@ -31,7 +31,7 @@ namespace BC7.Business.Implementation.Helpers
             return matrix.Any(x => x.UserMultiAccountId == null);
         }
 
-        public async Task<MatrixPosition> FindTheNearestEmptyPositionFromGivenAccount(Guid userMultiAccountId, int matrixLevel = 0)
+        public async Task<MatrixPosition> FindTheNearestEmptyPositionFromGivenAccountAsync(Guid userMultiAccountId, int matrixLevel = 0)
         {
             var userMatrixPosition = await _matrixPositionRepository.GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
             if (userMatrixPosition == null) throw new ArgumentNullException(nameof(userMatrixPosition));
@@ -42,6 +42,14 @@ namespace BC7.Business.Implementation.Helpers
                 .Where(x => x.DepthLevel >= userMatrixPosition.DepthLevel)
                 .Where(x => x.UserMultiAccountId == null)
                 .FirstAsync();
+        }
+
+        public async Task<IEnumerable<MatrixPosition>> GetMatrixPositionWhereGivenPositionIsInLineBAsync(MatrixPosition matrixPosition, int matrixLevel = 0)
+        {
+            var parentPosition = await _matrixPositionRepository.GetTopParentAsync(matrixPosition, matrixLevel);
+            var parentsMatrix = await _matrixPositionRepository.GetMatrixAsync(parentPosition, matrixLevel);
+
+            return parentsMatrix;
         }
     }
 }

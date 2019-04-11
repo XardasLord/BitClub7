@@ -9,6 +9,7 @@ namespace BC7.Business.Helpers
     {
         bool CheckIfAnyAccountExistInMatrix(IEnumerable<MatrixPosition> matrix, IEnumerable<Guid> accountIds);
         bool CheckIfMatrixHasEmptySpace(IEnumerable<MatrixPosition> matrix);
-        Task<MatrixPosition> FindTheNearestEmptyPositionFromGivenAccount(Guid userMultiAccountId, int matrixLevel = 0);
+        Task<MatrixPosition> FindTheNearestEmptyPositionFromGivenAccountAsync(Guid userMultiAccountId, int matrixLevel = 0);
+        Task<IEnumerable<MatrixPosition>> GetMatrixPositionWhereGivenPositionIsInLineBAsync(MatrixPosition matrixPosition, int matrixLevel = 0);
     }
 }

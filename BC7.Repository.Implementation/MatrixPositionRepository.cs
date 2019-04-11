@@ -40,6 +40,17 @@ namespace BC7.Repository.Implementation
                 .SingleOrDefaultAsync();
         }
 
+        public async Task<IEnumerable<MatrixPosition>> GetMatrixAsync(MatrixPosition matrixPosition, int matrixLevel = 0)
+        {
+           return await _context.Set<MatrixPosition>()
+                .Where(x => x.Left >= matrixPosition.Left)
+                .Where(x => x.Right <= matrixPosition.Right)
+                .Where(x => x.DepthLevel >= matrixPosition.DepthLevel)
+                .Where(x => x.DepthLevel <= matrixPosition.DepthLevel + 2) // Each matrix has 2 depth level
+                .Where(x => x.MatrixLevel == matrixLevel)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<MatrixPosition>> GetMatrixForGivenMultiAccountAsync(Guid userMultiAccountId, int matrixLevel = 0)
         {
             var userMatrixPosition = await GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
@@ -53,22 +64,10 @@ namespace BC7.Repository.Implementation
                 .Where(x => x.Right <= userMatrixPosition.Right)
                 .Where(x => x.DepthLevel >= userMatrixPosition.DepthLevel)
                 .Where(x => x.DepthLevel <= userMatrixPosition.DepthLevel + 2) // Each matrix has 2 depth level
+                .Where(x => x.MatrixLevel == matrixLevel)
                 .ToListAsync();
 
             return matrixAccounts;
-        }
-
-        public Task<IEnumerable<MatrixPosition>> GetOwnerMatrixBelongsForGivenPosition(MatrixPosition matrixPosition, int matrixLevel = 0)
-        {
-            // Pobranie matrycy, gdzie przekazany MatrixPosition jest w linii B
-            // GET PARENT TOP
-            // GET HIS MATRIX
-
-            return _context.Set<MatrixPosition>()
-                .Where(x => x.DepthLevel <= matrixPosition.DepthLevel)
-                .Where(x => x.DepthLevel >= matrixPosition.DepthLevel - 2)
-                .ToListAsync();
-            throw new NotImplementedException();
         }
 
         public async Task UpdateAsync(MatrixPosition matrixPosition)

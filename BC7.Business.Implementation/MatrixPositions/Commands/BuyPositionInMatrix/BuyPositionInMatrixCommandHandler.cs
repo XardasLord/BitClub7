@@ -53,9 +53,9 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             }
             else
             {
-                matrixPosition = await _matrixPositionHelper.FindTheNearestEmptyPositionFromGivenAccount(sponsorAccountId, command.MatrixLevel);
+                matrixPosition = await _matrixPositionHelper.FindTheNearestEmptyPositionFromGivenAccountAsync(sponsorAccountId, command.MatrixLevel);
                 // TODO: We should probably validate again to check if this founded position is not in the any of another owner multiAccounts (command.UserMultiAccountId other accounts)
-                // Or do it somehow in that `FindTheNearestEmptyPositionFromGivenAccount` helper maybe?
+                // Or do it somehow in that `FindTheNearestEmptyPositionFromGivenAccountAsync` helper maybe?
 
                 // TODO: Should we also change the sponsor for the founder of founded matrix?
                 // If yes than helper should has a method called like `GetSponsorForGivenPosition()`
