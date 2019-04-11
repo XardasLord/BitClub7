@@ -33,7 +33,7 @@ namespace BC7.Business.Implementation.Helpers
 
         public async Task<MatrixPosition> FindTheNearestEmptyPositionFromGivenAccount(Guid userMultiAccountId, int matrixLevel = 0)
         {
-            var userMatrixPosition = await _matrixPositionRepository.GetPositionForAccountAtLevel(userMultiAccountId, matrixLevel);
+            var userMatrixPosition = await _matrixPositionRepository.GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
             if (userMatrixPosition == null) throw new ArgumentNullException(nameof(userMatrixPosition));
             
             return await _context.Set<MatrixPosition>()

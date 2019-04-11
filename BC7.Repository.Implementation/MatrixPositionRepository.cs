@@ -22,7 +22,7 @@ namespace BC7.Repository.Implementation
             return _context.Set<MatrixPosition>().SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task<MatrixPosition> GetPositionForAccountAtLevel(Guid userMultiAccountId, int matrixLevel = 0)
+        public Task<MatrixPosition> GetPositionForAccountAtLevelAsync(Guid userMultiAccountId, int matrixLevel = 0)
         {
             return _context.Set<MatrixPosition>()
                 .Where(x => x.UserMultiAccountId == userMultiAccountId)
@@ -30,7 +30,7 @@ namespace BC7.Repository.Implementation
                 .SingleOrDefaultAsync(); // Cycles available later
         }
 
-        public Task<MatrixPosition> GetTopParent(MatrixPosition matrixPosition, int matrixLevel = 0)
+        public Task<MatrixPosition> GetTopParentAsync(MatrixPosition matrixPosition, int matrixLevel = 0)
         {
             return _context.Set<MatrixPosition>()
                 .Where(x => x.Left < matrixPosition.Left)
@@ -40,9 +40,9 @@ namespace BC7.Repository.Implementation
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<MatrixPosition>> GetMatrixAsync(Guid userMultiAccountId, int matrixLevel = 0)
+        public async Task<IEnumerable<MatrixPosition>> GetMatrixForGivenMultiAccountAsync(Guid userMultiAccountId, int matrixLevel = 0)
         {
-            var userMatrixPosition = await GetPositionForAccountAtLevel(userMultiAccountId, matrixLevel);
+            var userMatrixPosition = await GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
             if (userMatrixPosition == null)
             {
                 return null;
