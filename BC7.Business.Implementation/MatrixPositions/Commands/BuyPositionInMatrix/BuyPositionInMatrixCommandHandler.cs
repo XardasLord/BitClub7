@@ -35,7 +35,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             _mediator = mediator;
         }
 
-        public async Task<Guid> Handle(BuyPositionInMatrixCommand command, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(BuyPositionInMatrixCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
             var userMultiAccount = await _userMultiAccountRepository.GetAsync(command.UserMultiAccountId);
 
