@@ -41,7 +41,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
             ValidateUserMultiAccount(userMultiAccount);
 
-            var sponsorAccountId = userMultiAccount.UserMultiAccountInvitingId.Value;
+            var sponsorAccountId = userMultiAccount.SponsorId.Value;
 
             var invitingUserMatrix = await _matrixPositionRepository.GetMatrixForGivenMultiAccountAsync(sponsorAccountId, command.MatrixLevel);
             if (invitingUserMatrix is null)
@@ -90,7 +90,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
             // TODO: Add check if user paid for the matrix position on this level (available in etap 1)
 
-            if (!userMultiAccount.UserMultiAccountInvitingId.HasValue)
+            if (!userMultiAccount.SponsorId.HasValue)
             {
                 throw new ValidationException("This account does not have inviting multi account set");
             }

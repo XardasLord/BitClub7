@@ -72,7 +72,7 @@ namespace BC7.Business.Implementation.Tests.Integration
             (
                 id: Guid.NewGuid(),
                 userAccountDataId: existingUserAccountData.Id,
-                userMultiAccountInvitingId: null,
+                sponsorId: null,
                 multiAccountName: "myMultiAccountName"
             );
             myMultiAccount.SetReflink("myReflink12345");
@@ -82,7 +82,7 @@ namespace BC7.Business.Implementation.Tests.Integration
             (
                 id: Guid.NewGuid(),
                 userAccountDataId: otherUser.Id,
-                userMultiAccountInvitingId: null,
+                sponsorId: null,
                 multiAccountName: "otherMultiAccountName"
             );
             otherMultiAccount.SetReflink("otherUserReflink12345");

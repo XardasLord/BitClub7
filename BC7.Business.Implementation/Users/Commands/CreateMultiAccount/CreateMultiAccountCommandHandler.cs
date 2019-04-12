@@ -53,7 +53,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             (
                 id: Guid.NewGuid(),
                 userAccountDataId: _command.UserAccountId,
-                userMultiAccountInvitingId: userMultiAccountInviting.Id,
+                sponsorId: userMultiAccountInviting.Id,
                 multiAccountName: multiAccountName
             );
 

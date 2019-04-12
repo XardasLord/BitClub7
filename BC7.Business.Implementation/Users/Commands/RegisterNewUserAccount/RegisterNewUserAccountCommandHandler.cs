@@ -61,7 +61,7 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
             (
                 id: Guid.NewGuid(),
                 userAccountDataId: userAccountData.Id,
-                userMultiAccountInvitingId: invitingUserMultiAccountId,
+                sponsorId: invitingUserMultiAccountId,
                 multiAccountName: userAccountData.Login
             );
             userMultiAccount.SetAsMainAccount();

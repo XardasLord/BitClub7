@@ -69,7 +69,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
             (
                 id: Guid.Parse("d4887060-fb76-429b-95db-113fef65d68d"),
                 userAccountDataId: otherUser.Id,
-                userMultiAccountInvitingId: null,
+                sponsorId: null,
                 multiAccountName: "otherMultiAccountName"
             );
             otherMultiAccount.SetReflink("otherUserReflink12345");
@@ -79,7 +79,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
             (
                 id: Guid.NewGuid(),
                 userAccountDataId: otherUser.Id,
-                userMultiAccountInvitingId: null,
+                sponsorId: null,
                 multiAccountName: "otherMultiAccountName2"
             );
             otherMultiAccount2.SetReflink("otherUserReflink123456789");
@@ -88,7 +88,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
             (
                 id: Guid.NewGuid(),
                 userAccountDataId: otherUser.Id,
-                userMultiAccountInvitingId: null,
+                sponsorId: null,
                 multiAccountName: "otherMultiAccountName3"
             );
             otherMultiAccount3.SetReflink("3");
@@ -97,7 +97,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
             (
                 id: Guid.Parse("032d748c-9cef-4a5a-92bd-3fd9a4a0e499"),
                 userAccountDataId: existingUserAccountData.Id,
-                userMultiAccountInvitingId: otherMultiAccount.Id,
+                sponsorId: otherMultiAccount.Id,
                 multiAccountName: "myMultiAccountName"
             );
             myMultiAccount.SetAsMainAccount();
@@ -252,7 +252,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
         async Task AndUserHasNewSponsor()
         {
             var userMultiAccount = await _context.UserMultiAccounts.SingleAsync(x => x.Id == _command.UserMultiAccountId);
-            userMultiAccount.UserMultiAccountInvitingId.Should().NotBe(Guid.Parse("d4887060-fb76-429b-95db-113fef65d68d"));
+            userMultiAccount.SponsorId.Should().NotBe(Guid.Parse("d4887060-fb76-429b-95db-113fef65d68d"));
         }
 
         [Test]
