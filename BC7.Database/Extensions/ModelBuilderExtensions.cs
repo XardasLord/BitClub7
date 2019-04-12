@@ -66,7 +66,7 @@ namespace BC7.Database.Extensions
             (
                 id: Guid.NewGuid(),
                 userAccountDataId: root1.Id,
-                userMultiAccountInvitingId: null,
+                sponsorId: null,
                 multiAccountName: "LoginRoot1"
             );
             root1MultiAccount.SetAsMainAccount();
@@ -76,7 +76,7 @@ namespace BC7.Database.Extensions
             (
                 id: Guid.NewGuid(),
                 userAccountDataId: root2.Id,
-                userMultiAccountInvitingId: null,
+                sponsorId: null,
                 multiAccountName: "LoginRoot2"
             );
             root2MultiAccount.SetAsMainAccount();
@@ -86,7 +86,7 @@ namespace BC7.Database.Extensions
             (
                 id: Guid.NewGuid(),
                 userAccountDataId: root3.Id,
-                userMultiAccountInvitingId: null,
+                sponsorId: null,
                 multiAccountName: "LoginRoot3"
             );
             root3MultiAccount.SetAsMainAccount();

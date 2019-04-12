@@ -12,8 +12,8 @@ namespace BC7.Domain
         public virtual UserAccountData UserAccountData { get; private set; }
 
         // TODO: Change it to SponsorId
-        public Guid? UserMultiAccountInvitingId { get; private set; }
-        public virtual UserMultiAccount UserMultiAccountInviting { get; private set; }
+        public Guid? SponsorId { get; private set; }
+        public virtual UserMultiAccount Sponsor { get; private set; }
 
         public string MultiAccountName { get; private set; }
         public string RefLink { get; private set; }
@@ -26,13 +26,13 @@ namespace BC7.Domain
         {
         }
 
-        public UserMultiAccount(Guid id, Guid userAccountDataId, Guid? userMultiAccountInvitingId, string multiAccountName)
+        public UserMultiAccount(Guid id, Guid userAccountDataId, Guid? sponsorId, string multiAccountName)
         {
             ValidateDomain(id, userAccountDataId, multiAccountName);
 
             Id = id;
             UserAccountDataId = userAccountDataId;
-            UserMultiAccountInvitingId = userMultiAccountInvitingId;
+            SponsorId = sponsorId;
             MultiAccountName = multiAccountName;
             CreatedAt = DateTime.UtcNow;
             RefLink = null;
@@ -82,7 +82,7 @@ namespace BC7.Domain
 
         public void ChangeSponsor(Guid sponsorId)
         {
-            UserMultiAccountInvitingId = sponsorId;
+            SponsorId = sponsorId;
         }
     }
 }

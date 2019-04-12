@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BC7.Database.Migrations
 {
     [DbContext(typeof(BitClub7Context))]
-    [Migration("20190409143954_Reseed")]
-    partial class Reseed
+    [Migration("20190412132718_InitialDatabaseAndSeed")]
+    partial class InitialDatabaseAndSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace BC7.Database.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("BC7.Entity.MatrixPosition", b =>
+            modelBuilder.Entity("BC7.Domain.MatrixPosition", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -44,8 +44,6 @@ namespace BC7.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentId");
-
                     b.HasIndex("UserMultiAccountId");
 
                     b.ToTable("MatrixPositions");
@@ -53,79 +51,79 @@ namespace BC7.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("67c0e361-ddd7-413b-86a4-fcf11230fd91"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = new Guid("0f7b51a5-dd67-4ac3-9409-6d2a558e750d"),
+                            CreatedAt = new DateTime(2019, 4, 12, 13, 27, 18, 620, DateTimeKind.Utc).AddTicks(5333),
                             DepthLevel = 0,
                             Left = 1,
                             MatrixLevel = 0,
                             Right = 14,
-                            UserMultiAccountId = new Guid("e7785b1e-3d98-4b2c-8fff-e6ad0b213f1a")
+                            UserMultiAccountId = new Guid("07d685e1-bed9-4598-8952-5a111f6fa15d")
                         },
                         new
                         {
-                            Id = new Guid("2f814a3b-ef74-4f61-8e12-0836fee67eff"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = new Guid("1aba1a60-41d0-4812-b9f2-51faa2ec60d8"),
+                            CreatedAt = new DateTime(2019, 4, 12, 13, 27, 18, 620, DateTimeKind.Utc).AddTicks(6228),
                             DepthLevel = 1,
                             Left = 2,
                             MatrixLevel = 0,
-                            ParentId = new Guid("67c0e361-ddd7-413b-86a4-fcf11230fd91"),
+                            ParentId = new Guid("0f7b51a5-dd67-4ac3-9409-6d2a558e750d"),
                             Right = 7,
-                            UserMultiAccountId = new Guid("0732561e-f258-42dd-a103-6561bf898d0a")
+                            UserMultiAccountId = new Guid("9cab7bf8-5c11-4815-8acc-9f1dbcca6981")
                         },
                         new
                         {
-                            Id = new Guid("727212aa-48be-4a02-a8b5-af6d6bba5b3c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = new Guid("f1e4ba54-5d4d-47fa-8481-e790db06bf58"),
+                            CreatedAt = new DateTime(2019, 4, 12, 13, 27, 18, 620, DateTimeKind.Utc).AddTicks(6251),
                             DepthLevel = 1,
                             Left = 8,
                             MatrixLevel = 0,
-                            ParentId = new Guid("67c0e361-ddd7-413b-86a4-fcf11230fd91"),
+                            ParentId = new Guid("0f7b51a5-dd67-4ac3-9409-6d2a558e750d"),
                             Right = 13,
-                            UserMultiAccountId = new Guid("9b56bc1e-b4e6-4dbc-834c-ae623b37fbbe")
+                            UserMultiAccountId = new Guid("5e02e395-4869-4d6a-83f5-55aa8650e372")
                         },
                         new
                         {
-                            Id = new Guid("6aa80c12-db7d-4910-b3b8-b606684c8979"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = new Guid("9f0d2984-796e-444d-9bb1-3a403563d9d7"),
+                            CreatedAt = new DateTime(2019, 4, 12, 13, 27, 18, 620, DateTimeKind.Utc).AddTicks(6251),
                             DepthLevel = 2,
                             Left = 3,
                             MatrixLevel = 0,
-                            ParentId = new Guid("2f814a3b-ef74-4f61-8e12-0836fee67eff"),
+                            ParentId = new Guid("1aba1a60-41d0-4812-b9f2-51faa2ec60d8"),
                             Right = 4
                         },
                         new
                         {
-                            Id = new Guid("232b377a-4dc8-49eb-9e1a-e0546066fb9e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = new Guid("f7b10f15-c7ec-4a0f-b7d2-c4b535b70681"),
+                            CreatedAt = new DateTime(2019, 4, 12, 13, 27, 18, 620, DateTimeKind.Utc).AddTicks(6254),
                             DepthLevel = 2,
                             Left = 5,
                             MatrixLevel = 0,
-                            ParentId = new Guid("2f814a3b-ef74-4f61-8e12-0836fee67eff"),
+                            ParentId = new Guid("1aba1a60-41d0-4812-b9f2-51faa2ec60d8"),
                             Right = 6
                         },
                         new
                         {
-                            Id = new Guid("defa67e9-9cd1-40ef-9049-9cd43042c028"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = new Guid("f9620432-d5fd-493c-b639-7e3a0b690fb4"),
+                            CreatedAt = new DateTime(2019, 4, 12, 13, 27, 18, 620, DateTimeKind.Utc).AddTicks(6254),
                             DepthLevel = 2,
                             Left = 9,
                             MatrixLevel = 0,
-                            ParentId = new Guid("727212aa-48be-4a02-a8b5-af6d6bba5b3c"),
+                            ParentId = new Guid("f1e4ba54-5d4d-47fa-8481-e790db06bf58"),
                             Right = 10
                         },
                         new
                         {
-                            Id = new Guid("8d819e4c-053c-47e9-b58a-33325ccad788"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = new Guid("250363c2-93b2-4f2b-bc5d-dde24b5a785e"),
+                            CreatedAt = new DateTime(2019, 4, 12, 13, 27, 18, 620, DateTimeKind.Utc).AddTicks(6257),
                             DepthLevel = 2,
                             Left = 11,
                             MatrixLevel = 0,
-                            ParentId = new Guid("727212aa-48be-4a02-a8b5-af6d6bba5b3c"),
+                            ParentId = new Guid("f1e4ba54-5d4d-47fa-8481-e790db06bf58"),
                             Right = 12
                         });
                 });
 
-            modelBuilder.Entity("BC7.Entity.UserAccountData", b =>
+            modelBuilder.Entity("BC7.Domain.UserAccountData", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -185,11 +183,11 @@ namespace BC7.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d56a72b9-494f-49ce-a8b5-990a227ef075"),
+                            Id = new Guid("20ce71dc-f322-4d31-a525-d567ec0e2c9a"),
                             BtcWalletAddress = "BtcWalletAddressRoot1",
                             City = "CityRoot1",
                             Country = "CountryRoot1",
-                            CreatedAt = new DateTime(2019, 4, 9, 14, 39, 54, 461, DateTimeKind.Utc).AddTicks(8934),
+                            CreatedAt = new DateTime(2019, 4, 12, 13, 27, 18, 618, DateTimeKind.Utc).AddTicks(4071),
                             Email = "EmailRoot1",
                             FirstName = "FirstNameRoot1",
                             Hash = "hash1",
@@ -203,11 +201,11 @@ namespace BC7.Database.Migrations
                         },
                         new
                         {
-                            Id = new Guid("83295631-a9e8-4405-9027-6acfb5d1a59c"),
+                            Id = new Guid("f8319492-31b4-4b44-a750-667838a114ee"),
                             BtcWalletAddress = "BtcWalletAddressRoot2",
                             City = "CityRoot2",
                             Country = "CountryRoot2",
-                            CreatedAt = new DateTime(2019, 4, 9, 14, 39, 54, 462, DateTimeKind.Utc).AddTicks(181),
+                            CreatedAt = new DateTime(2019, 4, 12, 13, 27, 18, 618, DateTimeKind.Utc).AddTicks(5312),
                             Email = "EmailRoot2",
                             FirstName = "FirstNameRoot2",
                             Hash = "hash2",
@@ -221,11 +219,11 @@ namespace BC7.Database.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1371b998-0d76-4669-9cad-904330fe7ca9"),
+                            Id = new Guid("0ea1c2ff-b944-4aa8-98ec-a967cf7d7a65"),
                             BtcWalletAddress = "BtcWalletAddressRoot3",
                             City = "CityRoot3",
                             Country = "CountryRoot3",
-                            CreatedAt = new DateTime(2019, 4, 9, 14, 39, 54, 462, DateTimeKind.Utc).AddTicks(193),
+                            CreatedAt = new DateTime(2019, 4, 12, 13, 27, 18, 618, DateTimeKind.Utc).AddTicks(5324),
                             Email = "EmailRoot3",
                             FirstName = "FirstNameRoot3",
                             Hash = "hash3",
@@ -239,7 +237,7 @@ namespace BC7.Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BC7.Entity.UserMultiAccount", b =>
+            modelBuilder.Entity("BC7.Domain.UserMultiAccount", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -254,69 +252,65 @@ namespace BC7.Database.Migrations
 
                     b.Property<string>("RefLink");
 
-                    b.Property<Guid>("UserAccountDataId");
+                    b.Property<Guid?>("SponsorId");
 
-                    b.Property<Guid?>("UserMultiAccountInvitingId");
+                    b.Property<Guid>("UserAccountDataId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserAccountDataId");
+                    b.HasIndex("SponsorId");
 
-                    b.HasIndex("UserMultiAccountInvitingId");
+                    b.HasIndex("UserAccountDataId");
 
                     b.ToTable("UserMultiAccounts");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e7785b1e-3d98-4b2c-8fff-e6ad0b213f1a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = new Guid("07d685e1-bed9-4598-8952-5a111f6fa15d"),
+                            CreatedAt = new DateTime(2019, 4, 12, 13, 27, 18, 619, DateTimeKind.Utc).AddTicks(4607),
                             IsMainAccount = true,
                             MultiAccountName = "LoginRoot1",
                             RefLink = "111111",
-                            UserAccountDataId = new Guid("d56a72b9-494f-49ce-a8b5-990a227ef075")
+                            UserAccountDataId = new Guid("20ce71dc-f322-4d31-a525-d567ec0e2c9a")
                         },
                         new
                         {
-                            Id = new Guid("0732561e-f258-42dd-a103-6561bf898d0a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = new Guid("9cab7bf8-5c11-4815-8acc-9f1dbcca6981"),
+                            CreatedAt = new DateTime(2019, 4, 12, 13, 27, 18, 619, DateTimeKind.Utc).AddTicks(8460),
                             IsMainAccount = true,
                             MultiAccountName = "LoginRoot2",
                             RefLink = "222222",
-                            UserAccountDataId = new Guid("83295631-a9e8-4405-9027-6acfb5d1a59c")
+                            UserAccountDataId = new Guid("f8319492-31b4-4b44-a750-667838a114ee")
                         },
                         new
                         {
-                            Id = new Guid("9b56bc1e-b4e6-4dbc-834c-ae623b37fbbe"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = new Guid("5e02e395-4869-4d6a-83f5-55aa8650e372"),
+                            CreatedAt = new DateTime(2019, 4, 12, 13, 27, 18, 619, DateTimeKind.Utc).AddTicks(8484),
                             IsMainAccount = true,
                             MultiAccountName = "LoginRoot3",
                             RefLink = "333333",
-                            UserAccountDataId = new Guid("1371b998-0d76-4669-9cad-904330fe7ca9")
+                            UserAccountDataId = new Guid("0ea1c2ff-b944-4aa8-98ec-a967cf7d7a65")
                         });
                 });
 
-            modelBuilder.Entity("BC7.Entity.MatrixPosition", b =>
+            modelBuilder.Entity("BC7.Domain.MatrixPosition", b =>
                 {
-                    b.HasOne("BC7.Entity.MatrixPosition", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentId");
-
-                    b.HasOne("BC7.Entity.UserMultiAccount", "UserMultiAccount")
+                    b.HasOne("BC7.Domain.UserMultiAccount")
                         .WithMany("MatrixPositions")
                         .HasForeignKey("UserMultiAccountId");
                 });
 
-            modelBuilder.Entity("BC7.Entity.UserMultiAccount", b =>
+            modelBuilder.Entity("BC7.Domain.UserMultiAccount", b =>
                 {
-                    b.HasOne("BC7.Entity.UserAccountData", "UserAccountData")
+                    b.HasOne("BC7.Domain.UserMultiAccount", "Sponsor")
+                        .WithMany()
+                        .HasForeignKey("SponsorId");
+
+                    b.HasOne("BC7.Domain.UserAccountData", "UserAccountData")
                         .WithMany("UserMultiAccounts")
                         .HasForeignKey("UserAccountDataId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("BC7.Entity.UserMultiAccount", "UserMultiAccountInviting")
-                        .WithMany()
-                        .HasForeignKey("UserMultiAccountInvitingId");
                 });
 #pragma warning restore 612, 618
         }

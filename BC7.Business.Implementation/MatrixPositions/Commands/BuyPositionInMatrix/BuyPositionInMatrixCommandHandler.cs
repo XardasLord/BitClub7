@@ -41,7 +41,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
             ValidateUserMultiAccount(userMultiAccount);
 
-            var sponsorAccountId = userMultiAccount.UserMultiAccountInvitingId.Value;
+            var sponsorAccountId = userMultiAccount.SponsorId.Value;
 
             var invitingUserMatrix = await _matrixPositionRepository.GetMatrixForGivenMultiAccountAsync(sponsorAccountId, command.MatrixLevel);
             if (invitingUserMatrix is null)
@@ -90,7 +90,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
             // TODO: Add check if user paid for the matrix position on this level (available in etap 1)
 
-            if (!userMultiAccount.UserMultiAccountInvitingId.HasValue)
+            if (!userMultiAccount.SponsorId.HasValue)
             {
                 throw new ValidationException("This account does not have inviting multi account set");
             }
@@ -104,16 +104,16 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             await _userMultiAccountRepository.UpdateAsync(userMultiAccount);
         }
 
-        private async Task PublishMatrixPositionHasBeenBoughtNotification(Guid matrixPositionId)
+        private Task PublishMatrixPositionHasBeenBoughtNotification(Guid matrixPositionId)
         {
             var @event = new MatrixPositionHasBeenBoughtEvent { MatrixPositionId = matrixPositionId };
-            await _mediator.Publish(@event);
+            return _mediator.Publish(@event);
         }
 
-        private async Task PublishUserBoughtMatrixPositionNotification(Guid userMultiAccountId)
+        private Task PublishUserBoughtMatrixPositionNotification(Guid userMultiAccountId)
         {
             var @event = new UserBoughtMatrixPositionEvent { MultiAccountId = userMultiAccountId };
-            await _mediator.Publish(@event);
+            return _mediator.Publish(@event);
         }
     }
 }

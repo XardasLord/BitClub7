@@ -8,7 +8,7 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
-namespace BC7.Business.Implementation.Tests.Integration
+namespace BC7.Business.Implementation.Tests.Integration.Tests.Registration
 {
     [TestFixture]
     public class RegisterNewUserAccountCommandHandlerTests : BaseIntegration
@@ -50,13 +50,13 @@ namespace BC7.Business.Implementation.Tests.Integration
             var user = await _context.UserAccountsData
                 .SingleOrDefaultAsync(x => x.Id == result);
             var multiAccount = await _context.UserMultiAccounts
-                .Include(x => x.UserMultiAccountInviting)
+                .Include(x => x.Sponsor)
                 .SingleOrDefaultAsync(x => x.UserAccountDataId == result);
 
             user.Should().NotBeNull();
             multiAccount.Should().NotBeNull();
             multiAccount.IsMainAccount.Should().BeTrue();
-            multiAccount.UserMultiAccountInviting.MultiAccountName.Should().Be("222");
+            multiAccount.Sponsor.MultiAccountName.Should().Be("222");
         }
 
         [Test]
@@ -75,13 +75,13 @@ namespace BC7.Business.Implementation.Tests.Integration
             var user = await _context.UserAccountsData
                 .SingleOrDefaultAsync(x => x.Id == result);
             var multiAccount = await _context.UserMultiAccounts
-                .Include(x => x.UserMultiAccountInviting)
+                .Include(x => x.Sponsor)
                 .SingleOrDefaultAsync(x => x.UserAccountDataId == result);
 
             user.Should().NotBeNull();
             multiAccount.Should().NotBeNull();
             multiAccount.IsMainAccount.Should().BeTrue();
-            multiAccount.UserMultiAccountInviting.MultiAccountName.Should().Be("333");
+            multiAccount.Sponsor.MultiAccountName.Should().Be("333");
         }
 
         private static RegisterNewUserAccountCommand CreateCommand()
@@ -129,7 +129,7 @@ namespace BC7.Business.Implementation.Tests.Integration
             (
                 id: Guid.NewGuid(),
                 userAccountDataId: existingUserAccountData.Id,
-                userMultiAccountInvitingId: null,
+                sponsorId: null,
                 multiAccountName: "111"
             );
             multiAccount1.SetReflink("reflink111");
@@ -138,7 +138,7 @@ namespace BC7.Business.Implementation.Tests.Integration
             (
                 id: Guid.NewGuid(),
                 userAccountDataId: existingUserAccountData.Id,
-                userMultiAccountInvitingId: null,
+                sponsorId: null,
                 multiAccountName: "222"
             );
             multiAccount2.SetReflink("reflink222");
@@ -147,7 +147,7 @@ namespace BC7.Business.Implementation.Tests.Integration
             (
                 id: Guid.NewGuid(),
                 userAccountDataId: existingUserAccountData.Id,
-                userMultiAccountInvitingId: null,
+                sponsorId: null,
                 multiAccountName: "333"
             );
             multiAccount3.SetReflink("reflink333");

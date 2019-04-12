@@ -10,6 +10,6 @@ namespace BC7.Business.Models
         public string Reflink { get; set; }
         public ICollection<MatrixPositionModel> MatrixPositionModels { get; set; }
 
-        // TODO: UserMultiAccountInviting?
+        // TODO: Sponsor?
     }
 }
