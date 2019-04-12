@@ -7,9 +7,7 @@ namespace BC7.Domain
     {
         public Guid Id { get; private set; }
         public Guid? UserMultiAccountId { get; private set; }
-        public virtual UserMultiAccount UserMultiAccount { get; private set; }
         public Guid? ParentId { get; private set; }
-        public virtual MatrixPosition Parent { get; private set; } // TODO: Do we need this here? I guess no, because we will use MPTT (Nested Set Tree) to get items
         public DateTime CreatedAt { get; private set; }
 
         public int MatrixLevel { get; private set; }
