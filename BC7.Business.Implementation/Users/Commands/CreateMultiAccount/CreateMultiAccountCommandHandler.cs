@@ -46,14 +46,14 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
 
             await ValidateIfMultiAccountCanBeCreated();
 
-            var userMultiAccountInviting = await _userMultiAccountRepository.GetByReflinkAsync(_command.RefLink);
+            var sponsor = await _userMultiAccountRepository.GetByReflinkAsync(_command.RefLink);
             var multiAccountName = await _userMultiAccountHelper.GenerateNextMultiAccountName(_command.UserAccountId);
 
             var userMultiAccount = new UserMultiAccount
             (
                 id: Guid.NewGuid(),
                 userAccountDataId: _command.UserAccountId,
-                sponsorId: userMultiAccountInviting.Id,
+                sponsorId: sponsor.Id,
                 multiAccountName: multiAccountName
             );
 
@@ -70,13 +70,13 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
                 throw new AccountNotFoundException("User with given ID does not exist");
             }
 
-            var invitingMultiAccount = await _userMultiAccountRepository.GetByReflinkAsync(_command.RefLink);
-            if (invitingMultiAccount is null)
+            var sponsor = await _userMultiAccountRepository.GetByReflinkAsync(_command.RefLink);
+            if (sponsor is null)
             {
                 throw new AccountNotFoundException("Account with given reflink does not exist");
             }
 
-            if (CheckIfReflinkBelongsToRequestedUser(invitingMultiAccount))
+            if (CheckIfReflinkBelongsToRequestedUser(sponsor))
             {
                 throw new ValidationException("Given reflink belongs to the requested user account");
             }
@@ -100,15 +100,15 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             }
 
             // TODO: How to verify the reflink user's matrix level? Is it 0, 1...9?
-            var invitingUserMatrixAccounts = await _matrixPositionRepository.GetMatrixForGivenMultiAccountAsync(invitingMultiAccount.Id);
+            var sponsorsMatrix = await _matrixPositionRepository.GetMatrixForGivenMultiAccountAsync(sponsor.Id);
 
-            if (_matrixPositionHelper.CheckIfAnyAccountExistInMatrix(invitingUserMatrixAccounts, userMultiAccountIds))
+            if (_matrixPositionHelper.CheckIfAnyAccountExistInMatrix(sponsorsMatrix, userMultiAccountIds))
             {
                 // TODO: Probably we should find a random sponsor here instead of throwing an error?
                 throw new ValidationException("You cannot have position in matrix with any of your other multi account");
             }
 
-            if (!_matrixPositionHelper.CheckIfMatrixHasEmptySpace(invitingUserMatrixAccounts))
+            if (!_matrixPositionHelper.CheckIfMatrixHasEmptySpace(sponsorsMatrix))
             {
                 // TODO: Probably we should find a random sponsor here instead of throwing an error?
                 throw new ValidationException("Matrix is full for this reflink");
