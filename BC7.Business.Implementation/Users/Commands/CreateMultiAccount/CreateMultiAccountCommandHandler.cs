@@ -123,7 +123,8 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
                     throw new ValidationException("There is no space in this matrix level to put this account.");
                 }
 
-                sponsor = await _userMultiAccountRepository.GetAsync(emptyMatrixPositionUnderAvailableSponsor.ParentId.Value);
+                var parentPosition = await _matrixPositionRepository.GetAsync(emptyMatrixPositionUnderAvailableSponsor.ParentId.Value);
+                sponsor = await _userMultiAccountRepository.GetAsync(parentPosition.UserMultiAccountId.Value);
             }
 
             return sponsor;
