@@ -8,7 +8,7 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
-namespace BC7.Business.Implementation.Tests.Integration
+namespace BC7.Business.Implementation.Tests.Integration.Tests.Registration
 {
     [TestFixture]
     public class RegisterNewUserAccountCommandHandlerTests : BaseIntegration

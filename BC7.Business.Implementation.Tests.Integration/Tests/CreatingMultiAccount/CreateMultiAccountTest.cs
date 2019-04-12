@@ -8,9 +8,9 @@ using BC7.Security;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace BC7.Business.Implementation.Tests.Integration
+namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccount
 {
-    public class CreateMultiAccountCommandHandlerTests : BaseIntegration
+    public class CreateMultiAccountTest : BaseIntegration
     {
         private CreateMultiAccountCommandHandler _sut;
 
