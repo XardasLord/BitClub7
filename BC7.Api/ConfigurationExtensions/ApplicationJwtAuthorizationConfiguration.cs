@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace BC7.Api.ConfigurationExtensions
 {
-    public static class ApplicationConfigurationJwtAuthorization
+    public static class ApplicationJwtAuthorizationConfiguration
     {
         public static IServiceCollection ConfigureApplicationJwtAuthorization(this IServiceCollection services, IConfiguration configuration)
         {

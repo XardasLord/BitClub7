@@ -3,6 +3,7 @@ using AutoMapper;
 using BC7.Business.Implementation.Authentications.Commands.Login;
 using BC7.Business.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BC7.Api.Controllers
@@ -27,6 +28,7 @@ namespace BC7.Api.Controllers
         /// <returns>Returns a JWT token</returns>
         /// <response code="200">Returns a JWT token</response>
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             var command = _mapper.Map<LoginCommand>(model);
