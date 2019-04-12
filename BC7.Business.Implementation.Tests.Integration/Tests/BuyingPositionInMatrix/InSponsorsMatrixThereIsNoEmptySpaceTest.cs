@@ -16,7 +16,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
         IWant = "I want to buy a position in matrix which is already full",
         SoThat = "So I will have position in newly founded matrix in new sponsor"
     )]
-    public class BuyPositionInMatrixWhereIsNoEmptySpaceTest : BaseIntegration
+    public class InSponsorsMatrixThereIsNoEmptySpaceTest : BaseIntegration
     {
         private BuyPositionInMatrixCommandHandler _sut;
         private BuyPositionInMatrixCommand _command;
