@@ -33,7 +33,7 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
         {
             await ValidateForUniqueness(command);
 
-            var invitingUserMultiAccountId = await GetInvitingUserId(command);
+            var sponsorId = await GetSponsorId(command);
             var hashSalt = PasswordEncryptionUtilities.GenerateSaltedHash(command.Password);
 
             var userAccountData = new UserAccountData
@@ -61,7 +61,7 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
             (
                 id: Guid.NewGuid(),
                 userAccountDataId: userAccountData.Id,
-                sponsorId: invitingUserMultiAccountId,
+                sponsorId: sponsorId,
                 multiAccountName: userAccountData.Login
             );
             userMultiAccount.SetAsMainAccount();
@@ -82,46 +82,46 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
             }
         }
 
-        private Task<Guid> GetInvitingUserId(RegisterNewUserAccountCommand command)
+        private Task<Guid> GetSponsorId(RegisterNewUserAccountCommand command)
         {
             if (!string.IsNullOrEmpty(command.InvitingRefLink))
             {
-                return GetInvitingUserIdByRefLink(command.InvitingRefLink);
+                return GetSponsorByReflink(command.InvitingRefLink);
             }
 
             if (!string.IsNullOrEmpty(command.InvitingUserLogin))
             {
-                return GetInvitingUserIdByLogin(command.InvitingUserLogin);
+                return GetSponsorByLogin(command.InvitingUserLogin);
             }
 
-            return GetRandomInvitingUserId();
+            return GetRandomSponsorId();
         }
 
-        private async Task<Guid> GetInvitingUserIdByLogin(string login)
+        private async Task<Guid> GetSponsorByLogin(string login)
         {
-            var invitingUser = await _userMultiAccountRepository.GetByAccountNameAsync(login);
+            var sponsor = await _userMultiAccountRepository.GetByAccountNameAsync(login);
 
-            if (invitingUser is null)
+            if (sponsor is null)
             {
                 throw new InvalidOperationException("User with multi account name does not exist");
             }
 
-            return invitingUser.Id;
+            return sponsor.Id;
         }
 
-        private async Task<Guid> GetInvitingUserIdByRefLink(string reflink)
+        private async Task<Guid> GetSponsorByReflink(string reflink)
         {
-            var invitingUser = await _userMultiAccountRepository.GetByReflinkAsync(reflink);
+            var sponsor = await _userMultiAccountRepository.GetByReflinkAsync(reflink);
 
-            if (invitingUser is null)
+            if (sponsor is null)
             {
                 throw new InvalidOperationException("User with given reflink does not exist");
             }
 
-            return invitingUser.Id;
+            return sponsor.Id;
         }
 
-        private async Task<Guid> GetRandomInvitingUserId()
+        private async Task<Guid> GetRandomSponsorId()
         {
             var randomSponsor = await _userMultiAccountHelper.GetRandomUserMultiAccount();
 

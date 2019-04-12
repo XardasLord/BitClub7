@@ -104,16 +104,16 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             await _userMultiAccountRepository.UpdateAsync(userMultiAccount);
         }
 
-        private async Task PublishMatrixPositionHasBeenBoughtNotification(Guid matrixPositionId)
+        private Task PublishMatrixPositionHasBeenBoughtNotification(Guid matrixPositionId)
         {
             var @event = new MatrixPositionHasBeenBoughtEvent { MatrixPositionId = matrixPositionId };
-            await _mediator.Publish(@event);
+            return _mediator.Publish(@event);
         }
 
-        private async Task PublishUserBoughtMatrixPositionNotification(Guid userMultiAccountId)
+        private Task PublishUserBoughtMatrixPositionNotification(Guid userMultiAccountId)
         {
             var @event = new UserBoughtMatrixPositionEvent { MultiAccountId = userMultiAccountId };
-            await _mediator.Publish(@event);
+            return _mediator.Publish(@event);
         }
     }
 }
