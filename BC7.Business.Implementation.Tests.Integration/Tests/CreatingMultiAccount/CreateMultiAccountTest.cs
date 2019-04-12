@@ -6,6 +6,7 @@ using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
 using BC7.Domain;
 using BC7.Security;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
 namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccount
@@ -27,9 +28,12 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccou
 
             var result = await _sut.Handle(command);
 
-            var multiAccount = _context.UserMultiAccounts.Where(x => x.UserAccountDataId == Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499")).ToList();
+            var multiAccounts = _context.UserMultiAccounts.Where(x => x.UserAccountDataId == Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499")).ToList();
             result.Should().NotBe(Guid.Empty);
-            multiAccount.Count.Should().Be(2);
+            multiAccounts.Count.Should().Be(2);
+            
+            var multiAccount = await _context.UserMultiAccounts.Include(x => x.Sponsor).SingleOrDefaultAsync(x => x.Id == result);
+            multiAccount.Sponsor.RefLink.Should().Be(command.RefLink);
         }
 
         private async Task CreateUserAndMultiAccountAndMatrixPositionsInDatabase()
