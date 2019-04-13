@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using AutoMapper;
 using BC7.Business.Implementation.Authentications.Commands.Login;
 using BC7.Business.Models;
 using MediatR;
@@ -13,12 +12,10 @@ namespace BC7.Api.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
 
-        public AuthenticationController(IMediator mediator, IMapper mapper)
+        public AuthenticationController(IMediator mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
 
         /// <summary>
@@ -31,7 +28,7 @@ namespace BC7.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var command = _mapper.Map<LoginCommand>(model);
+            var command = new LoginCommand { LoginOrEmail = model.LoginOrEmail, Password = model.Password };
 
             var token = await _mediator.Send(command);
 
