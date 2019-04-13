@@ -71,7 +71,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
                 throw new AccountNotFoundException("User with given ID does not exist");
             }
 
-            var sponsor = await _userMultiAccountRepository.GetByReflinkAsync(_command.RefLink);
+            var sponsor = await _userMultiAccountRepository.GetByReflinkAsync(_command.SponsorReflink);
             if (sponsor is null)
             {
                 throw new AccountNotFoundException("Account with given reflink does not exist");
@@ -107,7 +107,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             var userMultiAccountIds = userAccount.UserMultiAccounts.Select(x => x.Id).ToList();
 
             // TODO: How to verify the reflink user's matrix level? Is it 0, 1...9?
-            var sponsor = await _userMultiAccountRepository.GetByReflinkAsync(_command.RefLink);
+            var sponsor = await _userMultiAccountRepository.GetByReflinkAsync(_command.SponsorReflink);
             var sponsorsMatrix = await _matrixPositionRepository.GetMatrixForGivenMultiAccountAsync(sponsor.Id);
 
             if (_matrixPositionHelper.CheckIfAnyAccountExistInMatrix(sponsorsMatrix, userMultiAccountIds) ||

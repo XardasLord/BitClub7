@@ -2,6 +2,6 @@
 {
     public class CreateMultiAccountModel
     {
-        public string Reflink { get; set; }
+        public string SponsorReflink { get; set; }
     }
 }

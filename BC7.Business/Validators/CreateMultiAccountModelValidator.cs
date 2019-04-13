@@ -7,7 +7,7 @@ namespace BC7.Business.Validators
     {
         public CreateMultiAccountModelValidator()
         {
-            RuleFor(x => x.Reflink)
+            RuleFor(x => x.SponsorReflink)
                 .NotNull()
                 .NotEmpty();
         }

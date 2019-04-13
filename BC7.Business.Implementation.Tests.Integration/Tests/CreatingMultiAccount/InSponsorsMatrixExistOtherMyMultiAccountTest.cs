@@ -253,7 +253,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccou
             _command = new CreateMultiAccountCommand
             {
                 UserAccountId = Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499"),
-                RefLink = "FIRST_REFLINK"
+                SponsorReflink = "FIRST_REFLINK"
             };
         }
 
@@ -276,7 +276,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccou
         async Task AndAccountShouldHasNewSponsor()
         {
             var multiAccount = await _context.UserMultiAccounts.Include(x => x.Sponsor).SingleAsync(x => x.Id == _result);
-            multiAccount.Sponsor.RefLink.Should().NotBe(_command.RefLink);
+            multiAccount.Sponsor.RefLink.Should().NotBe(_command.SponsorReflink);
             multiAccount.Sponsor.RefLink.Should().Be("FOURTH_REFLINK");
         }
 

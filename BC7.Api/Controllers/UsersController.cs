@@ -34,7 +34,7 @@ namespace BC7.Api.Controllers
         public async Task<IActionResult> RegisterNewAccount([FromBody] RegisterNewUserModel model, [FromQuery] string reflink = null)
         {
             var command = _mapper.Map<RegisterNewUserAccountCommand>(model);
-            command.InvitingRefLink = reflink;
+            command.SponsorRefLink = reflink;
 
             var resultId = await _mediator.Send(command);
 
@@ -56,7 +56,7 @@ namespace BC7.Api.Controllers
             var command = new CreateMultiAccountCommand
             {
                 UserAccountId = userId,
-                RefLink = model.Reflink
+                SponsorReflink = model.SponsorReflink
             };
 
             // TODO: Maybe 201 created?

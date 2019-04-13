@@ -23,7 +23,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccou
             var command = new CreateMultiAccountCommand
             {
                 UserAccountId = Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499"),
-                RefLink = "otherUserReflink12345"
+                SponsorReflink = "otherUserReflink12345"
             };
 
             var result = await _sut.Handle(command);
@@ -33,7 +33,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccou
             multiAccounts.Count.Should().Be(2);
             
             var multiAccount = await _context.UserMultiAccounts.Include(x => x.Sponsor).SingleOrDefaultAsync(x => x.Id == result);
-            multiAccount.Sponsor.RefLink.Should().Be(command.RefLink);
+            multiAccount.Sponsor.RefLink.Should().Be(command.SponsorReflink);
         }
 
         private async Task CreateUserAndMultiAccountAndMatrixPositionsInDatabase()
