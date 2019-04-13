@@ -11,7 +11,9 @@ namespace BC7.Api.Mappings
         {
             CreateMap<RegisterNewUserModel, RegisterNewUserAccountCommand>();
 
-            CreateMap<UserMultiAccount, UserMultiAccountModel>();
+            CreateMap<UserMultiAccount, UserMultiAccountModel>()
+                .ForMember(x => x.MatrixPositionModels, opt => opt.MapFrom(y => y.MatrixPositions));
+
             CreateMap<MatrixPosition, MatrixPositionModel>();
         }
     }
