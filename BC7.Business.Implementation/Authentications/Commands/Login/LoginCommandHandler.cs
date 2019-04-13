@@ -28,7 +28,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.Login
             _jwtSettings = jwtSettings;
         }
 
-        public async Task<string> Handle(LoginCommand command, CancellationToken cancellationToken)
+        public async Task<string> Handle(LoginCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
             var user = await _context.Set<UserAccountData>().SingleOrDefaultAsync(x => x.Login == command.LoginOrEmail || x.Email == command.LoginOrEmail);
             if (user is null)
