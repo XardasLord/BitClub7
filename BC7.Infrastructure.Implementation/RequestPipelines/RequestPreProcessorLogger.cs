@@ -4,7 +4,7 @@ using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace BC7.Infrastructure.Implementation
+namespace BC7.Infrastructure.Implementation.RequestPipelines
 {
     public class RequestPreProcessorLogger<TRequest> : IRequestPreProcessor<TRequest>
     {

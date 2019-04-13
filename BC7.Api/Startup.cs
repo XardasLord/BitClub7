@@ -3,7 +3,7 @@ using AutoMapper;
 using BC7.Api.ConfigurationExtensions;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Business.Validators;
-using BC7.Infrastructure.Implementation;
+using BC7.Infrastructure.Implementation.RequestPipelines;
 using FluentValidation.AspNetCore;
 using MediatR;
 using MediatR.Pipeline;
@@ -37,7 +37,7 @@ namespace BC7.Api
             services.AddMediatR(typeof(RegisterNewUserAccountCommand).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IRequestPreProcessor<>), typeof(RequestPreProcessorLogger<>));
-            
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterNewUserModelValidator>());
