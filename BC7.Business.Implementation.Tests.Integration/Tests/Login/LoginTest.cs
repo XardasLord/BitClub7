@@ -21,9 +21,8 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Login
         {
             _sut = new LoginCommandHandler(_context, _jwtSettings);
         }
-
-        [Given(StepTitle = "And given created default accounts and matrices in database prepared")]
-        async Task AndGivenCreatedDefaultAccountsAndMatricesInDatabase()
+        
+        async Task AndGivenCreatedUserAccountInDatabase()
         {
             var hashSalt = PasswordEncryptionUtilities.GenerateSaltedHash("Password12345");
             var myUserAccountData = new UserAccountData
@@ -42,60 +41,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Login
             );
             myUserAccountData.SetPassword(hashSalt.Salt, hashSalt.Hash);
 
-            var otherUser = new UserAccountData(
-                id: Guid.NewGuid(),
-                login: "OtherLogin",
-                email: "OtherEmail",
-                firstName: "OtherFirstName",
-                lastName: "OtherLastName",
-                street: "OtherStreet",
-                city: "OtherCity",
-                country: "OtherCountry",
-                zipCode: "OtherZipCode",
-                btcWalletAddress: "OtherBtcWalletAddress",
-                role: UserRolesHelper.User
-            );
-            otherUser.SetPassword("salt", "hash");
-
-            _context.UserAccountsData.AddRange(myUserAccountData, otherUser);
-            await _context.SaveChangesAsync();
-
-            // Multi accounts
-            var otherMultiAccount = new UserMultiAccount
-            (
-                id: Guid.NewGuid(),
-                userAccountDataId: otherUser.Id,
-                sponsorId: null,
-                multiAccountName: "otherMultiAccountName"
-            );
-            otherMultiAccount.SetReflink("FIRST_REFLINK");
-            otherMultiAccount.SetAsMainAccount();
-            
-            var myMultiAccount1 = new UserMultiAccount
-            (
-                id: Guid.NewGuid(),
-                userAccountDataId: myUserAccountData.Id,
-                sponsorId: null,
-                multiAccountName: "myMultiAccount1"
-            );
-
-            var myMultiAccount2 = new UserMultiAccount
-            (
-                id: Guid.NewGuid(),
-                userAccountDataId: myUserAccountData.Id,
-                sponsorId: null,
-                multiAccountName: "myMultiAccount2"
-            );
-
-            var myMultiAccount3 = new UserMultiAccount
-            (
-                id: Guid.NewGuid(),
-                userAccountDataId: myUserAccountData.Id,
-                sponsorId: null,
-                multiAccountName: "myMultiAccount3"
-            );
-
-            _context.UserMultiAccounts.AddRange(otherMultiAccount, myMultiAccount1, myMultiAccount2, myMultiAccount3);
+            _context.UserAccountsData.Add(myUserAccountData);
             await _context.SaveChangesAsync();
         }
 
