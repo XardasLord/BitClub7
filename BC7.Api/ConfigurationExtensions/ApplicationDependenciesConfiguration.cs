@@ -30,7 +30,7 @@ namespace BC7.Api.ConfigurationExtensions
             );
 
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings")); // TODO: Change it to abstract layer interface instead of strongly typed class
-            services.Configure<IBitBayPayApiSettings>(configuration.GetSection("BitBayPayApiSettings"));
+            services.Configure<BitBayPayApiSettings>(configuration.GetSection("BitBayPayApiSettings"));
 
             return services;
         }

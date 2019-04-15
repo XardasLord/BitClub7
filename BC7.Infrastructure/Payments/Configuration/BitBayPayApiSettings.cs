@@ -1,9 +1,9 @@
 ﻿namespace BC7.Infrastructure.Payments.Configuration
 {
-    public interface IBitBayPayApiSettings
+    public class BitBayPayApiSettings
     {
-        string ApiUrl { get; }
-        string PublicKey { get; }
-        string PrivateKey { get; }
+        public string ApiUrl { get; }
+        public string PublicKey { get; }
+        public string PrivateKey { get; }
     }
 }

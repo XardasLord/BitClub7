@@ -15,8 +15,4 @@
     <ProjectReference Include="..\BC7.Infrastructure\BC7.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Payments\" />
-  </ItemGroup>
-
 </Project>
