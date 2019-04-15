@@ -23,13 +23,13 @@ namespace BC7.Api.ConfigurationExtensions
             services.AddTransient<IUserAccountDataRepository, UserAccountDataRepository>();
             services.AddTransient<IUserMultiAccountRepository, UserMultiAccountRepository>();
             services.AddTransient<IMatrixPositionRepository, MatrixPositionRepository>();
-            
+
             services.AddDbContext<IBitClub7Context, BitClub7Context>(
                 opts => opts.UseSqlServer(configuration.GetConnectionString("BitClub7DB"),
                     b => b.MigrationsAssembly(typeof(IBitClub7Context).Namespace))
             );
 
-            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings")); // TODO: Change it to abstract layer interface instead of strongly typed class
+            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
             services.Configure<BitBayPayApiSettings>(configuration.GetSection("BitBayPayApiSettings"));
 
             return services;

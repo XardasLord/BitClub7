@@ -2,8 +2,8 @@
 {
     public class BitBayPayApiSettings
     {
-        public string ApiUrl { get; }
-        public string PublicKey { get; }
-        public string PrivateKey { get; }
+        public string ApiUrl { get; set; }
+        public string PublicKey { get; set; }
+        public string PrivateKey { get; set; }
     }
 }
