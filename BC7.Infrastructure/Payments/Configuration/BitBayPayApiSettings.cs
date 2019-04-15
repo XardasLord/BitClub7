@@ -2,6 +2,8 @@
 {
     public interface IBitBayPayApiSettings
     {
-        string ApiUrl { get; set; }
+        string ApiUrl { get; }
+        string PublicKey { get; }
+        string PrivateKey { get; }
     }
 }
