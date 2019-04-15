@@ -1,6 +1,7 @@
 ﻿using BC7.Business.Helpers;
 using BC7.Business.Implementation.Helpers;
 using BC7.Database;
+using BC7.Infrastructure.Payments.Configuration;
 using BC7.Repository;
 using BC7.Repository.Implementation;
 using BC7.Security;
@@ -28,7 +29,8 @@ namespace BC7.Api.ConfigurationExtensions
                     b => b.MigrationsAssembly(typeof(IBitClub7Context).Namespace))
             );
 
-            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings")); // TODO: Change it to abstract layer interface instead of strongly typed class
+            services.Configure<IBitBayPayApiSettings>(configuration.GetSection("BitBayPayApiSettings"));
 
             return services;
         }
