@@ -43,6 +43,7 @@ namespace BC7.Infrastructure.Implementation.ErrorHandling
                     break;
                 case AccountNotFoundException e when exceptionType == typeof(AccountNotFoundException):
                 case ValidationException ex when exceptionType == typeof(ValidationException):
+                case DomainException ex2 when exceptionType == typeof(DomainException):
                     statusCode = (int)HttpStatusCode.BadRequest;
                     _logger.LogError(exception.Message);
                     break;

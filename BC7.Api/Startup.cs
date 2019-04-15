@@ -1,9 +1,12 @@
-﻿using AutoMapper;
+﻿using System.Reflection;
+using AutoMapper;
 using BC7.Api.ConfigurationExtensions;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Business.Validators;
+using BC7.Infrastructure.Implementation.RequestPipelines;
 using FluentValidation.AspNetCore;
 using MediatR;
+using MediatR.Pipeline;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -29,11 +32,15 @@ namespace BC7.Api
             services.ConfigureApplicationJwtAuthorization(Configuration);
 
             services.AddAutoMapper();
-            services.AddMediatR(typeof(RegisterNewUserAccountCommand).Assembly); // TODO: Getting Assembly can be done more universal and pretty
+
+            // Mediator
+            services.AddMediatR(typeof(RegisterNewUserAccountCommand).GetTypeInfo().Assembly);
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
+            services.AddTransient(typeof(IRequestPreProcessor<>), typeof(RequestPreProcessorLogger<>));
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterNewUserModelValidator>()); // TODO: Getting Assembly can be done more universal and pretty
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterNewUserModelValidator>());
 
             services.ConfigureSwaggerUI();
         }

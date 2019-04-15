@@ -84,14 +84,14 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
 
         private Task<Guid> GetSponsorId(RegisterNewUserAccountCommand command)
         {
-            if (!string.IsNullOrEmpty(command.InvitingRefLink))
+            if (!string.IsNullOrEmpty(command.SponsorRefLink))
             {
-                return GetSponsorByReflink(command.InvitingRefLink);
+                return GetSponsorByReflink(command.SponsorRefLink);
             }
 
-            if (!string.IsNullOrEmpty(command.InvitingUserLogin))
+            if (!string.IsNullOrEmpty(command.SponsorLogin))
             {
-                return GetSponsorByLogin(command.InvitingUserLogin);
+                return GetSponsorByLogin(command.SponsorLogin);
             }
 
             return GetRandomSponsorId();

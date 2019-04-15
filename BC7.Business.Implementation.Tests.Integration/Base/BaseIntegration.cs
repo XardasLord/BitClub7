@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
 using BC7.Business.Helpers;
@@ -7,9 +8,12 @@ using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Database;
 using BC7.Repository;
 using BC7.Repository.Implementation;
+using BC7.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using NUnit.Framework;
 
 namespace BC7.Business.Implementation.Tests.Integration.Base
@@ -26,10 +30,16 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
         protected IUserAccountDataRepository _userAccountDataRepository;
         protected IUserMultiAccountRepository _userMultiAccountRepository;
         protected IMatrixPositionRepository _matrixPositionRepository;
+        protected IOptions<JwtSettings> _jwtSettings;
 
         [SetUp]
         public async Task SetUp()
         {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
             var services = new ServiceCollection();
             services.AddTransient<IReflinkHelper, ReflinkHelper>();
             services.AddTransient<IUserAccountDataHelper, UserAccountDataHelper>();
@@ -38,6 +48,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             services.AddTransient<IUserAccountDataRepository, UserAccountDataRepository>();
             services.AddTransient<IUserMultiAccountRepository, UserMultiAccountRepository>();
             services.AddTransient<IMatrixPositionRepository, MatrixPositionRepository>();
+            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
             services.AddAutoMapper();
             services.AddMediatR(typeof(RegisterNewUserAccountCommand).Assembly);
@@ -60,6 +71,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             _userAccountDataRepository = serviceProvider.GetService<IUserAccountDataRepository>();
             _userMultiAccountRepository = serviceProvider.GetService<IUserMultiAccountRepository>();
             _matrixPositionRepository = serviceProvider.GetService<IMatrixPositionRepository>();
+            _jwtSettings = serviceProvider.GetService<IOptions<JwtSettings>>();
             
             _context.Database.Migrate();
             await ClearDatabase();

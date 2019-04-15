@@ -255,6 +255,12 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
             userMultiAccount.SponsorId.Should().NotBe(Guid.Parse("d4887060-fb76-429b-95db-113fef65d68d"));
         }
 
+        async Task AndThereShouldBeTwoNewPositionsInMatrix()
+        {
+            var positionsCount = await _context.MatrixPositions.CountAsync();
+            positionsCount.Should().Be(11);
+        }
+
         [Test]
         public void BuyPositionInMatrix()
         {
@@ -265,6 +271,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
                 .Then(x => x.ThenResultShouldBeGuidWithMatrixPositionBought())
                     .And(x => x.AndPositionShouldHasAssignedAccountId())
                     .And(x => x.AndUserHasNewSponsor())
+                    .And(x => AndThereShouldBeTwoNewPositionsInMatrix())
                 .BDDfy();
         }
     }

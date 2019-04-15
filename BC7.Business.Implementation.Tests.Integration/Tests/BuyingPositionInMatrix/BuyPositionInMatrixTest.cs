@@ -167,6 +167,12 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
             var userMultiAccount = await _context.UserMultiAccounts.SingleAsync(x => x.Id == _command.UserMultiAccountId);
             userMultiAccount.SponsorId.Should().Be("d4887060-fb76-429b-95db-113fef65d68d");
         }
+
+        async Task AndThereShouldBeTwoNewPositionsInMatrix()
+        {
+            var positionsCount = await _context.MatrixPositions.CountAsync();
+            positionsCount.Should().Be(5);
+        }
         
         [Test]
         public void BuyPositionInMatrix()
@@ -178,6 +184,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
                 .Then(x => x.ThenResultShouldBeGuidWithMatrixPositionBought())
                     .And(x => x.AndPositionShouldHasAssignedAccountId())
                     .And(x => x.AndUserHasTheSameSponsor())
+                    .And(x => x.AndThereShouldBeTwoNewPositionsInMatrix())
                 .BDDfy();
         }
     }

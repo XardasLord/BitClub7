@@ -41,7 +41,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Registration
             _sut = new RegisterNewUserAccountCommandHandler(_context, _userMultiAccountHelper, _userMultiAccountRepository);
             await CreateExistingUsersInDatabase();
             var command = CreateCommand();
-            command.InvitingUserLogin = "222";
+            command.SponsorLogin = "222";
 
             // Act
             var result = await _sut.Handle(command);
@@ -66,7 +66,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Registration
             _sut = new RegisterNewUserAccountCommandHandler(_context, _userMultiAccountHelper, _userMultiAccountRepository);
             await CreateExistingUsersInDatabase();
             var command = CreateCommand();
-            command.InvitingRefLink = "reflink333";
+            command.SponsorRefLink = "reflink333";
 
             // Act
             var result = await _sut.Handle(command);
@@ -98,8 +98,8 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Registration
                 Country = "Polska",
                 ZipCode = "01-234",
                 BtcWalletAddress = "5JxwqzhrZBSDMu7BBzDaK2rMhL8PwUniikA45aJ9JutaBKS3iyS",
-                InvitingRefLink = null,
-                InvitingUserLogin = null
+                SponsorRefLink = null,
+                SponsorLogin = null
             };
         }
 

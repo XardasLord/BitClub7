@@ -14,8 +14,8 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
         public string City { get; set; }
         public string ZipCode { get; set; }
         public string Country { get; set; }
-        public string InvitingRefLink { get; set; }
-        public string InvitingUserLogin { get; set; }
+        public string SponsorRefLink { get; set; }
+        public string SponsorLogin { get; set; }
         public string BtcWalletAddress { get; set; }
     }
 }

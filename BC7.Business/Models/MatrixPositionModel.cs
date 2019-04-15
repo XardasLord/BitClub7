@@ -1,7 +1,10 @@
-﻿namespace BC7.Business.Models
+﻿using System;
+
+namespace BC7.Business.Models
 {
     public class MatrixPositionModel
     {
-        // TODO: To be done
+        public Guid Id { get; set; }
+        public int MatrixLevel { get; set; }
     }
 }

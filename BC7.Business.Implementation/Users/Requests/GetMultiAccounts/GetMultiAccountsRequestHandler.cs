@@ -20,7 +20,7 @@ namespace BC7.Business.Implementation.Users.Requests.GetMultiAccounts
             _userAccountDataRepository = userAccountDataRepository;
         }
 
-        public async Task<IEnumerable<UserMultiAccountModel>> Handle(GetMultiAccountsRequest request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<UserMultiAccountModel>> Handle(GetMultiAccountsRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             var userAccount = await _userAccountDataRepository.GetAsync(request.UserAccountId);
             if (userAccount is null)
