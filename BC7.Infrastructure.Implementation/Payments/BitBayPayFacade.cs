@@ -54,16 +54,19 @@ namespace BC7.Infrastructure.Implementation.Payments
         private string GenerateApiHash(string publicKey, int unitTimestamp, string privateKey, object body)
         {
             // TODO: Move to helper
-            var apiHash = "";
-            var key = publicKey + unitTimestamp + body + privateKey;
+            var hash = new StringBuilder();
+            var key = publicKey + unitTimestamp + body;
             
-            using (var hmac = new HMACSHA512())
+            using (var hmac = new HMACSHA512(Encoding.UTF8.GetBytes(privateKey)))
             {
                 hmac.ComputeHash(Encoding.UTF8.GetBytes(key));
-                apiHash = Convert.ToBase64String(hmac.Hash);
+                foreach (var theByte in hmac.Hash)
+                {
+                    hash.Append(theByte.ToString("x2"));
+                }
             }
 
-            return apiHash;
+            return hash.ToString();
         }
 
         private string SerializeObjectToJsonString(object obj)
