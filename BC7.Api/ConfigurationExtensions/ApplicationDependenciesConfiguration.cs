@@ -1,6 +1,8 @@
 ﻿using BC7.Business.Helpers;
 using BC7.Business.Implementation.Helpers;
 using BC7.Database;
+using BC7.Infrastructure.Implementation.Payments;
+using BC7.Infrastructure.Payments;
 using BC7.Infrastructure.Payments.Configuration;
 using BC7.Repository;
 using BC7.Repository.Implementation;
@@ -23,6 +25,8 @@ namespace BC7.Api.ConfigurationExtensions
             services.AddTransient<IUserAccountDataRepository, UserAccountDataRepository>();
             services.AddTransient<IUserMultiAccountRepository, UserMultiAccountRepository>();
             services.AddTransient<IMatrixPositionRepository, MatrixPositionRepository>();
+
+            services.AddTransient<IBitBayPayFacade, BitBayPayFacade>();
 
             services.AddDbContext<IBitClub7Context, BitClub7Context>(
                 opts => opts.UseSqlServer(configuration.GetConnectionString("BitClub7DB"),
