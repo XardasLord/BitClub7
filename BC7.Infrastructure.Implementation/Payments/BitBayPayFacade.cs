@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using BC7.Infrastructure.Payments;
+using BC7.Infrastructure.Payments.BodyModels;
 using BC7.Infrastructure.Payments.Configuration;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using RestSharp;
 
 namespace BC7.Infrastructure.Implementation.Payments
 {
@@ -15,9 +20,60 @@ namespace BC7.Infrastructure.Implementation.Payments
             _bitBayPayApiSettings = bitBayPayApiSettings;
         }
 
-        public Task<string> CreatePayment()
+        public Task<string> CreatePayment(Guid orderId, double price)
         {
+            var client = new RestClient(_bitBayPayApiSettings.Value.ApiUrl);
+            var request = new RestRequest("payments", Method.POST);
+
+            var createPaymentBody = new CreatePaymentBody()
+            {
+                DestinationCurrency = "btc", // TODO: Enums?
+                Price = price,
+                OrderId = orderId
+            };
+
+            var body = SerializeObjectToJsonString(createPaymentBody);
+            var unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds; // TODO: Helper?
+            var apiHash = GenerateApiHash(_bitBayPayApiSettings.Value.PublicKey, unixTimestamp, _bitBayPayApiSettings.Value.PrivateKey, body);
+
+            request.AddHeader("API-Key", _bitBayPayApiSettings.Value.PublicKey);
+            request.AddHeader("API-Hash", apiHash);
+            request.AddHeader("operation-id", Guid.NewGuid().ToString());
+            request.AddHeader("Request-Timestamp", unixTimestamp.ToString());
+            request.AddHeader("Content-Type", "application/json");
+            
+            //request.AddParameter("application/json; charset=utf-8", body, ParameterType.RequestBody);
+
+            request.AddJsonBody(createPaymentBody);
+
+            var response = client.Execute(request);
+
             throw new NotImplementedException();
+        }
+
+        private string GenerateApiHash(string publicKey, int unitTimestamp, string privateKey, object body)
+        {
+            // TODO: Move to helper
+            var apiHash = "";
+            var key = publicKey + unitTimestamp + body + privateKey;
+            
+            using (var hmac = new HMACSHA512())
+            {
+                hmac.ComputeHash(Encoding.UTF8.GetBytes(key));
+                apiHash = Convert.ToBase64String(hmac.Hash);
+            }
+
+            return apiHash;
+        }
+
+        private string SerializeObjectToJsonString(object obj)
+        {
+            // TODO: Move to helper
+            return JsonConvert.SerializeObject(obj, Formatting.None,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
         }
     }
 }
