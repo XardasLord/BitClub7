@@ -52,12 +52,13 @@ namespace BC7.Infrastructure.Implementation.Payments
         private string GenerateApiHash(string publicKey, long unixTimestamp, string privateKey, string bodyJson)
         {
             // TODO: Move to helper
+            var encoding = Encoding.UTF8;
             var hash = new StringBuilder();
             var key = publicKey + unixTimestamp + bodyJson;
             
-            using (var hmac = new HMACSHA512(Encoding.UTF8.GetBytes(privateKey)))
+            using (var hmac = new HMACSHA512(encoding.GetBytes(privateKey)))
             {
-                hmac.ComputeHash(Encoding.UTF8.GetBytes(key));
+                hmac.ComputeHash(encoding.GetBytes(key));
                 foreach (var theByte in hmac.Hash)
                 {
                     hash.Append(theByte.ToString("x2"));
