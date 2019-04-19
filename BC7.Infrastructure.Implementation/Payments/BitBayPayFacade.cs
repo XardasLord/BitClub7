@@ -33,7 +33,7 @@ namespace BC7.Infrastructure.Implementation.Payments
             };
 
             var body = SerializeObjectToJsonString(createPaymentBody);
-            var unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds; // TODO: Helper?
+            var unixTimestamp = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds; // TODO: Helper?
             var apiHash = GenerateApiHash(_bitBayPayApiSettings.Value.PublicKey, unixTimestamp, _bitBayPayApiSettings.Value.PrivateKey, body);
 
             request.AddHeader("API-Key", _bitBayPayApiSettings.Value.PublicKey);
@@ -41,8 +41,6 @@ namespace BC7.Infrastructure.Implementation.Payments
             request.AddHeader("operation-id", Guid.NewGuid().ToString());
             request.AddHeader("Request-Timestamp", unixTimestamp.ToString());
             request.AddHeader("Content-Type", "application/json");
-            
-            //request.AddParameter("application/json; charset=utf-8", body, ParameterType.RequestBody);
 
             request.AddJsonBody(createPaymentBody);
 
@@ -51,11 +49,11 @@ namespace BC7.Infrastructure.Implementation.Payments
             throw new NotImplementedException();
         }
 
-        private string GenerateApiHash(string publicKey, int unitTimestamp, string privateKey, object body)
+        private string GenerateApiHash(string publicKey, long unixTimestamp, string privateKey, string bodyJson)
         {
             // TODO: Move to helper
             var hash = new StringBuilder();
-            var key = publicKey + unitTimestamp + body;
+            var key = publicKey + unixTimestamp + bodyJson;
             
             using (var hmac = new HMACSHA512(Encoding.UTF8.GetBytes(privateKey)))
             {
