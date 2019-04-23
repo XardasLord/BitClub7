@@ -26,8 +26,7 @@ namespace BC7.Api.Controllers
         [Authorize]
         public async Task<IActionResult> PayMembershipsFee([FromBody] PayMembershipsFeeCommand command)
         {
-            await _mediator.Send(command);
-            return Ok();
+            return Ok(await _mediator.Send(command));
         }
     }
 }
