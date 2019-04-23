@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BC7.Infrastructure.Payments.BodyModels;
 
 namespace BC7.Infrastructure.Payments
 {
     public interface IBitBayPayFacade
     {
-        Task<string> CreatePayment(Guid orderId, double price); // TODO: parameters will be given during the development
+        Task<CreatePaymentResponse> CreatePayment(Guid orderId, double price);
     }
 }

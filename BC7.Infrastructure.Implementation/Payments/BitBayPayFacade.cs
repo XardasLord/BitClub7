@@ -20,7 +20,7 @@ namespace BC7.Infrastructure.Implementation.Payments
             _bitBayPayApiSettings = bitBayPayApiSettings;
         }
 
-        public Task<string> CreatePayment(Guid orderId, double price)
+        public async Task<CreatePaymentResponse> CreatePayment(Guid orderId, double price)
         {
             var client = new RestClient(_bitBayPayApiSettings.Value.ApiUrl);
             var request = new RestRequest("payments", Method.POST);
@@ -42,11 +42,11 @@ namespace BC7.Infrastructure.Implementation.Payments
             request.AddHeader("Request-Timestamp", unixTimestamp.ToString());
             request.AddHeader("Content-Type", "application/json");
 
-            request.AddJsonBody(createPaymentBody);
+            request.AddJsonBody(body);
 
-            var response = client.Execute(request);
+            var response = await client.ExecuteTaskAsync<CreatePaymentResponse>(request);
 
-            throw new NotImplementedException();
+            return response.Data;
         }
 
         private static long GetUnixTimestamp()
@@ -61,7 +61,7 @@ namespace BC7.Infrastructure.Implementation.Payments
             var encoding = Encoding.UTF8;
             var hash = new StringBuilder();
             var key = publicKey + unixTimestamp + bodyJson;
-            
+
             using (var hmac = new HMACSHA512(encoding.GetBytes(privateKey)))
             {
                 hmac.ComputeHash(encoding.GetBytes(key));
