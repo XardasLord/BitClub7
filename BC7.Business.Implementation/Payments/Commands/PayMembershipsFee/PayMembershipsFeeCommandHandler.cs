@@ -3,12 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using BC7.Infrastructure.CustomExceptions;
 using BC7.Infrastructure.Payments;
+using BC7.Infrastructure.Payments.BodyModels;
 using BC7.Repository;
 using MediatR;
 
 namespace BC7.Business.Implementation.Payments.Commands.PayMembershipsFee
 {
-    public class PayMembershipsFeeCommandHandler : IRequestHandler<PayMembershipsFeeCommand>
+    public class PayMembershipsFeeCommandHandler : IRequestHandler<PayMembershipsFeeCommand, string>
     {
         private readonly IBitBayPayFacade _bitBayPayFacade;
         private readonly IUserAccountDataRepository _userAccountDataRepository;
@@ -19,18 +20,19 @@ namespace BC7.Business.Implementation.Payments.Commands.PayMembershipsFee
             _userAccountDataRepository = userAccountDataRepository;
         }
 
-        public async Task<Unit> Handle(PayMembershipsFeeCommand command, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<string> Handle(PayMembershipsFeeCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
             await ValidateCommand(command);
 
-            //TODO: Tmp store orderId in DB with UserAccountDataId
             var orderId = Guid.NewGuid();
+            var paymentResponse = await _bitBayPayFacade.CreatePayment(orderId, command.Amount);
 
-            await _bitBayPayFacade.CreatePayment(orderId, command.Amount);
+            ValidateResponse(paymentResponse);
 
-            //TODO: Logic after payment call
+            // TODO: Save paymentId and orderId with UserAccountDataId in DB 
+            // TODO: Create entity to store payment histories
 
-            throw new NotImplementedException();
+            return paymentResponse.Data.Url;
         }
 
         private async Task ValidateCommand(PayMembershipsFeeCommand command)
@@ -38,7 +40,15 @@ namespace BC7.Business.Implementation.Payments.Commands.PayMembershipsFee
             var user = await _userAccountDataRepository.GetAsync(command.UserAccountDataId);
             if (user is null)
             {
-                throw new ValidationException("User with given ID not found");
+                throw new ValidationException("User with given ID was not found");
+            }
+        }
+
+        private static void ValidateResponse(CreatePaymentResponse response)
+        {
+            if (response.Status != "Ok")
+            {
+                throw new ValidationException("Status of the BitBayPay API call has failed");
             }
         }
     }

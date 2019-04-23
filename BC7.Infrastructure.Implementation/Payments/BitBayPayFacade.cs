@@ -25,11 +25,12 @@ namespace BC7.Infrastructure.Implementation.Payments
             var client = new RestClient(_bitBayPayApiSettings.Value.ApiUrl);
             var request = new RestRequest("payments", Method.POST);
 
-            var createPaymentBody = new CreatePaymentBody()
+            var createPaymentBody = new CreatePaymentBody
             {
                 DestinationCurrency = _bitBayPayApiSettings.Value.DestinationCurrency,
-                Price = price,
-                OrderId = orderId
+                Price = Math.Abs(price) <= 0 ? _bitBayPayApiSettings.Value.MembershipsFeeAmount : price,
+                OrderId = orderId,
+                //TODO notificationsUrl to handle the payment (page number 8 in documentation)
             };
 
             var body = SerializeObjectToJsonString(createPaymentBody);
