@@ -27,7 +27,7 @@ namespace BC7.Infrastructure.Implementation.Payments
 
             var createPaymentBody = new CreatePaymentBody()
             {
-                DestinationCurrency = "PLN", // TODO: Enums?
+                DestinationCurrency = _bitBayPayApiSettings.Value.DestinationCurrency,
                 Price = price,
                 OrderId = orderId
             };
