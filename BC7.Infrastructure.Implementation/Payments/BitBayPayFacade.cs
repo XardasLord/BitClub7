@@ -27,13 +27,13 @@ namespace BC7.Infrastructure.Implementation.Payments
 
             var createPaymentBody = new CreatePaymentBody()
             {
-                DestinationCurrency = "btc", // TODO: Enums?
+                DestinationCurrency = "PLN", // TODO: Enums?
                 Price = price,
                 OrderId = orderId
             };
 
             var body = SerializeObjectToJsonString(createPaymentBody);
-            var unixTimestamp = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds; // TODO: Helper?
+            var unixTimestamp = GetUnixTimestamp();
             var apiHash = GenerateApiHash(_bitBayPayApiSettings.Value.PublicKey, unixTimestamp, _bitBayPayApiSettings.Value.PrivateKey, body);
 
             request.AddHeader("API-Key", _bitBayPayApiSettings.Value.PublicKey);
@@ -47,6 +47,12 @@ namespace BC7.Infrastructure.Implementation.Payments
             var response = client.Execute(request);
 
             throw new NotImplementedException();
+        }
+
+        private static long GetUnixTimestamp()
+        {
+            // TODO: Move to helper
+            return (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         }
 
         private string GenerateApiHash(string publicKey, long unixTimestamp, string privateKey, string bodyJson)
