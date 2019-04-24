@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BC7.Common\BC7.Common.csproj" />
     <ProjectReference Include="..\BC7.Infrastructure\BC7.Infrastructure.csproj" />
   </ItemGroup>
 

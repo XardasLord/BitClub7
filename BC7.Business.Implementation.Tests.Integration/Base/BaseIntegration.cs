@@ -31,6 +31,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
         protected IUserAccountDataRepository _userAccountDataRepository;
         protected IUserMultiAccountRepository _userMultiAccountRepository;
         protected IMatrixPositionRepository _matrixPositionRepository;
+        protected IPaymentHistoryRepository _paymentHistoryRepository;
         protected IOptions<JwtSettings> _jwtSettings;
         protected IOptions<BitBayPayApiSettings> _bitBayPayApiSettings;
 
@@ -50,6 +51,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             services.AddTransient<IUserAccountDataRepository, UserAccountDataRepository>();
             services.AddTransient<IUserMultiAccountRepository, UserMultiAccountRepository>();
             services.AddTransient<IMatrixPositionRepository, MatrixPositionRepository>();
+            services.AddTransient<IPaymentHistoryRepository, PaymentHistoryRepository>();
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
             services.AddAutoMapper();
@@ -73,6 +75,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             _userAccountDataRepository = serviceProvider.GetService<IUserAccountDataRepository>();
             _userMultiAccountRepository = serviceProvider.GetService<IUserMultiAccountRepository>();
             _matrixPositionRepository = serviceProvider.GetService<IMatrixPositionRepository>();
+            _paymentHistoryRepository = serviceProvider.GetService<IPaymentHistoryRepository>();
             _jwtSettings = serviceProvider.GetService<IOptions<JwtSettings>>();
             _bitBayPayApiSettings = serviceProvider.GetService<IOptions<BitBayPayApiSettings>>();
 
