@@ -18,10 +18,11 @@ namespace BC7.Api.Controllers
         }
 
         /// <summary>
-        /// TODO
+        /// Pay the membership's fee
         /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
+        /// <param name="command">A command with user main account ID and amount to pay</param>
+        /// <returns>Returns the Url where the payment can be done</returns>
+        /// <response code="200">Returns the Url where the payment can be done</response>
         [HttpPost("membershipsFee")]
         [Authorize]
         public async Task<IActionResult> PayMembershipsFee([FromBody] PayMembershipsFeeCommand command)
