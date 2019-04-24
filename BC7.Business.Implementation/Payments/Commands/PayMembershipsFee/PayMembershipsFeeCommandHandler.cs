@@ -24,7 +24,7 @@ namespace BC7.Business.Implementation.Payments.Commands.PayMembershipsFee
         {
             await ValidateCommand(command);
 
-            var orderId = Guid.NewGuid();
+            var orderId = command.UserAccountDataId;
             var paymentResponse = await _bitBayPayFacade.CreatePayment(orderId, command.Amount);
 
             ValidateResponse(paymentResponse);
