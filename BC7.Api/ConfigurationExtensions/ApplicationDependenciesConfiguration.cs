@@ -1,5 +1,6 @@
 ﻿using BC7.Business.Helpers;
 using BC7.Business.Implementation.Helpers;
+using BC7.Common.Settings;
 using BC7.Database;
 using BC7.Infrastructure.Implementation.Payments;
 using BC7.Infrastructure.Payments;
@@ -35,6 +36,7 @@ namespace BC7.Api.ConfigurationExtensions
 
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
             services.Configure<BitBayPayApiSettings>(configuration.GetSection("BitBayPayApiSettings"));
+            services.Configure<ApplicationSettings>(configuration.GetSection("ApplicationSettings"));
 
             return services;
         }
