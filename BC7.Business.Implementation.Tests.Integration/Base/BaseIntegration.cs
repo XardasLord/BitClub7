@@ -6,6 +6,7 @@ using BC7.Business.Helpers;
 using BC7.Business.Implementation.Helpers;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Database;
+using BC7.Infrastructure.Payments.Configuration;
 using BC7.Repository;
 using BC7.Repository.Implementation;
 using BC7.Security;
@@ -31,6 +32,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
         protected IUserMultiAccountRepository _userMultiAccountRepository;
         protected IMatrixPositionRepository _matrixPositionRepository;
         protected IOptions<JwtSettings> _jwtSettings;
+        protected IOptions<BitBayPayApiSettings> _bitBayPayApiSettings;
 
         [SetUp]
         public async Task SetUp()
@@ -72,7 +74,8 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             _userMultiAccountRepository = serviceProvider.GetService<IUserMultiAccountRepository>();
             _matrixPositionRepository = serviceProvider.GetService<IMatrixPositionRepository>();
             _jwtSettings = serviceProvider.GetService<IOptions<JwtSettings>>();
-            
+            _bitBayPayApiSettings = serviceProvider.GetService<IOptions<BitBayPayApiSettings>>();
+
             _context.Database.Migrate();
             await ClearDatabase();
         }
