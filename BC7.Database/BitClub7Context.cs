@@ -32,5 +32,6 @@ namespace BC7.Database
         public DbSet<UserAccountData> UserAccountsData { get; set; }
         public DbSet<UserMultiAccount> UserMultiAccounts { get; set; }
         public DbSet<MatrixPosition> MatrixPositions { get; set; }
+        public DbSet<PaymentHistory> PaymentHistories { get; set; }
     }
 }
