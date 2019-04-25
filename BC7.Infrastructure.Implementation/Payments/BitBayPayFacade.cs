@@ -30,7 +30,7 @@ namespace BC7.Infrastructure.Implementation.Payments
                 DestinationCurrency = _bitBayPayApiSettings.Value.DestinationCurrency,
                 Price = Math.Abs(price) <= 0 ? _bitBayPayApiSettings.Value.MembershipsFeeAmount : price,
                 OrderId = orderId,
-                //TODO notificationsUrl to handle the payment (page number 8 in documentation)
+                //NotificationsUrl = _bitBayPayApiSettings.Value.NotificationsUrl
             };
 
             var body = SerializeObjectToJsonString(createPaymentBody);
