@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BC7.Business.Implementation.Payments.Commands.PayMembershipsFee;
+using BC7.Business.Implementation.Payments.Events;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,20 @@ namespace BC7.Api.Controllers
         public async Task<IActionResult> PayMembershipsFee([FromBody] PayMembershipsFeeCommand command)
         {
             return Ok(await _mediator.Send(command));
+        }
+
+        /// <summary>
+        /// Notification directly from BitBayPay system that payment status has changed
+        /// </summary>
+        /// <param name="event">Event with parameters to inform the system that payment's status has changed</param>
+        /// <returns>Nothing</returns>
+        /// <response code="200">Nothing</response>
+        [HttpPost("paymentNotification")]
+        [AllowAnonymous]
+        public async Task<IActionResult> PaymentNotification([FromBody] PaymentStatusChangedEvent @event)
+        {
+            await _mediator.Publish(@event);
+            return Ok();
         }
     }
 }
