@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
 using BC7.Infrastructure.Payments;
 using BC7.Infrastructure.Payments.BodyModels;
@@ -13,11 +14,13 @@ namespace BC7.Business.Implementation.Payments.Commands.PayMembershipsFee
     {
         private readonly IBitBayPayFacade _bitBayPayFacade;
         private readonly IUserAccountDataRepository _userAccountDataRepository;
+        private readonly IPaymentHistoryRepository _paymentHistoryRepository;
 
-        public PayMembershipsFeeCommandHandler(IBitBayPayFacade bitBayPayFacade, IUserAccountDataRepository userAccountDataRepository)
+        public PayMembershipsFeeCommandHandler(IBitBayPayFacade bitBayPayFacade, IUserAccountDataRepository userAccountDataRepository, IPaymentHistoryRepository paymentHistoryRepository)
         {
             _bitBayPayFacade = bitBayPayFacade;
             _userAccountDataRepository = userAccountDataRepository;
+            _paymentHistoryRepository = paymentHistoryRepository;
         }
 
         public async Task<string> Handle(PayMembershipsFeeCommand command, CancellationToken cancellationToken = default(CancellationToken))
@@ -28,9 +31,14 @@ namespace BC7.Business.Implementation.Payments.Commands.PayMembershipsFee
             var paymentResponse = await _bitBayPayFacade.CreatePayment(orderId, command.Amount);
 
             ValidateResponse(paymentResponse);
-
-            // TODO: Save paymentId and orderId with UserAccountDataId in DB 
-            // TODO: Create entity to store payment histories
+            
+            var paymentHistory = new PaymentHistory(
+                id: Guid.NewGuid(),
+                paymentId: paymentResponse.Data.PaymentId,
+                orderId: orderId,
+                amountToPay: command.Amount
+            );
+            await _paymentHistoryRepository.CreateAsync(paymentHistory);
 
             return paymentResponse.Data.Url;
         }
