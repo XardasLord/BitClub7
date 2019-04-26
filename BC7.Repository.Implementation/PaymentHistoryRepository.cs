@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using BC7.Database;
 using BC7.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace BC7.Repository.Implementation
 {
@@ -11,6 +13,11 @@ namespace BC7.Repository.Implementation
         public PaymentHistoryRepository(IBitClub7Context context)
         {
             _context = context;
+        }
+
+        public Task<PaymentHistory> GetAsync(Guid paymentId)
+        {
+            return _context.Set<PaymentHistory>().SingleOrDefaultAsync(x => x.PaymentId == paymentId);
         }
 
         public async Task CreateAsync(PaymentHistory paymentHistory)
