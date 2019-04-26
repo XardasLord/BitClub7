@@ -8,5 +8,6 @@ namespace BC7.Repository
     {
         Task<PaymentHistory> GetAsync(Guid paymentId);
         Task CreateAsync(PaymentHistory paymentHistory);
+        Task UpdateAsync(PaymentHistory paymentHistory);
     }
 }

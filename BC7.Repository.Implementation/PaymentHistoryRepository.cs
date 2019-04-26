@@ -25,5 +25,11 @@ namespace BC7.Repository.Implementation
             await _context.Set<PaymentHistory>().AddAsync(paymentHistory);
             await _context.SaveChangesAsync();
         }
+
+        public Task UpdateAsync(PaymentHistory paymentHistory)
+        {
+            _context.Set<PaymentHistory>().Attach(paymentHistory);
+            return _context.SaveChangesAsync();
+        }
     }
 }
