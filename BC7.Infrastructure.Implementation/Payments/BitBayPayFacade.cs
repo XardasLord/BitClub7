@@ -28,7 +28,7 @@ namespace BC7.Infrastructure.Implementation.Payments
             var createPaymentBody = new CreatePaymentBody
             {
                 DestinationCurrency = _bitBayPayApiSettings.Value.DestinationCurrency,
-                Price = Math.Abs(price) <= 0 ? _bitBayPayApiSettings.Value.MembershipsFeeAmount : price,
+                Price = price,
                 OrderId = orderId,
                 //NotificationsUrl = _bitBayPayApiSettings.Value.NotificationsUrl
             };
