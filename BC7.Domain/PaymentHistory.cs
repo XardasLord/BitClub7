@@ -49,5 +49,20 @@ namespace BC7.Domain
                 throw new DomainException($"Invalid amountToPay value: {amountToPay}");
             }
         }
+
+        public void ChangeStatus(string newStatus)
+        {
+            if (Status == "COMPLETED" && newStatus == "PAID")
+            {
+                throw new DomainException($"Cannot change the status {Status} to {newStatus}");
+            }
+
+            Status = newStatus;
+        }
+
+        public void Paid(double paidAmount)
+        {
+            PaidAmount += paidAmount;
+        }
     }
 }
