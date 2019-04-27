@@ -46,6 +46,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccou
                 role: UserRolesHelper.User
             );
             myUserAccountData.SetPassword("salt", "hash");
+            myUserAccountData.PaidMembershipFee();
 
             var otherUser = new UserAccountData(
                 id: Guid.NewGuid(),
@@ -61,6 +62,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccou
                 role: UserRolesHelper.User
             );
             otherUser.SetPassword("salt", "hash");
+            otherUser.PaidMembershipFee();
 
             _context.UserAccountsData.AddRange(myUserAccountData, otherUser);
             await _context.SaveChangesAsync();

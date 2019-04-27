@@ -45,6 +45,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
                 role: UserRolesHelper.User
             );
             existingUserAccountData.SetPassword("salt", "hash");
+            existingUserAccountData.PaidMembershipFee();
 
             var otherUser = new UserAccountData(
                 id: Guid.NewGuid(),
@@ -60,6 +61,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
                 role: UserRolesHelper.User
             );
             otherUser.SetPassword("salt", "hash");
+            otherUser.PaidMembershipFee();
 
             _context.UserAccountsData.AddRange(existingUserAccountData, otherUser);
             await _context.SaveChangesAsync();
