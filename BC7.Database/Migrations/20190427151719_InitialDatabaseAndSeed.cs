@@ -17,6 +17,7 @@ namespace BC7.Database.Migrations
                     AmountToPay = table.Column<double>(nullable: false),
                     PaidAmount = table.Column<double>(nullable: false),
                     Status = table.Column<string>(nullable: false),
+                    PaymentFor = table.Column<string>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "getutcdate()")
                 },
                 constraints: table =>
@@ -107,10 +108,10 @@ namespace BC7.Database.Migrations
                 columns: new[] { "Id", "CreatedAt", "DepthLevel", "Left", "MatrixLevel", "ParentId", "Right", "UserMultiAccountId" },
                 values: new object[,]
                 {
-                    { new Guid("94c88148-bed4-4e3a-98ef-66568517140b"), new DateTime(2019, 4, 24, 17, 51, 8, 459, DateTimeKind.Utc).AddTicks(9027), 2, 3, 0, new Guid("73ab5d25-0cd5-4e59-90b2-9235d93539cc"), 4, null },
-                    { new Guid("d8dbe897-7f0a-44e7-ab05-4a37b7c688bc"), new DateTime(2019, 4, 24, 17, 51, 8, 459, DateTimeKind.Utc).AddTicks(9030), 2, 5, 0, new Guid("73ab5d25-0cd5-4e59-90b2-9235d93539cc"), 6, null },
-                    { new Guid("650fa797-cc7d-4e02-bd4f-441723a9371e"), new DateTime(2019, 4, 24, 17, 51, 8, 459, DateTimeKind.Utc).AddTicks(9042), 2, 9, 0, new Guid("555377bd-2bc7-4e85-b7a9-8f921ac60fb2"), 10, null },
-                    { new Guid("f340082f-f501-4b51-b1db-60059d42dedf"), new DateTime(2019, 4, 24, 17, 51, 8, 459, DateTimeKind.Utc).AddTicks(9042), 2, 11, 0, new Guid("555377bd-2bc7-4e85-b7a9-8f921ac60fb2"), 12, null }
+                    { new Guid("c7e0c57c-7ce6-424e-9984-18d738263ab2"), new DateTime(2019, 4, 27, 15, 17, 19, 344, DateTimeKind.Utc).AddTicks(2998), 2, 3, 0, new Guid("fc3da3e6-2207-435c-a037-6c8ece47362e"), 4, null },
+                    { new Guid("ba4d343f-4670-41c8-a621-890eb098e79c"), new DateTime(2019, 4, 27, 15, 17, 19, 344, DateTimeKind.Utc).AddTicks(2998), 2, 5, 0, new Guid("fc3da3e6-2207-435c-a037-6c8ece47362e"), 6, null },
+                    { new Guid("fda12c80-56d9-40b3-8f58-d7d2b8ebc955"), new DateTime(2019, 4, 27, 15, 17, 19, 344, DateTimeKind.Utc).AddTicks(3001), 2, 9, 0, new Guid("28100b1c-488d-4ca8-9f2f-4154c9b85f54"), 10, null },
+                    { new Guid("4dffe139-3085-4359-9d9d-e71d8bba5305"), new DateTime(2019, 4, 27, 15, 17, 19, 344, DateTimeKind.Utc).AddTicks(3001), 2, 11, 0, new Guid("28100b1c-488d-4ca8-9f2f-4154c9b85f54"), 12, null }
                 });
 
             migrationBuilder.InsertData(
@@ -118,40 +119,40 @@ namespace BC7.Database.Migrations
                 columns: new[] { "Id", "BtcWalletAddress", "City", "Country", "CreatedAt", "Email", "FirstName", "Hash", "IsMembershipFeePaid", "LastName", "Login", "Role", "Salt", "Street", "ZipCode" },
                 values: new object[,]
                 {
-                    { new Guid("40390b5a-be5a-49f9-8b8e-1d77903f5f89"), "BtcWalletAddressRoot1", "CityRoot1", "CountryRoot1", new DateTime(2019, 4, 24, 17, 51, 8, 457, DateTimeKind.Utc).AddTicks(3161), "EmailRoot1", "FirstNameRoot1", "hash1", true, "LastNameRoot1", "LoginRoot1", "Root", "salt1", "StreetRoot1", "ZipCodeRoot1" },
-                    { new Guid("1d1d72f6-4f6e-4e87-872a-66042b0d17e5"), "BtcWalletAddressRoot2", "CityRoot2", "CountryRoot2", new DateTime(2019, 4, 24, 17, 51, 8, 457, DateTimeKind.Utc).AddTicks(4431), "EmailRoot2", "FirstNameRoot2", "hash2", true, "LastNameRoot2", "LoginRoot2", "Root", "salt2", "StreetRoot2", "ZipCodeRoot2" },
-                    { new Guid("38e6fba6-23c5-410e-a478-010e9a253cfc"), "BtcWalletAddressRoot3", "CityRoot3", "CountryRoot3", new DateTime(2019, 4, 24, 17, 51, 8, 457, DateTimeKind.Utc).AddTicks(4443), "EmailRoot3", "FirstNameRoot3", "hash3", true, "LastNameRoot3", "LoginRoot3", "Root", "salt3", "StreetRoot3", "ZipCodeRoot3" }
+                    { new Guid("5e4b3502-62ac-4660-a62b-f7a50f8b9fa5"), "BtcWalletAddressRoot1", "CityRoot1", "CountryRoot1", new DateTime(2019, 4, 27, 15, 17, 19, 341, DateTimeKind.Utc).AddTicks(9847), "EmailRoot1", "FirstNameRoot1", "hash1", true, "LastNameRoot1", "LoginRoot1", "Root", "salt1", "StreetRoot1", "ZipCodeRoot1" },
+                    { new Guid("83ad4d65-da83-459f-a3bb-80137686d9c5"), "BtcWalletAddressRoot2", "CityRoot2", "CountryRoot2", new DateTime(2019, 4, 27, 15, 17, 19, 342, DateTimeKind.Utc).AddTicks(985), "EmailRoot2", "FirstNameRoot2", "hash2", true, "LastNameRoot2", "LoginRoot2", "Root", "salt2", "StreetRoot2", "ZipCodeRoot2" },
+                    { new Guid("ef77cfc9-b3b7-4e10-8d65-eb3a48845cf0"), "BtcWalletAddressRoot3", "CityRoot3", "CountryRoot3", new DateTime(2019, 4, 27, 15, 17, 19, 342, DateTimeKind.Utc).AddTicks(997), "EmailRoot3", "FirstNameRoot3", "hash3", true, "LastNameRoot3", "LoginRoot3", "Root", "salt3", "StreetRoot3", "ZipCodeRoot3" }
                 });
 
             migrationBuilder.InsertData(
                 table: "UserMultiAccounts",
                 columns: new[] { "Id", "CreatedAt", "IsMainAccount", "MultiAccountName", "RefLink", "SponsorId", "UserAccountDataId" },
-                values: new object[] { new Guid("91e63abf-2417-45d8-b570-1aa06b3d2fcd"), new DateTime(2019, 4, 24, 17, 51, 8, 458, DateTimeKind.Utc).AddTicks(4847), true, "LoginRoot1", "111111", null, new Guid("40390b5a-be5a-49f9-8b8e-1d77903f5f89") });
+                values: new object[] { new Guid("0e388ca9-b282-4b67-b4eb-c04ca4b0cbad"), new DateTime(2019, 4, 27, 15, 17, 19, 343, DateTimeKind.Utc).AddTicks(1912), true, "LoginRoot1", "111111", null, new Guid("5e4b3502-62ac-4660-a62b-f7a50f8b9fa5") });
 
             migrationBuilder.InsertData(
                 table: "UserMultiAccounts",
                 columns: new[] { "Id", "CreatedAt", "IsMainAccount", "MultiAccountName", "RefLink", "SponsorId", "UserAccountDataId" },
-                values: new object[] { new Guid("779083e7-83bf-4202-9748-55f21d2c83a8"), new DateTime(2019, 4, 24, 17, 51, 8, 459, DateTimeKind.Utc).AddTicks(311), true, "LoginRoot2", "222222", null, new Guid("1d1d72f6-4f6e-4e87-872a-66042b0d17e5") });
+                values: new object[] { new Guid("4131d163-8a5f-49a1-ac39-db211ee26bba"), new DateTime(2019, 4, 27, 15, 17, 19, 343, DateTimeKind.Utc).AddTicks(5558), true, "LoginRoot2", "222222", null, new Guid("83ad4d65-da83-459f-a3bb-80137686d9c5") });
 
             migrationBuilder.InsertData(
                 table: "UserMultiAccounts",
                 columns: new[] { "Id", "CreatedAt", "IsMainAccount", "MultiAccountName", "RefLink", "SponsorId", "UserAccountDataId" },
-                values: new object[] { new Guid("35476f62-4d2c-4aa6-b449-6d422d14001b"), new DateTime(2019, 4, 24, 17, 51, 8, 459, DateTimeKind.Utc).AddTicks(332), true, "LoginRoot3", "333333", null, new Guid("38e6fba6-23c5-410e-a478-010e9a253cfc") });
+                values: new object[] { new Guid("058e260d-f42d-4621-b6ed-b7945fa2f373"), new DateTime(2019, 4, 27, 15, 17, 19, 343, DateTimeKind.Utc).AddTicks(5587), true, "LoginRoot3", "333333", null, new Guid("ef77cfc9-b3b7-4e10-8d65-eb3a48845cf0") });
 
             migrationBuilder.InsertData(
                 table: "MatrixPositions",
                 columns: new[] { "Id", "CreatedAt", "DepthLevel", "Left", "MatrixLevel", "ParentId", "Right", "UserMultiAccountId" },
-                values: new object[] { new Guid("23eb9ca7-8861-4ddd-a332-f611eb7ddb29"), new DateTime(2019, 4, 24, 17, 51, 8, 459, DateTimeKind.Utc).AddTicks(8135), 0, 1, 0, null, 14, new Guid("91e63abf-2417-45d8-b570-1aa06b3d2fcd") });
+                values: new object[] { new Guid("d6d21237-08ff-48f6-9558-4e0e456cc2a0"), new DateTime(2019, 4, 27, 15, 17, 19, 344, DateTimeKind.Utc).AddTicks(2129), 0, 1, 0, null, 14, new Guid("0e388ca9-b282-4b67-b4eb-c04ca4b0cbad") });
 
             migrationBuilder.InsertData(
                 table: "MatrixPositions",
                 columns: new[] { "Id", "CreatedAt", "DepthLevel", "Left", "MatrixLevel", "ParentId", "Right", "UserMultiAccountId" },
-                values: new object[] { new Guid("73ab5d25-0cd5-4e59-90b2-9235d93539cc"), new DateTime(2019, 4, 24, 17, 51, 8, 459, DateTimeKind.Utc).AddTicks(9015), 1, 2, 0, new Guid("23eb9ca7-8861-4ddd-a332-f611eb7ddb29"), 7, new Guid("779083e7-83bf-4202-9748-55f21d2c83a8") });
+                values: new object[] { new Guid("fc3da3e6-2207-435c-a037-6c8ece47362e"), new DateTime(2019, 4, 27, 15, 17, 19, 344, DateTimeKind.Utc).AddTicks(2984), 1, 2, 0, new Guid("d6d21237-08ff-48f6-9558-4e0e456cc2a0"), 7, new Guid("4131d163-8a5f-49a1-ac39-db211ee26bba") });
 
             migrationBuilder.InsertData(
                 table: "MatrixPositions",
                 columns: new[] { "Id", "CreatedAt", "DepthLevel", "Left", "MatrixLevel", "ParentId", "Right", "UserMultiAccountId" },
-                values: new object[] { new Guid("555377bd-2bc7-4e85-b7a9-8f921ac60fb2"), new DateTime(2019, 4, 24, 17, 51, 8, 459, DateTimeKind.Utc).AddTicks(9027), 1, 8, 0, new Guid("23eb9ca7-8861-4ddd-a332-f611eb7ddb29"), 13, new Guid("35476f62-4d2c-4aa6-b449-6d422d14001b") });
+                values: new object[] { new Guid("28100b1c-488d-4ca8-9f2f-4154c9b85f54"), new DateTime(2019, 4, 27, 15, 17, 19, 344, DateTimeKind.Utc).AddTicks(2995), 1, 8, 0, new Guid("d6d21237-08ff-48f6-9558-4e0e456cc2a0"), 13, new Guid("058e260d-f42d-4621-b6ed-b7945fa2f373") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_MatrixPositions_UserMultiAccountId",
