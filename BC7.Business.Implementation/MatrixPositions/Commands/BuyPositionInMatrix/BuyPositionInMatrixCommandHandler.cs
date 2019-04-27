@@ -88,7 +88,13 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
                 throw new ValidationException("This account already exists in a matrix");
             }
 
+            if (userMultiAccount.UserAccountData.IsMembershipFeePaid == false)
+            {
+                throw new ValidationException("The main account did not buy pay the membership's fee yet");
+            }
+
             // TODO: Add check if user paid for the matrix position on this level (available in etap 1)
+
 
             if (!userMultiAccount.SponsorId.HasValue)
             {

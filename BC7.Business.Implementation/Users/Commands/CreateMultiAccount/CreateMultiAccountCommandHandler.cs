@@ -83,10 +83,9 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             }
 
 
-            if (!CheckIfUserPaidMembershipsFee(userAccount))
+            if (!userAccount.IsMembershipFeePaid)
             {
-#warning this validation has to be uncomment in the ETAP 1
-                //throw new InvalidOperationException("The main account did not pay the membership's fee yet");
+                throw new ValidationException("The main account did not pay the membership's fee yet");
             }
 
             var userMultiAccountIds = userAccount.UserMultiAccounts.Select(x => x.Id).ToList();
@@ -128,11 +127,6 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
             }
 
             return sponsor;
-        }
-
-        private static bool CheckIfUserPaidMembershipsFee(UserAccountData userAccount)
-        {
-            return userAccount.IsMembershipFeePaid;
         }
 
         private bool CheckIfReflinkBelongsToRequestedUser(UserMultiAccount multiAccount)
