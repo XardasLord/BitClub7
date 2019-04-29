@@ -18,6 +18,7 @@ namespace BC7.Repository.Implementation
         public Task<UserMultiAccount> GetAsync(Guid id)
         {
             return _context.Set<UserMultiAccount>()
+                .Include(x => x.UserAccountData)
                 .Include(x => x.MatrixPositions)
                 .SingleOrDefaultAsync(x => x.Id == id);
         }

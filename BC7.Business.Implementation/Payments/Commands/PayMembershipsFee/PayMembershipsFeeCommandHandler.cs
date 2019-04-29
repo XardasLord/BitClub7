@@ -36,7 +36,8 @@ namespace BC7.Business.Implementation.Payments.Commands.PayMembershipsFee
                 id: Guid.NewGuid(),
                 paymentId: paymentResponse.Data.PaymentId,
                 orderId: orderId,
-                amountToPay: command.Amount
+                amountToPay: command.Amount,
+                paymentFor: PaymentForHelper.MembershipsFee
             );
             await _paymentHistoryRepository.CreateAsync(paymentHistory);
 

@@ -22,5 +22,11 @@ namespace BC7.Repository.Implementation
                 .ThenInclude(x => x.MatrixPositions)
                 .SingleOrDefaultAsync(x => x.Id == id);
         }
+
+        public Task UpdateAsync(UserAccountData userAccountData)
+        {
+            _context.Set<UserAccountData>().Attach(userAccountData);
+            return _context.SaveChangesAsync();
+        }
     }
 }
