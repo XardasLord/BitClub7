@@ -20,20 +20,13 @@ namespace BC7.Api.Controllers
         /// <summary>
         /// Buy position in matrix
         /// </summary>
-        /// <param name="matrixLevel">Matrix level where user would like to buy a position in matrix</param>
-        /// <param name="userMultiAccountId">User multi account ID who wants to buy a position in matrix</param>
+        /// <param name="command">Command with matrix level where user would like to buy a position and a userMultiAccountId who wants to buy a position in matrix</param>
         /// <returns>Returns the Id of the bought matrix position</returns>
         /// <response code="200">Returns the Id of the bought matrix position</response>
-        [HttpPost("{matrixLevel}/{userMultiAccountId}")]
+        [HttpPost("buyPosition")]
         [Authorize]
-        public async Task<IActionResult> BuyPosition(int matrixLevel, Guid userMultiAccountId)
+        public async Task<IActionResult> BuyPosition([FromBody] BuyPositionInMatrixCommand command)
         {
-            var command = new BuyPositionInMatrixCommand
-            {
-                UserMultiAccountId = userMultiAccountId,
-                MatrixLevel = matrixLevel
-            };
-
             // TODO: status 201 maybe?
             return Ok(new { Id = await _mediator.Send(command) });
         }
