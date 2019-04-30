@@ -7,6 +7,7 @@ namespace BC7.Domain
     public static class PaymentForHelper
     {
         public static readonly string MembershipsFee = "MembershipsFee";
+        public static readonly string MatrixLevel0Position = "MatrixLevel0Position";
     }
 
     public static class PaymentStatusHelper
