@@ -11,7 +11,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
         {
         }
 
-        public Task<Guid> Handle(UpgradeMatrixCommand request, CancellationToken cancellationToken)
+        public Task<Guid> Handle(UpgradeMatrixCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
             // 1. Sprawdzenie czy ID multikonta istnieje
             // 2. Sprawdzenie czy użytkownik posiada wykupione miejsce w matrycy na levelu niżej
