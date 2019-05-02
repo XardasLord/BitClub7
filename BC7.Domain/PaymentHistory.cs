@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BC7.Common.Extensions;
 using BC7.Infrastructure.CustomExceptions;
 
@@ -7,7 +8,19 @@ namespace BC7.Domain
     public static class PaymentForHelper
     {
         public static readonly string MembershipsFee = "MembershipsFee";
-        public static readonly string MatrixLevel0Position = "MatrixLevel0Position";
+        public static readonly Dictionary<int, string> MatrixLevelPositionsDictionary = new Dictionary<int, string>
+        {
+            {0, "MatrixLevel0"},
+            {1, "MatrixLevel1"},
+            {2, "MatrixLevel2"},
+            {3, "MatrixLevel3"},
+            {4, "MatrixLevel4"},
+            {5, "MatrixLevel5"},
+            {6, "MatrixLevel6"},
+            {7, "MatrixLevel7"},
+            {8, "MatrixLevel8"},
+            {9, "MatrixLevel9"},
+        };
     }
 
     public static class PaymentStatusHelper

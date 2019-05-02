@@ -44,7 +44,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
             // 3. Sprawdzenie czy użytkownik opłacił miejsce w matrycy, do której chce zrobić upgrade
             var userPayments = await _paymentHistoryRepository.GetPaymentsByUser(user.Id);
             //TODO: It shouldn't be PaymentForHelper.MatrixLevel0Position - need to calculate which matrix is it. To Rethink...
-            if (userPayments.Any(x => x.PaymentFor == PaymentForHelper.MatrixLevel0Position && (x.Status == PaymentStatusHelper.Paid || x.Status == PaymentStatusHelper.Completed))) // TODO: Move to helper
+            if (userPayments.Any(x => x.PaymentFor == PaymentForHelper.MatrixLevelPositionsDictionary[command.MatrixLevel] && (x.Status == PaymentStatusHelper.Paid || x.Status == PaymentStatusHelper.Completed))) // TODO: Move to helper
             {
                 throw new ValidationException("User didn't pay for the upgraded matrix yet");
             }
