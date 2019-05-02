@@ -9,7 +9,7 @@ namespace BC7.Infrastructure.Payments.BodyModels
         public string DestinationCurrency { get; set; }
 
         [JsonProperty(PropertyName = "price")]
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
         [JsonProperty(PropertyName = "orderId")]
         public Guid OrderId { get; set; }

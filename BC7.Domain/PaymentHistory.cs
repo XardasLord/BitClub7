@@ -22,8 +22,8 @@ namespace BC7.Domain
         public Guid Id { get; private set; }
         public Guid PaymentId { get; private set; }
         public Guid OrderId { get; private set; }
-        public double AmountToPay { get; private set; }
-        public double PaidAmount { get; private set; }
+        public decimal AmountToPay { get; private set; }
+        public decimal PaidAmount { get; private set; }
         public string Status { get; private set; }
         public string PaymentFor { get; private set; }
         public DateTime CreatedAt { get; private set; }
@@ -32,7 +32,7 @@ namespace BC7.Domain
         {
         }
 
-        public PaymentHistory(Guid id, Guid paymentId, Guid orderId, double amountToPay, string paymentFor)
+        public PaymentHistory(Guid id, Guid paymentId, Guid orderId, decimal amountToPay, string paymentFor)
         {
             ValidateDomain(id, paymentId, orderId, amountToPay, paymentFor);
 
@@ -46,7 +46,7 @@ namespace BC7.Domain
             CreatedAt = DateTime.UtcNow;
         }
 
-        private static void ValidateDomain(Guid id, Guid paymentId, Guid orderId, double amountToPay, string paymentFor)
+        private static void ValidateDomain(Guid id, Guid paymentId, Guid orderId, decimal amountToPay, string paymentFor)
         {
             if (id == Guid.Empty)
             {
@@ -81,7 +81,7 @@ namespace BC7.Domain
             Status = newStatus;
         }
 
-        public void Paid(double paidAmount)
+        public void Paid(decimal paidAmount)
         {
             PaidAmount += paidAmount;
         }
