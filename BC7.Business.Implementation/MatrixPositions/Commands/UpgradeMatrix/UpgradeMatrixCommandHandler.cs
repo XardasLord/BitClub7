@@ -50,6 +50,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
             }
 
             // 4. Sprawdzenie czy admin (znajdujący się na samej górze matrycy o level niższej) ma wykupione już miejsce w matrycy, do której chcemy zrobić upgrade
+            // TODO: REST LOGIC
 
             throw new NotImplementedException();
         }
