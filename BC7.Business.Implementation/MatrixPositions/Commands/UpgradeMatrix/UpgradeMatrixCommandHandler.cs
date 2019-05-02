@@ -45,6 +45,8 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
 
             // 4. Sprawdzenie czy admin (znajdujący się na samej górze matrycy o level niższej) ma wykupione już miejsce w matrycy, do której chcemy zrobić upgrade
 
+            // Algorytm szuka on PIERWSZEGO ADMINa z góry i tylko on jest dla algorytmu wyznacznikiem.
+            // W zależności na której nodze ADMINa znajduje się użytkownik, w nowej strukturze znajdzie się na tej samej stronie struktury ADMINa (ZAKAZ 1)
 
             // TODO: REST LOGIC
 
