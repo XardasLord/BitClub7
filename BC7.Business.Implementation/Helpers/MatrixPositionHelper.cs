@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BC7.Business.Helpers;
 using BC7.Database;
 using BC7.Domain;
+using BC7.Infrastructure.CustomExceptions;
 using BC7.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -54,6 +55,21 @@ namespace BC7.Business.Implementation.Helpers
             }
 
             return null;
+        }
+
+        public async Task<MatrixPosition> FindHighestAdminPositionAsync(Guid userMultiAccountId, int matrixLevel)
+        {
+            var position = await _matrixPositionRepository.GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
+            if (position is null)
+            {
+                throw new ValidationException($"There is no user multi account position - {userMultiAccountId} - in matrix lvl: {matrixLevel}");
+            }
+
+            return await _context.Set<MatrixPosition>()
+                .Where(x => x.Left <= position.Left)
+                .Where(x => x.Right >= position.Right)
+                .Where(x => x.DepthLevel == 2) // Czy możemy zawsze przyjąć, że na DepthLevel = 2 będzie admin ?
+                .SingleOrDefaultAsync();
         }
 
         private async Task<IEnumerable<MatrixPosition>> GetMatrixPositionWhereGivenPositionIsInLineBAsync(MatrixPosition matrixPosition, int matrixLevel = 0)
