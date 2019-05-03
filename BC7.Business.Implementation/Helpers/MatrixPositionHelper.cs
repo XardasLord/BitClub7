@@ -72,6 +72,15 @@ namespace BC7.Business.Implementation.Helpers
                 .SingleOrDefaultAsync();
         }
 
+        public Task<MatrixPosition> FindEmptyPositionForHighestAdminAsync(int matrixLevel)
+        {
+            return _context.Set<MatrixPosition>()
+                .Where(x => x.MatrixLevel == matrixLevel)
+                .Where(x => x.UserMultiAccountId == null)
+                .Where(x => x.DepthLevel == 2)
+                .FirstOrDefaultAsync();
+        }
+
         private async Task<IEnumerable<MatrixPosition>> GetMatrixPositionWhereGivenPositionIsInLineBAsync(MatrixPosition matrixPosition, int matrixLevel = 0)
         {
             var parentPosition = await _matrixPositionRepository.GetTopParentAsync(matrixPosition, matrixLevel);

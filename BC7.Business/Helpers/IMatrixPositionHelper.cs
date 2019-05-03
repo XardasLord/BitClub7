@@ -11,5 +11,6 @@ namespace BC7.Business.Helpers
         bool CheckIfMatrixHasEmptySpace(IEnumerable<MatrixPosition> matrix);
         Task<MatrixPosition> FindTheNearestEmptyPositionFromGivenAccountWhereInParentsMatrixThereIsNoAnyMultiAccountAsync(Guid userMultiAccountId, IReadOnlyCollection<Guid> multiAccountIds, int matrixLevel = 0);
         Task<MatrixPosition> FindHighestAdminPositionAsync(Guid userMultiAccountId, int matrixLevel);
+        Task<MatrixPosition> FindEmptyPositionForHighestAdminAsync(int matrixLevel);
     }
 }
