@@ -369,6 +369,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
             );
             _context.MatrixPositions.Add(positionLineC8);
 
+            // LVL 1
             var topMatrixPositionLvl1 = new MatrixPosition
             (
                 id: Guid.NewGuid(),
@@ -386,7 +387,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
                 id: Guid.NewGuid(),
                 userMultiAccountId: rootMultiAccount2.Id,
                 parentId: topMatrixPositionLvl1.Id,
-                matrixLevel: 0,
+                matrixLevel: 1,
                 depthLevel: 1,
                 left: 2,
                 right: 11
@@ -398,7 +399,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
                 id: Guid.NewGuid(),
                 userMultiAccountId: rootMultiAccount3.Id,
                 parentId: topMatrixPositionLvl1.Id,
-                matrixLevel: 0,
+                matrixLevel: 1,
                 depthLevel: 1,
                 left: 12,
                 right: 17
@@ -410,7 +411,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
                 id: Guid.NewGuid(),
                 userMultiAccountId: adminMultiAccount2.Id,
                 parentId: positionLineA1Lvl1.Id,
-                matrixLevel: 0,
+                matrixLevel: 1,
                 depthLevel: 2,
                 left: 3,
                 right: 8
@@ -422,7 +423,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
                 id: Guid.NewGuid(),
                 userMultiAccountId: null,
                 parentId: positionLineA1Lvl1.Id,
-                matrixLevel: 0,
+                matrixLevel: 1,
                 depthLevel: 2,
                 left: 9,
                 right: 10
@@ -434,7 +435,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
                 id: Guid.NewGuid(),
                 userMultiAccountId: null,
                 parentId: positionLineA2Lvl1.Id,
-                matrixLevel: 0,
+                matrixLevel: 1,
                 depthLevel: 2,
                 left: 13,
                 right: 14
@@ -446,7 +447,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
                 id: Guid.NewGuid(),
                 userMultiAccountId: adminMultiAccount4.Id,
                 parentId: positionLineA2Lvl1.Id,
-                matrixLevel: 0,
+                matrixLevel: 1,
                 depthLevel: 2,
                 left: 15,
                 right: 16
@@ -458,7 +459,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
                 id: Guid.NewGuid(),
                 userMultiAccountId: null,
                 parentId: positionLineB1Lvl1.Id,
-                matrixLevel: 0,
+                matrixLevel: 1,
                 depthLevel: 3,
                 left: 4,
                 right: 5
@@ -470,12 +471,13 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
                 id: Guid.NewGuid(),
                 userMultiAccountId: null,
                 parentId: positionLineB1Lvl1.Id,
-                matrixLevel: 0,
+                matrixLevel: 1,
                 depthLevel: 3,
                 left: 6,
                 right: 7
             );
             _context.MatrixPositions.Add(positionLineC2Lvl1);
+            await _context.SaveChangesAsync();
 
             // Payments
             var paymentHistory = new PaymentHistory
