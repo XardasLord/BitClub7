@@ -20,7 +20,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
     {
         private UpgradeMatrixCommandHandler _sut;
         private UpgradeMatrixCommand _command;
-        private Guid _result;
+        private UpgradeMatrixResult _result;
 
         private readonly Guid _adminMultiAccountId = Guid.Parse("032d748c-9cef-4a5a-92bd-3fd9a4a0e499");
 
@@ -28,8 +28,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
         {
             _sut = new UpgradeMatrixCommandHandler(_userMultiAccountRepository, _matrixPositionRepository, _paymentHistoryHelper, _matrixPositionHelper);
         }
-
-        [Given(StepTitle = "And given created default accounts and matrices structure in database")]
+        
         async Task AndGivenCreatedDefaultAccountsAndMatricesInDatabase()
         {
             var adminUserAccountData1 = new UserAccountData
@@ -509,14 +508,19 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
             _result = await _sut.Handle(_command);
         }
 
-        void ThenResultShouldBeGuidWithMatrixPositionUpgradedOnTheHigherLevel()
+        void ThenResultHasGuidWithMatrixPositionUpgradedOnTheHigherLevel()
         {
-            _result.Should().NotBeEmpty();
+            _result.UpgradedMatrixPositionId.Should().NotBeEmpty();
+        }
+
+        void AndResultHasNoErrorMessage()
+        {
+            _result.ErrorMsg.Should().BeNullOrEmpty();
         }
 
         async Task AndAdminHasMatrixPositionOnUpgradedLevel()
         {
-            var adminPositionOnUpgradedMatrix = await _context.MatrixPositions.SingleOrDefaultAsync(x => x.Id == _result);
+            var adminPositionOnUpgradedMatrix = await _context.MatrixPositions.SingleOrDefaultAsync(x => x.Id == _result.UpgradedMatrixPositionId);
             adminPositionOnUpgradedMatrix.UserMultiAccountId.Should().Be(_adminMultiAccountId);
             adminPositionOnUpgradedMatrix.DepthLevel.Should().Be(2);
         }
