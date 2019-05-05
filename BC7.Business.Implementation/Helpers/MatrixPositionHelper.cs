@@ -42,6 +42,7 @@ namespace BC7.Business.Implementation.Helpers
                 .Where(x => x.Left >= userMatrixPosition.Left)
                 .Where(x => x.Right <= userMatrixPosition.Right)
                 .Where(x => x.DepthLevel >= userMatrixPosition.DepthLevel)
+                .Where(x => x.MatrixLevel == matrixLevel)
                 .Where(x => x.UserMultiAccountId == null)
                 .ToListAsync();
             
@@ -68,6 +69,7 @@ namespace BC7.Business.Implementation.Helpers
             return await _context.Set<MatrixPosition>()
                 .Where(x => x.Left <= position.Left)
                 .Where(x => x.Right >= position.Right)
+                .Where(x => x.MatrixLevel == matrixLevel)
                 .Where(x => x.DepthLevel == 2) // Czy możemy zawsze przyjąć, że na DepthLevel = 2 będzie admin ?
                 .SingleOrDefaultAsync();
         }
