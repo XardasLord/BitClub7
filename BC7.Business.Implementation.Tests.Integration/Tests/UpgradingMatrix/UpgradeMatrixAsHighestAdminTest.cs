@@ -26,7 +26,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
 
         void GivenSystemUnderTest()
         {
-            _sut = new UpgradeMatrixCommandHandler(_userMultiAccountRepository, _matrixPositionRepository, _paymentHistoryHelper, _matrixPositionHelper);
+            _sut = new UpgradeMatrixCommandHandler(_userMultiAccountRepository, _matrixPositionRepository, _userAccountDataRepository, _paymentHistoryHelper, _matrixPositionHelper, _mediator);
         }
         
         async Task AndGivenCreatedDefaultAccountsAndMatricesInDatabase()

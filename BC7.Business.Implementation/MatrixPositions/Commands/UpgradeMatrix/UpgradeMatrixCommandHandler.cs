@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BC7.Business.Helpers;
+using BC7.Business.Implementation.Events;
 using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
 using BC7.Repository;
@@ -19,19 +21,25 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
 
         private readonly IUserMultiAccountRepository _userMultiAccountRepository;
         private readonly IMatrixPositionRepository _matrixPositionRepository;
+        private readonly IUserAccountDataRepository _userAccountDataRepository;
         private readonly IPaymentHistoryHelper _paymentHistoryHelper;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
+        private readonly IMediator _mediator;
 
         public UpgradeMatrixCommandHandler(
             IUserMultiAccountRepository userMultiAccountRepository,
             IMatrixPositionRepository matrixPositionRepository,
+            IUserAccountDataRepository userAccountDataRepository,
             IPaymentHistoryHelper paymentHistoryHelper,
-            IMatrixPositionHelper matrixPositionHelper)
+            IMatrixPositionHelper matrixPositionHelper,
+            IMediator mediator)
         {
             _userMultiAccountRepository = userMultiAccountRepository;
             _matrixPositionRepository = matrixPositionRepository;
+            _userAccountDataRepository = userAccountDataRepository;
             _paymentHistoryHelper = paymentHistoryHelper;
             _matrixPositionHelper = matrixPositionHelper;
+            _mediator = mediator;
         }
 
         public async Task<UpgradeMatrixResult> Handle(UpgradeMatrixCommand command, CancellationToken cancellationToken = default(CancellationToken))
@@ -44,7 +52,6 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
 
             if (_multiAccount.UserAccountData.Role == UserRolesHelper.Admin && _userMatrixPositionOnLowerMatrix.DepthLevel == 2)
             {
-                // Upgrade for admin
                 var upgradedPositionId = await UpgradeMatrixForAdmin();
                 return new UpgradeMatrixResult(upgradedPositionId);
             }
@@ -62,9 +69,9 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
                 //TODO: Event to notify admin that someone wants to upgrade his matrix
                 return new UpgradeMatrixResult(Guid.Empty, "Cannot upgrade because admin didn't upgrade his matrix yet. E-mail notification has been sent to admin");
             }
-
-            // Upgrade for normal user
-            var upgradedMatrixPositionId = await UpgradeMatrixForUser(adminPositionOnUpgradingLevel);
+            
+            var adminSide = AdminStructure.Left; // TODO: Need to find a way of finding if it's a RIGHT or LEFT side from admin
+            var upgradedMatrixPositionId = await UpgradeMatrixForUser(adminPositionOnUpgradingLevel, adminSide);
             return new UpgradeMatrixResult(upgradedMatrixPositionId);
         }
 
@@ -99,14 +106,59 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
 
             await _matrixPositionRepository.UpdateAsync(upgradedPosition);
 
+            await PublishMatrixPositionHasBeenBoughtNotification(upgradedPosition.Id);
+
             return upgradedPosition.Id;
         }
 
-        private Task<Guid> UpgradeMatrixForUser(MatrixPosition adminPosition)
+        private async Task<Guid> UpgradeMatrixForUser(MatrixPosition adminPosition, AdminStructure adminStructure)
         {
-            // TODO: Upgrade logic for user based on the admin - to rethink how to do it clearly
+            MatrixPosition upgradedPosition;
 
-            throw new NotImplementedException();
+            if (!_multiAccount.SponsorId.HasValue)
+            {
+                throw new ValidationException("FATAL! User does not have sponsor");
+            }
+
+            var userAccount = await _userAccountDataRepository.GetAsync(_multiAccount.UserAccountDataId);
+            var userMultiAccountIds = userAccount.UserMultiAccounts.Select(x => x.Id).ToList(); // Need for cycles in the future
+
+            var sponsorPositionOnUpgradedMatrix = await _matrixPositionRepository.GetPositionForAccountAtLevelAsync(_multiAccount.SponsorId.Value, _command.MatrixLevel);
+            if (sponsorPositionOnUpgradedMatrix is null)
+            {
+                // TODO: Use the admin side LEFT or RIGHT here
+                upgradedPosition = await _matrixPositionHelper.FindTheNearestEmptyPositionFromGivenAccountWhereInParentsMatrixThereIsNoAnyMultiAccountAsync(
+                    adminPosition.UserMultiAccountId.Value, userMultiAccountIds, _command.MatrixLevel);
+            }
+            else
+            {
+                upgradedPosition = await _matrixPositionHelper.FindTheNearestEmptyPositionFromGivenAccountWhereInParentsMatrixThereIsNoAnyMultiAccountAsync(
+                    _multiAccount.SponsorId.Value, userMultiAccountIds, _command.MatrixLevel);
+            }
+
+            if (upgradedPosition is null)
+            {
+                throw new ValidationException($"There is no empty space in matrix level - {_command.MatrixLevel} - where account can be assigned");
+            }
+
+            upgradedPosition.AssignMultiAccount(_multiAccount.Id);
+            await _matrixPositionRepository.UpdateAsync(upgradedPosition);
+
+            await PublishMatrixPositionHasBeenBoughtNotification(upgradedPosition.Id);
+
+            return upgradedPosition.Id;
+        }
+
+        private Task PublishMatrixPositionHasBeenBoughtNotification(Guid matrixPositionId)
+        {
+            var @event = new MatrixPositionHasBeenBoughtEvent(matrixPositionId);
+            return _mediator.Publish(@event);
+        }
+
+        enum AdminStructure
+        {
+            Left,
+            Right
         }
     }
 }
