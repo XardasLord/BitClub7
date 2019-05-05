@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BC7.Business.Helpers;
+using BC7.Business.Models;
 using BC7.Database;
 using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
@@ -45,7 +46,7 @@ namespace BC7.Business.Implementation.Helpers
                 .Where(x => x.MatrixLevel == matrixLevel)
                 .Where(x => x.UserMultiAccountId == null)
                 .ToListAsync();
-            
+
             foreach (var emptyPosition in allEmptyPositions)
             {
                 var matrix = await GetMatrixPositionWhereGivenPositionIsInLineBAsync(emptyPosition, matrixLevel);
@@ -70,8 +71,36 @@ namespace BC7.Business.Implementation.Helpers
                 .Where(x => x.Left <= position.Left)
                 .Where(x => x.Right >= position.Right)
                 .Where(x => x.MatrixLevel == matrixLevel)
-                .Where(x => x.DepthLevel == 2) // Czy możemy zawsze przyjąć, że na DepthLevel = 2 będzie admin ?
+                .Where(x => x.DepthLevel == 2) // Always influencer is here
                 .SingleOrDefaultAsync();
+        }
+
+        public async Task<AdminStructureSide> GetAdminStructureSide(Guid userMultiAccountId, int matrixLevel, MatrixPosition admin = null)
+        {
+            var position = await _matrixPositionRepository.GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
+            if (position is null)
+            {
+                throw new ValidationException($"There is no user multi account position - {userMultiAccountId} - in matrix lvl: {matrixLevel}");
+            }
+
+            if (admin is null)
+            {
+                admin = await FindHighestAdminPositionAsync(userMultiAccountId, matrixLevel);
+            }
+
+            var underAdmin = await _context.Set<MatrixPosition>()
+                .Where(x => x.Left <= position.Left)
+                .Where(x => x.Right >= position.Right)
+                .Where(x => x.MatrixLevel == matrixLevel)
+                .Where(x => x.DepthLevel == 3) // Position under admin
+                .SingleAsync();
+
+            if (underAdmin.Left - 1 == admin.Left)
+            {
+                return AdminStructureSide.Left;
+            }
+
+            return AdminStructureSide.Right;
         }
 
         public Task<MatrixPosition> FindEmptyPositionForHighestAdminAsync(int matrixLevel)

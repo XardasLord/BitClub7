@@ -154,11 +154,5 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
             var @event = new MatrixPositionHasBeenBoughtEvent(matrixPositionId);
             return _mediator.Publish(@event);
         }
-
-        enum AdminStructure
-        {
-            Left,
-            Right
-        }
     }
 }
