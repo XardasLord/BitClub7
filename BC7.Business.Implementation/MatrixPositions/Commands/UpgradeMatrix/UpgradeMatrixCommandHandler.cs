@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BC7.Business.Helpers;
 using BC7.Business.Implementation.Events;
+using BC7.Business.Models;
 using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
 using BC7.Repository;
@@ -69,9 +70,10 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
                 //TODO: Event to notify admin that someone wants to upgrade his matrix
                 return new UpgradeMatrixResult(Guid.Empty, "Cannot upgrade because admin didn't upgrade his matrix yet. E-mail notification has been sent to admin");
             }
-            
-            var adminSide = AdminStructure.Left; // TODO: Need to find a way of finding if it's a RIGHT or LEFT side from admin
+
+            var adminSide = await _matrixPositionHelper.GetAdminStructureSide(_multiAccount.Id, _lowerLevelMatrix, adminPositionOnLowerMatrix);
             var upgradedMatrixPositionId = await UpgradeMatrixForUser(adminPositionOnUpgradingLevel, adminSide);
+
             return new UpgradeMatrixResult(upgradedMatrixPositionId);
         }
 
@@ -111,7 +113,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
             return upgradedPosition.Id;
         }
 
-        private async Task<Guid> UpgradeMatrixForUser(MatrixPosition adminPosition, AdminStructure adminStructure)
+        private async Task<Guid> UpgradeMatrixForUser(MatrixPosition adminPosition, AdminStructureSide adminStructure)
         {
             MatrixPosition upgradedPosition;
 
@@ -128,7 +130,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
             {
                 // TODO: Use the admin side LEFT or RIGHT here
                 upgradedPosition = await _matrixPositionHelper.FindTheNearestEmptyPositionFromGivenAccountWhereInParentsMatrixThereIsNoAnyMultiAccountAsync(
-                    adminPosition.UserMultiAccountId.Value, userMultiAccountIds, _command.MatrixLevel);
+                    adminPosition.UserMultiAccountId.Value, userMultiAccountIds, _command.MatrixLevel, adminStructure);
             }
             else
             {

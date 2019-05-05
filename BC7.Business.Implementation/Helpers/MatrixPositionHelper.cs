@@ -34,10 +34,12 @@ namespace BC7.Business.Implementation.Helpers
         }
 
         public async Task<MatrixPosition> FindTheNearestEmptyPositionFromGivenAccountWhereInParentsMatrixThereIsNoAnyMultiAccountAsync(
-            Guid userMultiAccountId, IReadOnlyCollection<Guid> multiAccountIds, int matrixLevel = 0)
+            Guid userMultiAccountId, IReadOnlyCollection<Guid> multiAccountIds, int matrixLevel, AdminStructureSide adminStructureSide = AdminStructureSide.Skipped)
         {
             var userMatrixPosition = await _matrixPositionRepository.GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
             if (userMatrixPosition is null) throw new ArgumentNullException(nameof(userMatrixPosition));
+
+            userMatrixPosition = await GetMatrixPositionUnderAdminBasedOnStructureSide(matrixLevel, adminStructureSide, userMatrixPosition);
 
             var allEmptyPositions = await _context.Set<MatrixPosition>()
                 .Where(x => x.Left >= userMatrixPosition.Left)
@@ -58,6 +60,7 @@ namespace BC7.Business.Implementation.Helpers
 
             return null;
         }
+
 
         public async Task<MatrixPosition> FindHighestAdminPositionAsync(Guid userMultiAccountId, int matrixLevel)
         {
@@ -118,6 +121,35 @@ namespace BC7.Business.Implementation.Helpers
             var parentsMatrix = await _matrixPositionRepository.GetMatrixAsync(parentPosition, matrixLevel);
 
             return parentsMatrix;
+        }
+
+        private async Task<MatrixPosition> GetMatrixPositionUnderAdminBasedOnStructureSide(int matrixLevel, AdminStructureSide adminStructureSide, MatrixPosition topAdmin)
+        {
+            if (adminStructureSide == AdminStructureSide.Skipped)
+            {
+                return topAdmin;
+            }
+
+            MatrixPosition position = topAdmin;
+            switch (adminStructureSide)
+            {
+                case AdminStructureSide.Left:
+                    topAdmin = await _context.Set<MatrixPosition>()
+                        .Where(x => x.Left == position.Left + 1)
+                        .Where(x => x.ParentId == position.Id)
+                        .Where(x => x.MatrixLevel == matrixLevel)
+                        .SingleAsync();
+                    break;
+                case AdminStructureSide.Right:
+                    topAdmin = await _context.Set<MatrixPosition>()
+                        .Where(x => x.Right == position.Right - 1)
+                        .Where(x => x.ParentId == position.Id)
+                        .Where(x => x.MatrixLevel == matrixLevel)
+                        .SingleAsync();
+                    break;
+            }
+
+            return topAdmin;
         }
     }
 }
