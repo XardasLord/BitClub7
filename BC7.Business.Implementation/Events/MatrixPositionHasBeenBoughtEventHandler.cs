@@ -77,7 +77,7 @@ namespace BC7.Business.Implementation.Events
                 )
             };
 
-            await _context.Set<MatrixPosition>().AddRangeAsync(matricesToAdd);
+            _context.Set<MatrixPosition>().AddRange(matricesToAdd);
             await _context.SaveChangesAsync();
         }
     }

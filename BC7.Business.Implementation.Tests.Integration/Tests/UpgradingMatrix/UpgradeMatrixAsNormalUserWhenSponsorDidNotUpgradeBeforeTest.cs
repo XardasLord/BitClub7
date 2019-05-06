@@ -742,7 +742,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
 
         async Task AndUserHasMatrixPositionOnUpgradedLevelUnderRightSideOfTopAdmin()
         {
-            var userPositionOnUpgradedMatrix = await _context.MatrixPositions.SingleOrDefaultAsync(x => x.Id == _result.UpgradedMatrixPositionId);
+            var userPositionOnUpgradedMatrix = await _context.MatrixPositions.SingleAsync(x => x.Id == _result.UpgradedMatrixPositionId);
             userPositionOnUpgradedMatrix.UserMultiAccountId.Should().Be(_userMultiAccountId);
             userPositionOnUpgradedMatrix.DepthLevel.Should().Be(3);
             userPositionOnUpgradedMatrix.Left.Should().Be(30);
