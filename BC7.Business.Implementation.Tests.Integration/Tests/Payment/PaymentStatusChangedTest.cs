@@ -33,7 +33,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Payment
                 id: Guid.NewGuid(),
                 paymentId: Guid.Parse("ab1a5483-fd98-4fe0-b859-240b718c3ac3"),
                 orderId: Guid.NewGuid(),
-                amountToPay: 100,
+                amountToPay: 0.008M,
                 paymentFor: PaymentForHelper.MembershipsFee
             );
 
@@ -65,9 +65,9 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Payment
                 PaymentId = Guid.Parse("ab1a5483-fd98-4fe0-b859-240b718c3ac3"),
                 OrderId = Guid.Parse("590565b0-df3e-49f0-866c-ececbe696611"),
                 Status = PaymentStatusHelper.Paid,
-                PaidAmount = 40,
-                AmountToPayInDestinationCurrency = 100,
-                AmountToPayInSourceCurrency = 100
+                PaidAmount = 0.004M,
+                AmountToPayInDestinationCurrency = 0.008M,
+                AmountToPayInSourceCurrency = 0.008M
             };
         }
 
@@ -80,7 +80,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Payment
         {
             var payment = await _context.PaymentHistories.SingleAsync();
             payment.Status.Should().Be(PaymentStatusHelper.Paid);
-            payment.PaidAmount.Should().Be(40);
+            payment.PaidAmount.Should().Be(0.004M);
         }
 
         async Task AndUserHasMembershipsFeeSetToTrue()
