@@ -30,7 +30,7 @@ namespace BC7.Infrastructure.Implementation.Payments
                 DestinationCurrency = _bitBayPayApiSettings.Value.DestinationCurrency,
                 Price = price,
                 OrderId = orderId,
-                //NotificationsUrl = _bitBayPayApiSettings.Value.NotificationsUrl
+                NotificationsUrl = _bitBayPayApiSettings.Value.NotificationsUrl
             };
 
             var body = SerializeObjectToJsonString(createPaymentBody);
