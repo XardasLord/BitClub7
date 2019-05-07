@@ -56,7 +56,7 @@ namespace BC7.Infrastructure.Implementation.ErrorHandling
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = statusCode;
 
-            return context.Response.WriteAsync(new ErrorDetails()
+            return context.Response.WriteAsync(new ErrorDetails
             {
                 StatusCode = statusCode,
                 Message = $"{exception.Message}"
