@@ -70,10 +70,10 @@ namespace BC7.Repository.Implementation
             return matrixAccounts;
         }
 
-        public async Task UpdateAsync(MatrixPosition matrixPosition)
+        public Task UpdateAsync(MatrixPosition matrixPosition)
         {
             _context.Set<MatrixPosition>().Attach(matrixPosition);
-            await _context.SaveChangesAsync();
+            return _context.SaveChangesAsync();
         }
     }
 }

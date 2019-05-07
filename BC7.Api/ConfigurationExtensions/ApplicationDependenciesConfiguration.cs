@@ -22,6 +22,7 @@ namespace BC7.Api.ConfigurationExtensions
             services.AddTransient<IUserMultiAccountHelper, UserMultiAccountHelper>();
             services.AddTransient<IUserAccountDataHelper, UserAccountDataHelper>();
             services.AddTransient<IMatrixPositionHelper, MatrixPositionHelper>();
+            services.AddTransient<IPaymentHistoryHelper, PaymentHistoryHelper>();
 
             services.AddTransient<IUserAccountDataRepository, UserAccountDataRepository>();
             services.AddTransient<IUserMultiAccountRepository, UserMultiAccountRepository>();

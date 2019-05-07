@@ -6,6 +6,6 @@ namespace BC7.Infrastructure.Payments
 {
     public interface IBitBayPayFacade
     {
-        Task<CreatePaymentResponse> CreatePayment(Guid orderId, double price);
+        Task<CreatePaymentResponse> CreatePayment(Guid orderId, decimal price);
     }
 }

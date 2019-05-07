@@ -28,6 +28,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
         protected IUserMultiAccountHelper _userMultiAccountHelper;
         protected IUserAccountDataHelper _userAccountDataHelper;
         protected IMatrixPositionHelper _matrixPositionHelper;
+        protected IPaymentHistoryHelper _paymentHistoryHelper;
         protected IUserAccountDataRepository _userAccountDataRepository;
         protected IUserMultiAccountRepository _userMultiAccountRepository;
         protected IMatrixPositionRepository _matrixPositionRepository;
@@ -48,6 +49,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             services.AddTransient<IUserAccountDataHelper, UserAccountDataHelper>();
             services.AddTransient<IMatrixPositionHelper, MatrixPositionHelper>();
             services.AddTransient<IUserMultiAccountHelper, UserMultiAccountHelper>();
+            services.AddTransient<IPaymentHistoryHelper, PaymentHistoryHelper>();
             services.AddTransient<IUserAccountDataRepository, UserAccountDataRepository>();
             services.AddTransient<IUserMultiAccountRepository, UserMultiAccountRepository>();
             services.AddTransient<IMatrixPositionRepository, MatrixPositionRepository>();
@@ -72,6 +74,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             _userAccountDataHelper = serviceProvider.GetService<IUserAccountDataHelper>();
             _matrixPositionHelper = serviceProvider.GetService<IMatrixPositionHelper>();
             _userMultiAccountHelper = serviceProvider.GetService<IUserMultiAccountHelper>();
+            _paymentHistoryHelper = serviceProvider.GetService<IPaymentHistoryHelper>();
             _userAccountDataRepository = serviceProvider.GetService<IUserAccountDataRepository>();
             _userMultiAccountRepository = serviceProvider.GetService<IUserMultiAccountRepository>();
             _matrixPositionRepository = serviceProvider.GetService<IMatrixPositionRepository>();
@@ -88,10 +91,12 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             var matrices = _context.MatrixPositions;
             var multiAccounts = _context.UserMultiAccounts;
             var users = _context.UserAccountsData;
+            var paymentHistories = _context.PaymentHistories;
 
             _context.MatrixPositions.RemoveRange(matrices);
             _context.UserMultiAccounts.RemoveRange(multiAccounts);
             _context.UserAccountsData.RemoveRange(users);
+            _context.PaymentHistories.RemoveRange(paymentHistories);
 
             await _context.SaveChangesAsync();
         }

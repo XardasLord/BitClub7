@@ -22,7 +22,7 @@ namespace BC7.Business.Implementation.Events
             _matrixPositionRepository = matrixPositionRepository;
         }
 
-        public async Task Handle(MatrixPositionHasBeenBoughtEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(MatrixPositionHasBeenBoughtEvent notification, CancellationToken cancellationToken = default(CancellationToken))
         {
             var matrixPositionBought = await _matrixPositionRepository.GetAsync(notification.MatrixPositionId);
 
@@ -34,14 +34,16 @@ namespace BC7.Business.Implementation.Events
         {
             await _context.Set<MatrixPosition>()
                 .Where(x => x.Left > matrixPositionBought.Left)
-                .UpdateAsync(x => new MatrixPosition()
+                .Where(x => x.MatrixLevel == matrixPositionBought.MatrixLevel)
+                .UpdateAsync(x => new MatrixPosition
                 {
                     Left = x.Left + 4
                 });
 
             await _context.Set<MatrixPosition>()
                 .Where(x => x.Right >= matrixPositionBought.Right)
-                .UpdateAsync(x => new MatrixPosition()
+                .Where(x => x.MatrixLevel == matrixPositionBought.MatrixLevel)
+                .UpdateAsync(x => new MatrixPosition
                 {
                     Right = x.Right + 4
                 });
@@ -75,7 +77,7 @@ namespace BC7.Business.Implementation.Events
                 )
             };
 
-            await _context.Set<MatrixPosition>().AddRangeAsync(matricesToAdd);
+            _context.Set<MatrixPosition>().AddRange(matricesToAdd);
             await _context.SaveChangesAsync();
         }
     }

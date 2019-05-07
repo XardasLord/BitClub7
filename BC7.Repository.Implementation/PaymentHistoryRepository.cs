@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BC7.Database;
 using BC7.Domain;
@@ -18,6 +20,13 @@ namespace BC7.Repository.Implementation
         public Task<PaymentHistory> GetAsync(Guid paymentId)
         {
             return _context.Set<PaymentHistory>().SingleOrDefaultAsync(x => x.PaymentId == paymentId);
+        }
+
+        public Task<List<PaymentHistory>> GetPaymentsByUser(Guid userId)
+        {
+            return _context.Set<PaymentHistory>()
+                .Where(x => x.OrderId == userId)
+                .ToListAsync();
         }
 
         public async Task CreateAsync(PaymentHistory paymentHistory)
