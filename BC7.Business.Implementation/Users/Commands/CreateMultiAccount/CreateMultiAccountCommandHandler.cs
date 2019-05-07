@@ -115,7 +115,7 @@ namespace BC7.Business.Implementation.Users.Commands.CreateMultiAccount
                 // Nie ma miejsca w matrycy sponsora lub w matrycy sponsora jest któreś z kont użytkownika
                 // Wtedy szukamy nowego sponsora
                 var emptyMatrixPositionUnderAvailableSponsor = await _matrixPositionHelper
-                    .FindTheNearestEmptyPositionFromGivenAccountWhereInParentsMatrixThereIsNoAnyMultiAccountAsync(sponsor.Id, userMultiAccountIds);
+                    .FindTheNearestEmptyPositionFromGivenAccountWhereInParentsMatrixThereIsNoAnyMultiAccountAsync(sponsor.Id, userMultiAccountIds, 0);
 
                 if (emptyMatrixPositionUnderAvailableSponsor == null)
                 {

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using BC7.Business.Implementation.Payments.Commands.PayMatrixLevel;
 using BC7.Business.Implementation.Payments.Commands.PayMembershipsFee;
 using BC7.Business.Implementation.Payments.Events;
 using MediatR;
@@ -27,6 +28,18 @@ namespace BC7.Api.Controllers
         [HttpPost("membershipsFee")]
         [Authorize]
         public async Task<IActionResult> PayMembershipsFee([FromBody] PayMembershipsFeeCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+
+        /// <summary>
+        /// Pay for the matrix entrance on given level
+        /// </summary>
+        /// <param name="command">A command with user main account ID and amount to pay and a matrix level to buy entrance to</param>
+        /// <returns>Returns the Url where the payment can be done</returns>
+        [HttpPost("matrixLevel")]
+        [Authorize]
+        public async Task<IActionResult> PayForMatrixLevel([FromBody] PayMatrixLevelCommand command)
         {
             return Ok(await _mediator.Send(command));
         }

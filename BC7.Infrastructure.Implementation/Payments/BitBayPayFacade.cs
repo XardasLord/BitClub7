@@ -20,7 +20,7 @@ namespace BC7.Infrastructure.Implementation.Payments
             _bitBayPayApiSettings = bitBayPayApiSettings;
         }
 
-        public async Task<CreatePaymentResponse> CreatePayment(Guid orderId, double price)
+        public async Task<CreatePaymentResponse> CreatePayment(Guid orderId, decimal price)
         {
             var client = new RestClient(_bitBayPayApiSettings.Value.ApiUrl);
             var request = new RestRequest("payments", Method.POST);

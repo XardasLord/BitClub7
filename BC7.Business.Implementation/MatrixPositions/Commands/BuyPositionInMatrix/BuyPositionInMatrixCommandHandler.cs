@@ -112,7 +112,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
         private Task PublishMatrixPositionHasBeenBoughtNotification(Guid matrixPositionId)
         {
-            var @event = new MatrixPositionHasBeenBoughtEvent { MatrixPositionId = matrixPositionId };
+            var @event = new MatrixPositionHasBeenBoughtEvent(matrixPositionId);
             return _mediator.Publish(@event);
         }
 
