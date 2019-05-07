@@ -223,6 +223,8 @@ namespace BC7.Database.Extensions
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.PaymentId).IsRequired();
                 entity.Property(e => e.OrderId).IsRequired();
+                entity.Property(e => e.AmountToPay).HasColumnType("decimal(18,6)");
+                entity.Property(e => e.PaidAmount).HasColumnType("decimal(18,6)");
                 entity.Property(e => e.Status).IsRequired();
                 entity.Property(e => e.PaymentFor).IsRequired();
                 entity.Property(e => e.CreatedAt).HasDefaultValueSql("getutcdate()");

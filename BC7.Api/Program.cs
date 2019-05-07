@@ -11,7 +11,9 @@ namespace BC7.Api
         public static void Main(string[] args)
         {
             // NLog: setup the logger first to catch all errors
-            var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var isDevelop = environment == EnvironmentName.Development;
+            var logger = NLogBuilder.ConfigureNLog(isDevelop ? "nlog.Development.config" : "nlog.config").GetCurrentClassLogger();
             try
             {
                 logger.Debug("init main");
