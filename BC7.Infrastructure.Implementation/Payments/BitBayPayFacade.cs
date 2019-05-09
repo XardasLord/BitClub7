@@ -2,9 +2,9 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using BC7.Common.Settings;
 using BC7.Infrastructure.Payments;
 using BC7.Infrastructure.Payments.BodyModels;
-using BC7.Infrastructure.Payments.Configuration;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RestSharp;

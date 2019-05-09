@@ -1,4 +1,4 @@
-﻿namespace BC7.Infrastructure.Payments.Configuration
+﻿namespace BC7.Common.Settings
 {
     public class BitBayPayApiSettings
     {

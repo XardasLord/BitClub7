@@ -4,7 +4,6 @@ using BC7.Common.Settings;
 using BC7.Database;
 using BC7.Infrastructure.Implementation.Payments;
 using BC7.Infrastructure.Payments;
-using BC7.Infrastructure.Payments.Configuration;
 using BC7.Repository;
 using BC7.Repository.Implementation;
 using BC7.Security;

@@ -1,4 +1,4 @@
-﻿namespace BC7.Security
+﻿namespace BC7.Common.Settings
 {
     public class JwtSettings
     {
