@@ -9,7 +9,6 @@ using BC7.Common.Settings;
 using BC7.Database;
 using BC7.Repository;
 using BC7.Repository.Implementation;
-using BC7.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +34,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
         protected IPaymentHistoryRepository _paymentHistoryRepository;
         protected IOptions<JwtSettings> _jwtSettings;
         protected IOptions<BitBayPayApiSettings> _bitBayPayApiSettings;
+        protected IOptions<MatrixStructureSettings> _matrixStructureSettings;
 
         [SetUp]
         public async Task SetUp()
@@ -81,6 +81,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             _paymentHistoryRepository = serviceProvider.GetService<IPaymentHistoryRepository>();
             _jwtSettings = serviceProvider.GetService<IOptions<JwtSettings>>();
             _bitBayPayApiSettings = serviceProvider.GetService<IOptions<BitBayPayApiSettings>>();
+            _matrixStructureSettings = serviceProvider.GetService<IOptions<MatrixStructureSettings>>();
 
             _context.Database.Migrate();
             await ClearDatabase();

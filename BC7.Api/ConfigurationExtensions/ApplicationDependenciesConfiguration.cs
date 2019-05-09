@@ -6,7 +6,6 @@ using BC7.Infrastructure.Implementation.Payments;
 using BC7.Infrastructure.Payments;
 using BC7.Repository;
 using BC7.Repository.Implementation;
-using BC7.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +37,7 @@ namespace BC7.Api.ConfigurationExtensions
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
             services.Configure<BitBayPayApiSettings>(configuration.GetSection("BitBayPayApiSettings"));
             services.Configure<ApplicationSettings>(configuration.GetSection("ApplicationSettings"));
+            services.Configure<MatrixStructureSettings>(configuration.GetSection("MatrixStructureSettings"));
 
             return services;
         }
