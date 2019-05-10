@@ -54,7 +54,7 @@ namespace BC7.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GenerateTreeDefinitionFile(int matrixLevel)
         {
-            await _mediator.Send(new GenerateTreeDefinitionFileRequest {MatrixLevel = matrixLevel});
+            await _mediator.Send(new GenerateTreeDefinitionFileRequest(matrixLevel));
             return Ok();
         }
     }

@@ -4,6 +4,11 @@ namespace BC7.Business.Implementation.MatrixPositions.Requests.GenerateTreeDefin
 {
     public class GenerateTreeDefinitionFileRequest : IRequest
     {
-        public int MatrixLevel { get; set; }
+        public int MatrixLevel { get; }
+
+        public GenerateTreeDefinitionFileRequest(int matrixLevel)
+        {
+            MatrixLevel = matrixLevel;
+        }
     }
 }
