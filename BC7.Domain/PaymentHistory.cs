@@ -36,7 +36,7 @@ namespace BC7.Domain
         public Guid PaymentId { get; private set; }
         public Guid OrderId { get; private set; }
         public decimal AmountToPay { get; private set; }
-        public decimal PaidAmount { get; private set; }
+        public decimal? PaidAmount { get; private set; }
         public string Status { get; private set; }
         public string PaymentFor { get; private set; }
         public DateTime CreatedAt { get; private set; }
@@ -53,7 +53,7 @@ namespace BC7.Domain
             PaymentId = paymentId;
             OrderId = orderId;
             AmountToPay = amountToPay;
-            PaidAmount = 0;
+            PaidAmount = null;
             Status = PaymentStatusHelper.NotPaid;
             PaymentFor = paymentFor;
             CreatedAt = DateTime.UtcNow;
@@ -94,9 +94,9 @@ namespace BC7.Domain
             Status = newStatus;
         }
 
-        public void Paid(decimal paidAmount)
+        public void Paid(decimal? paidAmount)
         {
-            PaidAmount += paidAmount;
+            PaidAmount = paidAmount;
         }
     }
 }

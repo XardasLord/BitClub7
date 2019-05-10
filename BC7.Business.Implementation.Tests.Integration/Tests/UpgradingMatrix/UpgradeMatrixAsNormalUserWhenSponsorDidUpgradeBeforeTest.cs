@@ -502,7 +502,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
                 matrixLevel: 1,
                 depthLevel: 0,
                 left: 1,
-                right: 18
+                right: 34
             );
             _context.MatrixPositions.Add(topMatrixPositionLvl1);
 
@@ -514,7 +514,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
                 matrixLevel: 1,
                 depthLevel: 1,
                 left: 2,
-                right: 11
+                right: 15
             );
             _context.MatrixPositions.Add(positionLineA1Lvl1);
 
@@ -525,8 +525,8 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
                 parentId: topMatrixPositionLvl1.Id,
                 matrixLevel: 1,
                 depthLevel: 1,
-                left: 12,
-                right: 17
+                left: 16,
+                right: 33
             );
             _context.MatrixPositions.Add(positionLineA2Lvl1);
 
