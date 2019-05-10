@@ -28,6 +28,7 @@ namespace BC7.Infrastructure.Implementation.Payments
             var createPaymentBody = new CreatePaymentBody
             {
                 DestinationCurrency = _bitBayPayApiSettings.Value.DestinationCurrency,
+                SourceCurrency = _bitBayPayApiSettings.Value.SourceCurrency,
                 Price = price,
                 OrderId = orderId,
                 NotificationsUrl = _bitBayPayApiSettings.Value.NotificationsUrl

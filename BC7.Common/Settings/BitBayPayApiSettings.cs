@@ -6,6 +6,7 @@
         public string PublicKey { get; set; }
         public string PrivateKey { get; set; }
         public string DestinationCurrency { get; set; }
+        public string SourceCurrency { get; set; }
         public double MembershipsFeeAmount { get; set; }
         public string NotificationsUrl { get; set; }
     }
