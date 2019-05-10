@@ -15,5 +15,6 @@ namespace BC7.Business.Helpers
         Task<MatrixPosition> FindHighestAdminPositionAsync(Guid userMultiAccountId, int matrixLevel);
         Task<AdminStructureSide> GetAdminStructureSide(Guid userMultiAccountId, int matrixLevel, MatrixPosition admin = null);
         Task<MatrixPosition> FindEmptyPositionForHighestAdminAsync(int matrixLevel);
+        Task<string> GenerateMatrixStructureTreeFileDefinition(int matrixLevel);
     }
 }

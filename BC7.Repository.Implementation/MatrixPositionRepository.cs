@@ -19,7 +19,7 @@ namespace BC7.Repository.Implementation
 
         public Task<MatrixPosition> GetAsync(Guid id)
         {
-            return _context.Set<MatrixPosition>().SingleOrDefaultAsync(x => x.Id == id);
+            return _context.Set<MatrixPosition>().SingleAsync(x => x.Id == id);
         }
 
         public Task<MatrixPosition> GetPositionForAccountAtLevelAsync(Guid userMultiAccountId, int matrixLevel = 0)

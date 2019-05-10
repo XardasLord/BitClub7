@@ -19,7 +19,7 @@ namespace BC7.Repository.Implementation
 
         public Task<PaymentHistory> GetAsync(Guid paymentId)
         {
-            return _context.Set<PaymentHistory>().SingleOrDefaultAsync(x => x.PaymentId == paymentId);
+            return _context.Set<PaymentHistory>().SingleAsync(x => x.PaymentId == paymentId);
         }
 
         public Task<List<PaymentHistory>> GetPaymentsByUser(Guid userId)
@@ -29,10 +29,10 @@ namespace BC7.Repository.Implementation
                 .ToListAsync();
         }
 
-        public async Task CreateAsync(PaymentHistory paymentHistory)
+        public Task CreateAsync(PaymentHistory paymentHistory)
         {
-            await _context.Set<PaymentHistory>().AddAsync(paymentHistory);
-            await _context.SaveChangesAsync();
+            _context.Set<PaymentHistory>().Add(paymentHistory);
+            return _context.SaveChangesAsync();
         }
 
         public Task UpdateAsync(PaymentHistory paymentHistory)

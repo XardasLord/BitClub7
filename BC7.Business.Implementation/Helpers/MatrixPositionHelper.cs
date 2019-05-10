@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using BC7.Business.Helpers;
 using BC7.Business.Models;
@@ -113,6 +115,40 @@ namespace BC7.Business.Implementation.Helpers
                 .Where(x => x.UserMultiAccountId == null)
                 .Where(x => x.DepthLevel == 2)
                 .FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Uses Graphviz library to draw a tree
+        /// </summary>
+        /// <param name="matrixLevel"></param>
+        /// <returns></returns>
+        public async Task<string> GenerateMatrixStructureTreeFileDefinition(int matrixLevel)
+        {
+            // TODO: Do it prettier
+            var results = await _context.Set<MatrixPosition>().FromSql($@"WITH cteEEs AS ( 
+            SELECT MatrixPositions.Id, MatrixPositions.ParentId, MatrixPositions.UserMultiAccountId, MatrixPositions.[Left], MatrixPositions.[Right], MatrixPositions.DepthLevel, MatrixPositions.MatrixLevel, MatrixPositions.CreatedAt FROM MatrixPositions WHERE MatrixPositions.ParentId IS NULL AND MatrixPositions.MatrixLevel = {matrixLevel} 
+                UNION ALL
+                SELECT MatrixPositions.Id, MatrixPositions.ParentId, MatrixPositions.UserMultiAccountId, MatrixPositions.[Left], MatrixPositions.[Right], MatrixPositions.DepthLevel, MatrixPositions.MatrixLevel, MatrixPositions.CreatedAt FROM MatrixPositions JOIN cteEEs ON(MatrixPositions.ParentId = cteEEs.Id) WHERE MatrixPositions.MatrixLevel = {matrixLevel} 
+                )
+            SELECT* FROM cteEEs")
+                .ToListAsync();
+
+            var nodeRelationships = new StringBuilder();
+            var nodeDetails = new StringBuilder();
+
+            foreach (var node in results)
+            {
+                if (node.ParentId.HasValue)
+                {
+                    nodeRelationships.AppendLine($"\t\"{node.ParentId}\" -> \"{node.Id}\"");
+                }
+
+                nodeDetails.AppendLine($"\t\"{node.Id}\" [label=\"{node.UserMultiAccountId}\"]");
+            }
+
+            nodeRelationships.AppendLine(nodeDetails.ToString());
+
+            return nodeRelationships.ToString();
         }
 
         private async Task<IEnumerable<MatrixPosition>> GetMatrixPositionWhereGivenPositionIsInLineBAsync(MatrixPosition matrixPosition, int matrixLevel = 0)

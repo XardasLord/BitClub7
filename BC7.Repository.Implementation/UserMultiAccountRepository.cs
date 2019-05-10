@@ -34,10 +34,10 @@ namespace BC7.Repository.Implementation
             return _context.Set<UserMultiAccount>().SingleOrDefaultAsync(x => x.MultiAccountName == accountName);
         }
 
-        public async Task CreateAsync(UserMultiAccount userMultiAccount)
+        public Task CreateAsync(UserMultiAccount userMultiAccount)
         {
-            await _context.Set<UserMultiAccount>().AddAsync(userMultiAccount);
-            await _context.SaveChangesAsync();
+            _context.Set<UserMultiAccount>().Add(userMultiAccount);
+            return _context.SaveChangesAsync();
         }
 
         public Task UpdateAsync(UserMultiAccount userMultiAccount)

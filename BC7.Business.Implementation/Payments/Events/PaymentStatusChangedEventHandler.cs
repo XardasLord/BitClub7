@@ -35,7 +35,7 @@ namespace BC7.Business.Implementation.Payments.Events
             {
                 case "MembershipsFee": // TODO: Maybe it should be enum for the simplicity? If yes then migration is necessary to change the PaymentFor table in domain
                     return MembershipsFeePaid(orderId);
-                //TODO: Other types in the future
+                    //TODO: Other types in the future
             }
 
             throw new ValidationException($"Unknown paymentFor value: {paymentFor}");

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatrix;
 using BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix;
+using BC7.Business.Implementation.MatrixPositions.Requests.GenerateTreeDefinitionFile;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,19 @@ namespace BC7.Api.Controllers
         {
             // TODO: status 201 maybe?
             return Ok(new { Id = await _mediator.Send(command) });
+        }
+
+        /// <summary>
+        /// Helper endpoint to generate the matrix tree structure - it saves the tree definition file which can be drawn using the Graphviz library
+        /// </summary>
+        /// <param name="matrixLevel">Matrix level</param>
+        /// <returns>Saves the file on a disc</returns>
+        [HttpGet("treeStructure/{matrixLevel}")]
+        [Authorize]
+        public async Task<IActionResult> GenerateTreeDefinitionFile(int matrixLevel)
+        {
+            await _mediator.Send(new GenerateTreeDefinitionFileRequest(matrixLevel));
+            return Ok();
         }
     }
 }
