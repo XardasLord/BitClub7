@@ -20,6 +20,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
 {
     public abstract class BaseIntegration
     {
+        // TODO Do the base test abstract prettier ;)
         protected IBitClub7Context _context;
         protected IMapper _mapper;
         protected IMediator _mediator;
