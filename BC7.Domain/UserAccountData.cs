@@ -102,6 +102,11 @@ namespace BC7.Domain
 
         public void SetPassword(string salt, string hash)
         {
+            if (!Salt.IsNullOrWhiteSpace() || !Hash.IsNullOrWhiteSpace())
+            {
+                throw new DomainException("Cannot set salt/hash properties because they are already set");
+            }
+
             Salt = salt;
             Hash = hash;
         }
