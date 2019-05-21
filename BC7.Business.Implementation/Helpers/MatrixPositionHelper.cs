@@ -17,13 +17,11 @@ namespace BC7.Business.Implementation.Helpers
     {
         private readonly IBitClub7Context _context;
         private readonly IMatrixPositionRepository _matrixPositionRepository;
-        private readonly IMatrixPositionHelper _matrixPositionHelper;
 
-        public MatrixPositionHelper(IBitClub7Context context, IMatrixPositionRepository matrixPositionRepository, IMatrixPositionHelper matrixPositionHelper)
+        public MatrixPositionHelper(IBitClub7Context context, IMatrixPositionRepository matrixPositionRepository)
         {
             _context = context;
             _matrixPositionRepository = matrixPositionRepository;
-            _matrixPositionHelper = matrixPositionHelper;
         }
 
         public bool CheckIfAnyAccountExistInMatrix(IEnumerable<MatrixPosition> matrix, IEnumerable<Guid> accountIds)
@@ -49,7 +47,7 @@ namespace BC7.Business.Implementation.Helpers
         public async Task<MatrixPosition> FindTheNearestEmptyPositionFromGivenAccountWhereInParentsMatrixThereIsNoAnyMultiAccountAsync(
             Guid userMultiAccountId, IReadOnlyCollection<Guid> multiAccountIds, int matrixLevel, AdminStructureSide adminStructureSide = AdminStructureSide.Skipped)
         {
-            var userMatrixPosition = await _matrixPositionRepository.GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
+            var userMatrixPosition = await GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
             if (userMatrixPosition is null) throw new ArgumentNullException(nameof(userMatrixPosition));
 
             userMatrixPosition = await GetMatrixPositionUnderAdminBasedOnStructureSide(matrixLevel, adminStructureSide, userMatrixPosition);
@@ -76,7 +74,7 @@ namespace BC7.Business.Implementation.Helpers
 
         public async Task<MatrixPosition> FindHighestAdminPositionAsync(Guid userMultiAccountId, int matrixLevel)
         {
-            var position = await _matrixPositionRepository.GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
+            var position = await GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
             if (position is null)
             {
                 throw new ValidationException($"There is no user multi account position - {userMultiAccountId} - in matrix lvl: {matrixLevel}");
@@ -92,7 +90,7 @@ namespace BC7.Business.Implementation.Helpers
 
         public async Task<AdminStructureSide> GetAdminStructureSide(Guid userMultiAccountId, int matrixLevel, MatrixPosition admin = null)
         {
-            var position = await _matrixPositionRepository.GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
+            var position = await GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
             if (position is null)
             {
                 throw new ValidationException($"There is no user multi account position - {userMultiAccountId} - in matrix lvl: {matrixLevel}");
@@ -125,6 +123,33 @@ namespace BC7.Business.Implementation.Helpers
                 .Where(x => x.UserMultiAccountId == null)
                 .Where(x => x.DepthLevel == 2)
                 .FirstOrDefaultAsync();
+        }
+
+        public Task<MatrixPosition> GetPositionForAccountAtLevelAsync(Guid userMultiAccountId, int matrixLevel = 0)
+        {
+            return _context.Set<MatrixPosition>()
+                .Where(x => x.UserMultiAccountId == userMultiAccountId)
+                .Where(x => x.MatrixLevel == matrixLevel)
+                .SingleOrDefaultAsync(); // Cycles available later
+        }
+
+        public async Task<IEnumerable<MatrixPosition>> GetMatrixForGivenMultiAccountAsync(Guid userMultiAccountId, int matrixLevel = 0)
+        {
+            var userMatrixPosition = await GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
+            if (userMatrixPosition == null)
+            {
+                return null;
+            }
+
+            var matrixAccounts = await _context.Set<MatrixPosition>()
+                .Where(x => x.Left >= userMatrixPosition.Left)
+                .Where(x => x.Right <= userMatrixPosition.Right)
+                .Where(x => x.DepthLevel >= userMatrixPosition.DepthLevel)
+                .Where(x => x.DepthLevel <= userMatrixPosition.DepthLevel + 2) // Each matrix has 2 depth level
+                .Where(x => x.MatrixLevel == matrixLevel)
+                .ToListAsync();
+
+            return matrixAccounts;
         }
 
         /// <summary>
@@ -163,7 +188,7 @@ namespace BC7.Business.Implementation.Helpers
 
         private async Task<IEnumerable<MatrixPosition>> GetMatrixPositionWhereGivenPositionIsInLineBAsync(MatrixPosition matrixPosition, int matrixLevel = 0)
         {
-            var parentPosition = await _matrixPositionHelper.GetTopParentAsync(matrixPosition, matrixLevel);
+            var parentPosition = await GetTopParentAsync(matrixPosition, matrixLevel);
             var parentsMatrix = await _matrixPositionRepository.GetMatrixAsync(parentPosition, matrixLevel);
 
             return parentsMatrix;
