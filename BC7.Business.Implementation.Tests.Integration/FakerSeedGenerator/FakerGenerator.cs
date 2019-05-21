@@ -14,14 +14,16 @@ namespace BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator
                     id: Guid.NewGuid(),
                     firstName: f.Person.FirstName,
                     email: f.Person.Email,
-                    login: f.Company.CompanyName(),
+                    login: f.Internet.UserName(),
                     lastName: f.Person.LastName,
                     street: f.Address.StreetName(),
                     city: f.Address.City(),
                     zipCode: f.Address.ZipCode(),
                     country: f.Address.Country(),
                     btcWalletAddress: f.Finance.BitcoinAddress(),
-                    role: UserRolesHelper.Admin));
+                    role: UserRolesHelper.User));
         }
+
+        //TODO: Rest of domain object faker generator
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BC7.Business.Implementation.Tests.Integration.Base;
+using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
 using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
 using BC7.Domain;
-using BC7.Security;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -31,36 +31,16 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccou
         [Given(StepTitle = "And given created default accounts and matrices in database prepared")]
         async Task AndGivenCreatedDefaultAccountsAndMatricesInDatabase()
         {
-            var myUserAccountData = new UserAccountData
-            (
-                id: Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499"),
-                login: "ExistingLogin",
-                email: "Email",
-                firstName: "FirstName",
-                lastName: "LastName",
-                street: "Street",
-                city: "City",
-                country: "Country",
-                zipCode: "ZipCode",
-                btcWalletAddress: "BtcWalletAddress",
-                role: UserRolesHelper.User
-            );
+            var fakerGenerator = new FakerGenerator();
+
+            var myUserAccountData = fakerGenerator.GetUserAccountDataFakerGenerator()
+                .RuleFor(x => x.Id, f => Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499"))
+                .Generate();
+
             myUserAccountData.SetPassword("salt", "hash");
             myUserAccountData.PaidMembershipFee();
 
-            var otherUser = new UserAccountData(
-                id: Guid.NewGuid(),
-                login: "OtherLogin",
-                email: "OtherEmail",
-                firstName: "OtherFirstName",
-                lastName: "OtherLastName",
-                street: "OtherStreet",
-                city: "OtherCity",
-                country: "OtherCountry",
-                zipCode: "OtherZipCode",
-                btcWalletAddress: "OtherBtcWalletAddress",
-                role: UserRolesHelper.User
-            );
+            var otherUser = fakerGenerator.GetUserAccountDataFakerGenerator().Generate();
             otherUser.SetPassword("salt", "hash");
             otherUser.PaidMembershipFee();
 
@@ -86,7 +66,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccou
                 multiAccountName: "otherMultiAccountName1"
             );
             otherSecondMultiAccount.SetReflink("SECOND_REFLINK");
-            
+
             var otherThirdMultiAccount = new UserMultiAccount
             (
                 id: Guid.NewGuid(),

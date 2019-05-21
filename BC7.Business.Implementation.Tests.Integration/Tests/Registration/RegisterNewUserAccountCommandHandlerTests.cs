@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BC7.Business.Implementation.Tests.Integration.Base;
+using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Domain;
-using BC7.Security;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -105,20 +105,9 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Registration
 
         private async Task CreateExistingUsersInDatabase()
         {
-            var existingUserAccountData = new UserAccountData
-            (
-                id: Guid.NewGuid(),
-                login: "ExistingLogin",
-                email: "Email",
-                firstName: "FirstName",
-                lastName: "LastName",
-                street: "Street",
-                city: "City",
-                country: "Country",
-                zipCode: "ZipCode",
-                btcWalletAddress: "BtcWalletAddress",
-                role: UserRolesHelper.Admin
-            );
+            var fakerGenerator = new FakerGenerator();
+
+            var existingUserAccountData = fakerGenerator.GetUserAccountDataFakerGenerator().Generate();
             existingUserAccountData.SetPassword("salt", "hash");
 
             _context.UserAccountsData.Add(existingUserAccountData);

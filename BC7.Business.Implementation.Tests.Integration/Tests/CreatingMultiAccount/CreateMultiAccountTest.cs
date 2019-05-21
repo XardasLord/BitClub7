@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using BC7.Business.Implementation.Tests.Integration.Base;
+using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
 using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
 using BC7.Domain;
-using BC7.Security;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -31,43 +31,23 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccou
             var multiAccounts = _context.UserMultiAccounts.Where(x => x.UserAccountDataId == Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499")).ToList();
             result.Should().NotBe(Guid.Empty);
             multiAccounts.Count.Should().Be(2);
-            
+
             var multiAccount = await _context.UserMultiAccounts.Include(x => x.Sponsor).SingleOrDefaultAsync(x => x.Id == result);
             multiAccount.Sponsor.RefLink.Should().Be(command.SponsorReflink);
         }
 
         private async Task CreateUserAndMultiAccountAndMatrixPositionsInDatabase()
         {
-            var existingUserAccountData = new UserAccountData
-            (
-                id: Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499"),
-                login: "ExistingLogin",
-                email: "Email",
-                firstName: "FirstName",
-                lastName: "LastName",
-                street: "Street",
-                city: "City",
-                country: "Country",
-                zipCode: "ZipCode",
-                btcWalletAddress: "BtcWalletAddress",
-                role: UserRolesHelper.User
-            );
+            var fakerGenerator = new FakerGenerator();
+
+            var existingUserAccountData = fakerGenerator.GetUserAccountDataFakerGenerator()
+                .RuleFor(x => x.Id, f => Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499"))
+                .Generate();
+
             existingUserAccountData.SetPassword("salt", "hash");
             existingUserAccountData.PaidMembershipFee();
 
-            var otherUser = new UserAccountData(
-                id: Guid.NewGuid(),
-                login: "OtherLogin",
-                email: "OtherEmail",
-                firstName: "OtherFirstName",
-                lastName: "OtherLastName",
-                street: "OtherStreet",
-                city: "OtherCity",
-                country: "OtherCountry",
-                zipCode: "OtherZipCode",
-                btcWalletAddress: "OtherBtcWalletAddress",
-                role: UserRolesHelper.User
-            );
+            var otherUser = fakerGenerator.GetUserAccountDataFakerGenerator().Generate();
             otherUser.SetPassword("salt", "hash");
             otherUser.PaidMembershipFee();
 
@@ -109,7 +89,6 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccou
                 right: 6
             );
             _context.MatrixPositions.Add(myMatrixPosition);
-            await _context.SaveChangesAsync();
 
             var otherMatrixPosition = new MatrixPosition
             (
@@ -122,7 +101,6 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccou
                 right: 5
             );
             _context.MatrixPositions.Add(otherMatrixPosition);
-            await _context.SaveChangesAsync();
 
             var otherMatrixPosition2 = new MatrixPosition
             (
