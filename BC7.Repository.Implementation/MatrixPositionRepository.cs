@@ -30,16 +30,6 @@ namespace BC7.Repository.Implementation
                 .SingleOrDefaultAsync(); // Cycles available later
         }
 
-        public Task<MatrixPosition> GetTopParentAsync(MatrixPosition matrixPosition, int matrixLevel = 0)
-        {
-            return _context.Set<MatrixPosition>()
-                .Where(x => x.Left < matrixPosition.Left)
-                .Where(x => x.Right > matrixPosition.Right)
-                .Where(x => x.DepthLevel == matrixPosition.DepthLevel - 2)
-                .Where(x => x.MatrixLevel == matrixLevel)
-                .SingleOrDefaultAsync();
-        }
-
         public async Task<IEnumerable<MatrixPosition>> GetMatrixAsync(MatrixPosition matrixPosition, int matrixLevel = 0)
         {
            return await _context.Set<MatrixPosition>()

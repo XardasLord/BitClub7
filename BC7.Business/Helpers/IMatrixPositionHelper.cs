@@ -10,6 +10,7 @@ namespace BC7.Business.Helpers
     {
         bool CheckIfAnyAccountExistInMatrix(IEnumerable<MatrixPosition> matrix, IEnumerable<Guid> accountIds);
         bool CheckIfMatrixHasEmptySpace(IEnumerable<MatrixPosition> matrix);
+        Task<MatrixPosition> GetTopParentAsync(MatrixPosition matrixPosition, int matrixLevel = 0);
         Task<MatrixPosition> FindTheNearestEmptyPositionFromGivenAccountWhereInParentsMatrixThereIsNoAnyMultiAccountAsync
             (Guid userMultiAccountId, IReadOnlyCollection<Guid> multiAccountIds, int matrixLevel, AdminStructureSide adminStructureSide = AdminStructureSide.Skipped);
         Task<MatrixPosition> FindHighestAdminPositionAsync(Guid userMultiAccountId, int matrixLevel);
