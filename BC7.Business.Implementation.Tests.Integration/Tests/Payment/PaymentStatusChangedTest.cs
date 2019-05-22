@@ -30,14 +30,11 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Payment
         {
             var fakerGenerator = new FakerGenerator();
 
-            var payment = new PaymentHistory
-            (
-                id: Guid.NewGuid(),
-                paymentId: Guid.Parse("ab1a5483-fd98-4fe0-b859-240b718c3ac3"),
-                orderId: Guid.NewGuid(),
-                amountToPay: 0.008M,
-                paymentFor: PaymentForHelper.MembershipsFee
-            );
+            var payment = fakerGenerator.GetPaymentHistoryFakerGenerator()
+                .RuleFor(x => x.PaymentId, f => Guid.Parse("ab1a5483-fd98-4fe0-b859-240b718c3ac3"))
+                .RuleFor(x => x.AmountToPay, f => 0.008M)
+                .RuleFor(x => x.PaymentFor, f => PaymentForHelper.MembershipsFee)
+                .Generate();
 
             _context.PaymentHistories.Add(payment);
 

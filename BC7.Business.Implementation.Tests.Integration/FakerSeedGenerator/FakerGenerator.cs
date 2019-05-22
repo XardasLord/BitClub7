@@ -7,9 +7,11 @@ namespace BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator
 {
     public class FakerGenerator
     {
+        private const string Local = "pl";
+
         public Faker<UserAccountData> GetUserAccountDataFakerGenerator()
         {
-            return new Faker<UserAccountData>("pl")
+            return new Faker<UserAccountData>(Local)
                 .CustomInstantiator(f => new UserAccountData(
                     id: Guid.NewGuid(),
                     firstName: f.Person.FirstName,
@@ -22,6 +24,17 @@ namespace BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator
                     country: f.Address.Country(),
                     btcWalletAddress: f.Finance.BitcoinAddress(),
                     role: UserRolesHelper.User));
+        }
+
+        public Faker<PaymentHistory> GetPaymentHistoryFakerGenerator()
+        {
+            return  new Faker<PaymentHistory>(Local)
+                .CustomInstantiator(f => new PaymentHistory(
+                    id: Guid.NewGuid(),
+                    paymentId: Guid.NewGuid(), 
+                    orderId: Guid.NewGuid(), 
+                    amountToPay: f.Finance.Amount(0.01M, 10M),
+                    paymentFor: PaymentForHelper.MembershipsFee));
         }
 
         //TODO: Rest of domain object faker generator
