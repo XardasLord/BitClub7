@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using BC7.Business.Implementation.Payments.Events;
 using BC7.Business.Implementation.Tests.Integration.Base;
+using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
 using BC7.Domain;
-using BC7.Security;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -28,6 +28,8 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Payment
 
         async Task AndGivenPaymentAndUserAccountInDatabase()
         {
+            var fakerGenerator = new FakerGenerator();
+
             var payment = new PaymentHistory
             (
                 id: Guid.NewGuid(),
@@ -39,19 +41,10 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Payment
 
             _context.PaymentHistories.Add(payment);
 
-            var user = new UserAccountData(
-                id: Guid.Parse("590565b0-df3e-49f0-866c-ececbe696611"),
-                login: "OtherLogin",
-                email: "OtherEmail",
-                firstName: "OtherFirstName",
-                lastName: "OtherLastName",
-                street: "OtherStreet",
-                city: "OtherCity",
-                country: "OtherCountry",
-                zipCode: "OtherZipCode",
-                btcWalletAddress: "OtherBtcWalletAddress",
-                role: UserRolesHelper.User
-            );
+            var user = fakerGenerator.GetUserAccountDataFakerGenerator()
+                .RuleFor(x => x.Id, f => Guid.Parse("590565b0-df3e-49f0-866c-ececbe696611"))
+                .Generate();
+
             user.SetPassword("salt", "hash");
 
             _context.UserAccountsData.Add(user);
