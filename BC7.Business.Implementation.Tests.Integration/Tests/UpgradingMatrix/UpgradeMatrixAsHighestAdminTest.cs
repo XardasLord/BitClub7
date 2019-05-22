@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix;
 using BC7.Business.Implementation.Tests.Integration.Base;
+using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
 using BC7.Domain;
 using BC7.Security;
 using FluentAssertions;
@@ -31,89 +32,32 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
         
         async Task AndGivenCreatedDefaultAccountsAndMatricesInDatabase()
         {
-            var adminUserAccountData1 = new UserAccountData
-            (
-                id: Guid.NewGuid(),
-                login: "ExistingLogin1",
-                email: "Email1",
-                firstName: "FirstName",
-                lastName: "LastName",
-                street: "Street",
-                city: "City",
-                country: "Country",
-                zipCode: "ZipCode",
-                btcWalletAddress: "BtcWalletAddress",
-                role: UserRolesHelper.Admin
-            );
-            adminUserAccountData1.SetPassword("salt", "hash");
-            adminUserAccountData1.PaidMembershipFee();
+            var fakerGenerator = new FakerGenerator();
 
-            var adminUserAccountData2 = new UserAccountData
-            (
-                id: Guid.NewGuid(),
-                login: "ExistingLogin2",
-                email: "Email2",
-                firstName: "FirstName",
-                lastName: "LastName",
-                street: "Street",
-                city: "City",
-                country: "Country",
-                zipCode: "ZipCode",
-                btcWalletAddress: "BtcWalletAddress",
-                role: UserRolesHelper.Admin
-            );
-            adminUserAccountData2.SetPassword("salt", "hash");
-            adminUserAccountData2.PaidMembershipFee();
+            var adminUserAccountData1 = fakerGenerator.GetUserAccountDataFakerGenerator()
+                .RuleFor(x => x.Role, UserRolesHelper.Admin)
+                .RuleFor(x => x.IsMembershipFeePaid, true)
+                .Generate();
 
-            var adminUserAccountData3 = new UserAccountData
-            (
-                id: Guid.NewGuid(),
-                login: "ExistingLogin3",
-                email: "Email3",
-                firstName: "FirstName",
-                lastName: "LastName",
-                street: "Street",
-                city: "City",
-                country: "Country",
-                zipCode: "ZipCode",
-                btcWalletAddress: "BtcWalletAddress",
-                role: UserRolesHelper.Admin
-            );
-            adminUserAccountData3.SetPassword("salt", "hash");
-            adminUserAccountData3.PaidMembershipFee();
+            var adminUserAccountData2 = fakerGenerator.GetUserAccountDataFakerGenerator()
+                .RuleFor(x => x.Role, UserRolesHelper.Admin)
+                .RuleFor(x => x.IsMembershipFeePaid, true)
+                .Generate();
 
-            var adminUserAccountData4 = new UserAccountData
-            (
-                id: Guid.NewGuid(),
-                login: "ExistingLogin4",
-                email: "Email4",
-                firstName: "FirstName",
-                lastName: "LastName",
-                street: "Street",
-                city: "City",
-                country: "Country",
-                zipCode: "ZipCode",
-                btcWalletAddress: "BtcWalletAddress",
-                role: UserRolesHelper.Admin
-            );
-            adminUserAccountData4.SetPassword("salt", "hash");
-            adminUserAccountData4.PaidMembershipFee();
+            var adminUserAccountData3 = fakerGenerator.GetUserAccountDataFakerGenerator()
+                .RuleFor(x => x.Role, UserRolesHelper.Admin)
+                .RuleFor(x => x.IsMembershipFeePaid, true)
+                .Generate();
 
-            var rootUser = new UserAccountData(
-                id: Guid.NewGuid(),
-                login: "OtherLogin",
-                email: "OtherEmail",
-                firstName: "OtherFirstName",
-                lastName: "OtherLastName",
-                street: "OtherStreet",
-                city: "OtherCity",
-                country: "OtherCountry",
-                zipCode: "OtherZipCode",
-                btcWalletAddress: "OtherBtcWalletAddress",
-                role: UserRolesHelper.Root
-            );
-            rootUser.SetPassword("salt", "hash");
-            rootUser.PaidMembershipFee();
+            var adminUserAccountData4 = fakerGenerator.GetUserAccountDataFakerGenerator()
+                .RuleFor(x => x.Role, UserRolesHelper.Admin)
+                .RuleFor(x => x.IsMembershipFeePaid, true)
+                .Generate();
+
+            var rootUser = fakerGenerator.GetUserAccountDataFakerGenerator()
+                .RuleFor(x => x.Role, UserRolesHelper.Root)
+                .RuleFor(x => x.IsMembershipFeePaid, true)
+                .Generate();
 
             _context.UserAccountsData.AddRange(adminUserAccountData1, adminUserAccountData2, adminUserAccountData3, adminUserAccountData4, rootUser);
             await _context.SaveChangesAsync();
@@ -479,16 +423,13 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
             await _context.SaveChangesAsync();
 
             // Payments
-            var paymentHistory = new PaymentHistory
-            (
-                id: Guid.NewGuid(),
-                paymentId: Guid.NewGuid(),
-                orderId: _adminMultiAccountId,
-                amountToPay: 10,
-                paymentFor: PaymentForHelper.MatrixLevelPositionsDictionary[1]
-            );
-            paymentHistory.Paid(10);
-            paymentHistory.ChangeStatus(PaymentStatusHelper.Completed);
+            var paymentHistory = fakerGenerator.GetPaymentHistoryFakerGenerator()
+                .RuleFor(x => x.OrderId, _adminMultiAccountId)
+                .RuleFor(x => x.AmountToPay, 10M)
+                .RuleFor(x => x.PaidAmount, 10M)
+                .RuleFor(x => x.Status, PaymentStatusHelper.Completed)
+                .RuleFor(x => x.PaymentFor, PaymentForHelper.MatrixLevelPositionsDictionary[1])
+                .Generate();
 
             _context.PaymentHistories.Add(paymentHistory);
             await _context.SaveChangesAsync();

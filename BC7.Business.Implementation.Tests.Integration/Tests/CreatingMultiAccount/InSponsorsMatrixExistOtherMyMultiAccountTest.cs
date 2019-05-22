@@ -35,14 +35,12 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccou
 
             var myUserAccountData = fakerGenerator.GetUserAccountDataFakerGenerator()
                 .RuleFor(x => x.Id, f => Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499"))
+                .RuleFor(x => x.IsMembershipFeePaid, true)
                 .Generate();
 
-            myUserAccountData.SetPassword("salt", "hash");
-            myUserAccountData.PaidMembershipFee();
-
-            var otherUser = fakerGenerator.GetUserAccountDataFakerGenerator().Generate();
-            otherUser.SetPassword("salt", "hash");
-            otherUser.PaidMembershipFee();
+            var otherUser = fakerGenerator.GetUserAccountDataFakerGenerator()
+                .RuleFor(x => x.IsMembershipFeePaid, true)
+                .Generate();
 
             _context.UserAccountsData.AddRange(myUserAccountData, otherUser);
             await _context.SaveChangesAsync();

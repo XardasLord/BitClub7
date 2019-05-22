@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BC7.Business.Implementation.Tests.Integration.Base;
+using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
 using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
 using BC7.Domain;
-using BC7.Security;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -31,38 +31,16 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccou
         [Given(StepTitle = "And given created default accounts and matrices in database prepared")]
         async Task AndGivenCreatedDefaultAccountsAndMatricesInDatabase()
         {
-            var myUserAccountData = new UserAccountData
-            (
-                id: Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499"),
-                login: "ExistingLogin",
-                email: "Email",
-                firstName: "FirstName",
-                lastName: "LastName",
-                street: "Street",
-                city: "City",
-                country: "Country",
-                zipCode: "ZipCode",
-                btcWalletAddress: "BtcWalletAddress",
-                role: UserRolesHelper.User
-            );
-            myUserAccountData.SetPassword("salt", "hash");
-            myUserAccountData.PaidMembershipFee();
+            var fakerGenerator = new FakerGenerator();
 
-            var otherUser = new UserAccountData(
-                id: Guid.NewGuid(),
-                login: "OtherLogin",
-                email: "OtherEmail",
-                firstName: "OtherFirstName",
-                lastName: "OtherLastName",
-                street: "OtherStreet",
-                city: "OtherCity",
-                country: "OtherCountry",
-                zipCode: "OtherZipCode",
-                btcWalletAddress: "OtherBtcWalletAddress",
-                role: UserRolesHelper.User
-            );
-            otherUser.SetPassword("salt", "hash");
-            otherUser.PaidMembershipFee();
+            var myUserAccountData = fakerGenerator.GetUserAccountDataFakerGenerator()
+                .RuleFor(x => x.Id, Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499"))
+                .RuleFor(x => x.IsMembershipFeePaid, true)
+                .Generate();
+
+            var otherUser = fakerGenerator.GetUserAccountDataFakerGenerator()
+                .RuleFor(x => x.IsMembershipFeePaid, true)
+                .Generate();
 
             _context.UserAccountsData.AddRange(myUserAccountData, otherUser);
             await _context.SaveChangesAsync();
@@ -86,7 +64,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreatingMultiAccou
                 multiAccountName: "otherMultiAccountName2"
             );
             otherMultiAccount2.SetReflink("SECOND_REFLINK");
-            
+
             var otherMultiAccount3 = new UserMultiAccount
             (
                 id: Guid.NewGuid(),

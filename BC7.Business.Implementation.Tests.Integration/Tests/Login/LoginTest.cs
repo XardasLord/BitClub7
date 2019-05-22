@@ -12,6 +12,9 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Login
 {
     public class LoginTest : BaseIntegration
     {
+        private const string TestLogin = "Test123";
+        private const string TestPassword = "Password12345";
+
         private LoginCommandHandler _sut;
         private LoginCommand _command;
         private string _result;
@@ -24,14 +27,14 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Login
         async Task AndGivenCreatedUserAccountInDatabase()
         {
             var fakerGenerator = new FakerGenerator();
+            var hashSalt = PasswordEncryptionUtilities.GenerateSaltedHash(TestPassword);
 
             var myUserAccountData = fakerGenerator.GetUserAccountDataFakerGenerator()
                 .RuleFor(x => x.Id, f => Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499"))
-                .RuleFor(x => x.Login, f => "Test123")
+                .RuleFor(x => x.Login, f => TestLogin)
+                .RuleFor(x => x.Hash, hashSalt.Hash)
+                .RuleFor(x => x.Salt, hashSalt.Salt)
                 .Generate();
-
-            var hashSalt = PasswordEncryptionUtilities.GenerateSaltedHash("Password12345");
-            myUserAccountData.SetPassword(hashSalt.Salt, hashSalt.Hash);
 
             _context.UserAccountsData.Add(myUserAccountData);
             await _context.SaveChangesAsync();
@@ -41,8 +44,8 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Login
         {
             _command = new LoginCommand
             {
-                LoginOrEmail = "Test123",
-                Password = "Password12345"
+                LoginOrEmail = TestLogin,
+                Password = TestPassword
             };
         }
 

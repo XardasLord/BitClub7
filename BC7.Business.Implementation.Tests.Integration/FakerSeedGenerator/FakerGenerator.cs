@@ -23,20 +23,33 @@ namespace BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator
                     zipCode: f.Address.ZipCode(),
                     country: f.Address.Country(),
                     btcWalletAddress: f.Finance.BitcoinAddress(),
-                    role: UserRolesHelper.User));
+                    role: UserRolesHelper.User))
+                .RuleFor(x => x.Hash, f => f.Random.Hash())
+                .RuleFor(x => x.Salt, f => f.Random.Hash())
+                .RuleFor(x => x.IsMembershipFeePaid, false);
         }
 
         public Faker<PaymentHistory> GetPaymentHistoryFakerGenerator()
         {
-            return  new Faker<PaymentHistory>(Local)
+            return new Faker<PaymentHistory>(Local)
                 .CustomInstantiator(f => new PaymentHistory(
                     id: Guid.NewGuid(),
-                    paymentId: Guid.NewGuid(), 
-                    orderId: Guid.NewGuid(), 
+                    paymentId: Guid.NewGuid(),
+                    orderId: Guid.NewGuid(),
                     amountToPay: f.Finance.Amount(0.01M, 10M),
                     paymentFor: PaymentForHelper.MembershipsFee));
         }
 
-        //TODO: Rest of domain object faker generator
+        public Faker<UserMultiAccount> GetUserMultiAccountFakerGenerator()
+        {
+            return new Faker<UserMultiAccount>(Local)
+                .CustomInstantiator(f => new UserMultiAccount(
+                    id: Guid.NewGuid(),
+                    userAccountDataId: Guid.NewGuid(),
+                    sponsorId: null,
+                    multiAccountName: f.Person.UserName))
+                .RuleFor(x => x.RefLink, f => f.Random.Hash())
+                .RuleFor(x => x.IsMainAccount, false);
+        }
     }
 }

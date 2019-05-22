@@ -42,8 +42,6 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Payment
                 .RuleFor(x => x.Id, f => Guid.Parse("590565b0-df3e-49f0-866c-ececbe696611"))
                 .Generate();
 
-            user.SetPassword("salt", "hash");
-
             _context.UserAccountsData.Add(user);
             await _context.SaveChangesAsync();
         }
