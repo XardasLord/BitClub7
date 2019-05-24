@@ -15,18 +15,23 @@ namespace BC7.Business.Implementation.Tests.Unit
         }
 
         [Test]
+        public void GenerateReflink_WhenCalled_ReflinkHasLengthOf32()
+        {
+            var reflink = _reflinkHelper.GenerateReflink();
+
+            reflink.Length.Should().Be(32);
+        }
+
+        [Test]
         public void GenerateReflink_WhenCalled_ReturnsDifferentHashEachTime()
         {
-            // Arrange
             var hashes = new List<string>();
-
-            // Act
+            
             for (var i = 0; i < 10; i++)
             {
                 hashes.Add(_reflinkHelper.GenerateReflink());
             }
-
-            // Assert
+            
             hashes.Should().OnlyHaveUniqueItems();
         }
     }
