@@ -14,10 +14,15 @@ namespace BC7.Business.Implementation.Tests.Unit
             _reflinkHelper = new ReflinkHelper();
         }
 
+        public string Act()
+        {
+            return _reflinkHelper.GenerateReflink();
+        }
+
         [Test]
         public void GenerateReflink_WhenCalled_ReflinkHasLengthOf32()
         {
-            var reflink = _reflinkHelper.GenerateReflink();
+            var reflink = Act();
 
             reflink.Length.Should().Be(32);
         }
@@ -27,9 +32,9 @@ namespace BC7.Business.Implementation.Tests.Unit
         {
             var hashes = new List<string>();
             
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < 20; i++)
             {
-                hashes.Add(_reflinkHelper.GenerateReflink());
+                hashes.Add(Act());
             }
             
             hashes.Should().OnlyHaveUniqueItems();
