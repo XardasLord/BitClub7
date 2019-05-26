@@ -23,13 +23,20 @@ namespace BC7.Business.Implementation.Tests.Unit
             _userAccountDataRepositoryMock = new Mock<IUserAccountDataRepository>(MockBehavior.Strict);
         }
 
+        public Task<string> Act(Guid userAccountDataId)
+        {
+            var sut = new UserMultiAccountHelper(_contextMock.Object, _userAccountDataRepositoryMock.Object);
+
+            return sut.GenerateNextMultiAccountName(userAccountDataId);
+        }
+
         [Test]
         [TestCase(0, "TestUser")]
         [TestCase(1, "TestUser-001")]
+        [TestCase(2, "TestUser-002")]
         [TestCase(5, "TestUser-005")]
         public async Task GenerateNextMultiAccountName_WhenCalled_ReturnsCorrectMultiAccountName(int numberOfMultiAccounts, string expectedResult)
         {
-            var sut = new UserMultiAccountHelper(_contextMock.Object, _userAccountDataRepositoryMock.Object);
             var userAccountDataId = Guid.NewGuid();
             var multiAccounts = _fakeGenerator.GetUserMultiAccountFakerGenerator().Generate(numberOfMultiAccounts);
 
@@ -40,7 +47,7 @@ namespace BC7.Business.Implementation.Tests.Unit
                         .RuleFor(x => x.UserMultiAccounts, multiAccounts)
                         .Generate()));
 
-            var result = await sut.GenerateNextMultiAccountName(userAccountDataId);
+            var result = await Act(userAccountDataId);
 
             result.Should().Be(expectedResult);
         }
