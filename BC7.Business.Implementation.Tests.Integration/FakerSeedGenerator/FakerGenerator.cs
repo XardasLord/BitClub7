@@ -51,5 +51,16 @@ namespace BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator
                 .RuleFor(x => x.RefLink, f => f.Random.Hash())
                 .RuleFor(x => x.IsMainAccount, false);
         }
+
+        public Faker<Article> GetArticleFakerGenerator()
+        {
+            return new Faker<Article>(Local)
+                .CustomInstantiator(f => new Article(
+                    id: Guid.NewGuid(), 
+                    creatorId:Guid.NewGuid(), 
+                    title: f.Lorem.Sentence(),
+                    text: f.Lorem.Text()))
+                .RuleFor(x => x.CreatedAt, DateTimeOffset.Now);
+        }
     }
 }

@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BC7.Business.Implementation.Tests.Integration\BC7.Business.Implementation.Tests.Integration.csproj" />
     <ProjectReference Include="..\BC7.Business.Implementation\BC7.Business.Implementation.csproj" />
   </ItemGroup>
 

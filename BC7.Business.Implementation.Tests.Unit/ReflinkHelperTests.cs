@@ -14,19 +14,29 @@ namespace BC7.Business.Implementation.Tests.Unit
             _reflinkHelper = new ReflinkHelper();
         }
 
+        public string Act()
+        {
+            return _reflinkHelper.GenerateReflink();
+        }
+
+        [Test]
+        public void GenerateReflink_WhenCalled_ReflinkHasLengthOf32()
+        {
+            var reflink = Act();
+
+            reflink.Length.Should().Be(32);
+        }
+
         [Test]
         public void GenerateReflink_WhenCalled_ReturnsDifferentHashEachTime()
         {
-            // Arrange
             var hashes = new List<string>();
-
-            // Act
-            for (var i = 0; i < 10; i++)
+            
+            for (var i = 0; i < 20; i++)
             {
-                hashes.Add(_reflinkHelper.GenerateReflink());
+                hashes.Add(Act());
             }
-
-            // Assert
+            
             hashes.Should().OnlyHaveUniqueItems();
         }
     }

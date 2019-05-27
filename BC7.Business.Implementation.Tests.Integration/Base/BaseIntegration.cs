@@ -33,6 +33,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
         protected IUserMultiAccountRepository _userMultiAccountRepository;
         protected IMatrixPositionRepository _matrixPositionRepository;
         protected IPaymentHistoryRepository _paymentHistoryRepository;
+        protected IArticleRepository _articleRepository;
         protected IOptions<JwtSettings> _jwtSettings;
         protected IOptions<BitBayPayApiSettings> _bitBayPayApiSettings;
         protected IOptions<MatrixStructureSettings> _matrixStructureSettings;
@@ -55,6 +56,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             services.AddTransient<IUserMultiAccountRepository, UserMultiAccountRepository>();
             services.AddTransient<IMatrixPositionRepository, MatrixPositionRepository>();
             services.AddTransient<IPaymentHistoryRepository, PaymentHistoryRepository>();
+            services.AddTransient<IArticleRepository, ArticleRepository>();
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
             services.AddAutoMapper();
@@ -80,6 +82,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             _userMultiAccountRepository = serviceProvider.GetService<IUserMultiAccountRepository>();
             _matrixPositionRepository = serviceProvider.GetService<IMatrixPositionRepository>();
             _paymentHistoryRepository = serviceProvider.GetService<IPaymentHistoryRepository>();
+            _articleRepository = serviceProvider.GetService<IArticleRepository>();
             _jwtSettings = serviceProvider.GetService<IOptions<JwtSettings>>();
             _bitBayPayApiSettings = serviceProvider.GetService<IOptions<BitBayPayApiSettings>>();
             _matrixStructureSettings = serviceProvider.GetService<IOptions<MatrixStructureSettings>>();
@@ -94,16 +97,17 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             var multiAccounts = _context.UserMultiAccounts;
             var users = _context.UserAccountsData;
             var paymentHistories = _context.PaymentHistories;
+            var articles = _context.Articles;
 
             _context.MatrixPositions.RemoveRange(matrices);
             _context.UserMultiAccounts.RemoveRange(multiAccounts);
             _context.UserAccountsData.RemoveRange(users);
             _context.PaymentHistories.RemoveRange(paymentHistories);
+            _context.Articles.RemoveRange(articles);
 
             await _context.SaveChangesAsync();
         }
-
-
+        
         [TearDown]
         public async Task TearDown()
         {
