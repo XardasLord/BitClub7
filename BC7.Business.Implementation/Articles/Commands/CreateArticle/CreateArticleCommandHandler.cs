@@ -7,7 +7,7 @@ using MediatR;
 
 namespace BC7.Business.Implementation.Articles.Commands.CreateArticle
 {
-    public class CreateArticleCommandHandler : IRequestHandler<CreateArticleCommand>
+    public class CreateArticleCommandHandler : IRequestHandler<CreateArticleCommand, Guid>
     {
         private readonly IUserAccountDataRepository _userAccountDataRepository;
         private readonly IArticleRepository _articleRepository;
@@ -18,7 +18,7 @@ namespace BC7.Business.Implementation.Articles.Commands.CreateArticle
             _articleRepository = articleRepository;
         }
 
-        public async Task<Unit> Handle(CreateArticleCommand command, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Guid> Handle(CreateArticleCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
             var user = await _userAccountDataRepository.GetAsync(command.UserAccountDataId);
 
@@ -31,7 +31,7 @@ namespace BC7.Business.Implementation.Articles.Commands.CreateArticle
 
             await _articleRepository.CreateAsync(article);
 
-            return Unit.Value;
+            return article.Id;
         }
     }
 }
