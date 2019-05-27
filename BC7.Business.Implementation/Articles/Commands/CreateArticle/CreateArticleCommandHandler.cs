@@ -5,7 +5,7 @@ using BC7.Domain;
 using BC7.Repository;
 using MediatR;
 
-namespace BC7.Business.Implementation.Articles.Commands
+namespace BC7.Business.Implementation.Articles.Commands.CreateArticle
 {
     public class CreateArticleCommandHandler : IRequestHandler<CreateArticleCommand>
     {

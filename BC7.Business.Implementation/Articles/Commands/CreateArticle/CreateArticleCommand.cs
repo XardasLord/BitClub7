@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace BC7.Business.Implementation.Articles.Commands
+namespace BC7.Business.Implementation.Articles.Commands.CreateArticle
 {
     public class CreateArticleCommand : IRequest
     {

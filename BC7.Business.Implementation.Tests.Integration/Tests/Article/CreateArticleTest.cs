@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BC7.Business.Implementation.Articles.Commands;
+using BC7.Business.Implementation.Articles.Commands.CreateArticle;
 using BC7.Business.Implementation.Tests.Integration.Base;
 using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
 using BC7.Security;
