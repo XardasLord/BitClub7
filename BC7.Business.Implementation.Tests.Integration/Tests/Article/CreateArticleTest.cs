@@ -3,14 +3,13 @@ using System.Threading.Tasks;
 using BC7.Business.Implementation.Articles.Commands;
 using BC7.Business.Implementation.Tests.Integration.Base;
 using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
-using BC7.Domain;
 using BC7.Security;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using TestStack.BDDfy;
 
-namespace BC7.Business.Implementation.Tests.Integration.Tests.CreateArticle
+namespace BC7.Business.Implementation.Tests.Integration.Tests.Article
 {
     [Story(
         AsA = "As a user with root role",
@@ -58,7 +57,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.CreateArticle
 
         async Task ThenArticleExistsInDatabase()
         {
-            var article = await _context.Set<Article>().SingleAsync();
+            var article = await _context.Set<Domain.Article>().SingleAsync();
             
             article.CreatorId.Should().Be(_userId);
             article.Title.Should().Be("Example Title");

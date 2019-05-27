@@ -17,6 +17,9 @@ namespace BC7.Business.Implementation.Tests.Integration.Mappings
 
             CreateMap<UserMultiAccount, UserMultiAccountModel>();
             CreateMap<MatrixPosition, MatrixPositionModel>();
+
+            CreateMap<Article, ArticleModel>()
+                .ForMember(x => x.Creator, opt => opt.MapFrom(y => $"{y.Creator.FirstName} {y.Creator.LastName}"));
         }
     }
 }
