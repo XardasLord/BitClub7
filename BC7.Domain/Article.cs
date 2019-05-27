@@ -43,5 +43,21 @@ namespace BC7.Domain
                 throw new DomainException("Invalid article text");
             }
         }
+
+        public void UpdateInformation(string newTitle, string newText)
+        {
+            if (newTitle.IsNullOrWhiteSpace())
+            {
+                throw  new DomainException("Article's title cannot be null or empty");
+            }
+            if (newText.IsNullOrWhiteSpace())
+            {
+                throw new DomainException("Article's text cannot be null or empty");
+            }
+
+            Title = newTitle;
+            Text = newText;
+            // TODO: ModifiedAt...
+        }
     }
 }

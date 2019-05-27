@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BC7.Database;
 using BC7.Domain;
@@ -15,6 +16,11 @@ namespace BC7.Repository.Implementation
             _context = context;
         }
 
+        public Task<Article> GetAsync(Guid id)
+        {
+            return _context.Set<Article>().SingleAsync(x => x.Id == id);
+        }
+
         public Task<List<Article>> GetAllAsync()
         {
             return _context.Set<Article>()
@@ -25,6 +31,12 @@ namespace BC7.Repository.Implementation
         public Task CreateAsync(Article article)
         {
             _context.Set<Article>().Add(article);
+            return _context.SaveChangesAsync();
+        }
+
+        public Task UpdateAsync(Article article)
+        {
+            _context.Set<Article>().Attach(article);
             return _context.SaveChangesAsync();
         }
     }
