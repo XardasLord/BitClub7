@@ -2,9 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using BC7.Domain;
-using BC7.Infrastructure.CustomExceptions;
 using BC7.Repository;
-using BC7.Security;
 using MediatR;
 
 namespace BC7.Business.Implementation.Articles.Commands
@@ -23,10 +21,6 @@ namespace BC7.Business.Implementation.Articles.Commands
         public async Task<Unit> Handle(CreateArticleCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
             var user = await _userAccountDataRepository.GetAsync(command.UserAccountDataId);
-            if (user.Role != UserRolesHelper.Root)
-            {
-                throw new ValidationException("Only root user can add an article");
-            }
 
             var article = new Article(
                 id: Guid.NewGuid(),
