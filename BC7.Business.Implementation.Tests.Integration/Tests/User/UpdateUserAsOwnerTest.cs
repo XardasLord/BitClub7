@@ -77,7 +77,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.User
         }
 
         [Test]
-        public void UpdateUser()
+        public void UpdateUserAsOwner()
         {
             this.BDDfy();
         }
