@@ -51,7 +51,6 @@ namespace BC7.Api
         {
             if (env.IsDevelopment())
             {
-                app.UpdateDatabase();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -59,6 +58,8 @@ namespace BC7.Api
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UpdateDatabase();
             app.ConfigureCustomExceptionMiddleware();
             app.UseAuthentication();
             app.UseHttpsRedirection();
