@@ -21,7 +21,6 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.User
         private UpdateUserCommandHandler _sut;
         private UpdateUserCommand _command;
         private readonly Guid _updatedUserId = Guid.NewGuid();
-        private readonly Guid _requestedUserId = Guid.NewGuid();
 
         void GivenSystemUnderTest()
         {
@@ -34,6 +33,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.User
 
             var user = fakerGenerator.GetUserAccountDataFakerGenerator()
                 .RuleFor(x => x.Id, _updatedUserId)
+                .RuleFor(x => x.Role, UserRolesHelper.User)
                 .Generate();
 
             _context.UserAccountsData.Add(user);
