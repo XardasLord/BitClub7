@@ -22,7 +22,7 @@ namespace BC7.Business.Implementation.Users.Commands.UpdateUser
             var userToUpdate = await _userAccountDataRepository.GetAsync(command.UserId);
             var requestedUser = await _userAccountDataRepository.GetAsync(command.RequestedUserId);
 
-            ValidatePermission(userToUpdate, requestedUser);
+            ValidatePermission(userToUpdate, requestedUser, command.Role);
 
             userToUpdate.UpdateInformation(command.FirstName, command.LastName, command.Street, command.City, command.ZipCode, command.Country, command.BtcWalletAddress);
             userToUpdate.UpdateRole(command.Role);
@@ -32,11 +32,16 @@ namespace BC7.Business.Implementation.Users.Commands.UpdateUser
             return Unit.Value;
         }
 
-        private static void ValidatePermission(UserAccountData userToUpdate, UserAccountData requestedUser)
+        private static void ValidatePermission(UserAccountData userToUpdate, UserAccountData requestedUser, string newRole)
         {
             if (requestedUser.Id != userToUpdate.Id && requestedUser.Role != UserRolesHelper.Root)
             {
                 throw new ValidationException("Only user itself or user with role `root` can edit information of other user");
+            }
+
+            if (requestedUser.Id == userToUpdate.Id && requestedUser.Role != UserRolesHelper.Root && userToUpdate.Role != newRole)
+            {
+                throw new ValidationException("You don't have permission to change your own role");
             }
         }
     }

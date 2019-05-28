@@ -6,10 +6,10 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
-namespace BC7.Business.Implementation.Tests.Integration.Tests.Registration
+namespace BC7.Business.Implementation.Tests.Integration.Tests.User
 {
     [TestFixture]
-    public class RegisterNewUserAccountCommandHandlerTests : BaseIntegration
+    public class RegisterNewUserAccountTests : BaseIntegration
     {
         private RegisterNewUserAccountCommandHandler _sut;
 

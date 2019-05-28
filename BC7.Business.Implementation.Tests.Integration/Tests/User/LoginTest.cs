@@ -8,7 +8,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using TestStack.BDDfy;
 
-namespace BC7.Business.Implementation.Tests.Integration.Tests.Login
+namespace BC7.Business.Implementation.Tests.Integration.Tests.User
 {
     public class LoginTest : BaseIntegration
     {
