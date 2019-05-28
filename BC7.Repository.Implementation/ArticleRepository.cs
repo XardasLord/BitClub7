@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BC7.Database;
 using BC7.Domain;
 using Microsoft.EntityFrameworkCore;
+using Z.EntityFramework.Plus;
 
 namespace BC7.Repository.Implementation
 {
@@ -38,6 +40,13 @@ namespace BC7.Repository.Implementation
         {
             _context.Set<Article>().Attach(article);
             return _context.SaveChangesAsync();
+        }
+
+        public Task DeleteAsync(Guid id)
+        {
+            return _context.Set<Article>()
+                .Where(x => x.Id == id)
+                .DeleteAsync();
         }
     }
 }
