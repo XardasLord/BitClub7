@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BC7.Business.Implementation.Articles.Commands.CreateArticle;
+using BC7.Business.Implementation.Articles.Commands.DeleteArticle;
 using BC7.Business.Implementation.Articles.Commands.UpdateArticle;
 using BC7.Business.Implementation.Articles.Requests;
 using BC7.Business.Models;
@@ -27,7 +28,7 @@ namespace BC7.Api.Controllers
         /// <response code="200">Returns model with list of articles</response>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAllArticles()
+        public async Task<IActionResult> GetAll()
         {
             return Ok(await _mediator.Send(new GetArticlesRequest()));
         }
@@ -41,7 +42,7 @@ namespace BC7.Api.Controllers
         /// <response code="403">Failed - Only root users have access</response>
         [HttpPost]
         [Authorize(Roles = "Root")]
-        public async Task<IActionResult> CreateArticle(CreateArticleCommand command)
+        public async Task<IActionResult> Create(CreateArticleCommand command)
         {
             // TODO: Maybe 201 created?
             return Ok(new { Id = await _mediator.Send(command) });
@@ -57,13 +58,34 @@ namespace BC7.Api.Controllers
         /// <response code="403">Failed - Only root users have access</response>
         [HttpPut("{id}")]
         [Authorize(Roles = "Root")]
-        public async Task<IActionResult> UpdateArticle(Guid id, UpdateArticleModel model)
+        public async Task<IActionResult> Update(Guid id, UpdateArticleModel model)
         {
             var command = new UpdateArticleCommand
             {
                 ArticleId = id,
                 Title = model.Title,
                 Text = model.Text
+            };
+
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Delete article
+        /// </summary>
+        /// <param name="id">ID of the article to delete</param>
+        /// <returns>Returns NoContent (204)</returns>
+        /// <response code="204">Success - article deleted</response>
+        /// <response code="403">Failed - Only root users have access</response>
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Root")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var command = new DeleteArticleCommand
+            {
+                ArticleId = id
             };
 
             await _mediator.Send(command);
