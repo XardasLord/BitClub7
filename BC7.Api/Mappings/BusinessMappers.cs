@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
+using BC7.Business.Implementation.Users.Commands.UpdateUser;
 using BC7.Business.Models;
 using BC7.Domain;
 
@@ -18,6 +19,10 @@ namespace BC7.Api.Mappings
 
             CreateMap<Article, ArticleModel>()
                 .ForMember(x => x.Creator, opt => opt.MapFrom(y => $"{y.Creator.FirstName} {y.Creator.LastName}"));
+
+            CreateMap<UpdateUserModel, UpdateUserCommand>()
+                .ForMember(x => x.UserId, opt => opt.Ignore())
+                .ForMember(x => x.RequestedUserId, opt => opt.Ignore());
         }
     }
 }

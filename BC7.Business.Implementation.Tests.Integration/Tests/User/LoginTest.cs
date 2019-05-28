@@ -8,7 +8,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using TestStack.BDDfy;
 
-namespace BC7.Business.Implementation.Tests.Integration.Tests.Login
+namespace BC7.Business.Implementation.Tests.Integration.Tests.User
 {
     public class LoginTest : BaseIntegration
     {
@@ -21,7 +21,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Login
 
         void GivenSystemUnderTest()
         {
-            _sut = new LoginCommandHandler(_context, _jwtSettings);
+            _sut = new LoginCommandHandler(_userAccountDataRepository, _jwtSettings);
         }
 
         async Task AndGivenCreatedUserAccountInDatabase()

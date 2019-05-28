@@ -7,6 +7,7 @@ namespace BC7.Repository
     public interface IUserAccountDataRepository
     {
         Task<UserAccountData> GetAsync(Guid id);
+        Task<UserAccountData> GetAsync(string emailOrLogin);
         Task UpdateAsync(UserAccountData userAccountData);
     }
 }
