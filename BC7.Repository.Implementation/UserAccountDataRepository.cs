@@ -23,6 +23,14 @@ namespace BC7.Repository.Implementation
                 .SingleOrDefaultAsync(x => x.Id == id);
         }
 
+        public Task<UserAccountData> GetAsync(string emailOrLogin)
+        {
+            return _context.Set<UserAccountData>()
+                .Include(x => x.UserMultiAccounts)
+                .ThenInclude(x => x.MatrixPositions)
+                .SingleOrDefaultAsync(x => x.Email == emailOrLogin || x.Login == emailOrLogin);
+        }
+
         public Task UpdateAsync(UserAccountData userAccountData)
         {
             _context.Set<UserAccountData>().Attach(userAccountData);

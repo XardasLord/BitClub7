@@ -21,7 +21,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.User
 
         void GivenSystemUnderTest()
         {
-            _sut = new LoginCommandHandler(_context, _jwtSettings);
+            _sut = new LoginCommandHandler(_userAccountDataRepository, _jwtSettings);
         }
 
         async Task AndGivenCreatedUserAccountInDatabase()

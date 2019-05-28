@@ -6,12 +6,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using BC7.Common.Settings;
-using BC7.Database;
-using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
+using BC7.Repository;
 using BC7.Security.PasswordUtilities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,18 +17,19 @@ namespace BC7.Business.Implementation.Authentications.Commands.Login
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
     {
-        private readonly IBitClub7Context _context;
+        private readonly IUserAccountDataRepository _userAccountDataRepository;
         private readonly IOptions<JwtSettings> _jwtSettings;
 
-        public LoginCommandHandler(IBitClub7Context context, IOptions<JwtSettings> jwtSettings)
+        public LoginCommandHandler(IUserAccountDataRepository userAccountDataRepository, IOptions<JwtSettings> jwtSettings)
         {
-            _context = context;
+            _userAccountDataRepository = userAccountDataRepository;
             _jwtSettings = jwtSettings;
         }
 
         public async Task<string> Handle(LoginCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var user = await _context.Set<UserAccountData>().SingleOrDefaultAsync(x => x.Login == command.LoginOrEmail || x.Email == command.LoginOrEmail);
+            // TODO: Move to helper
+            var user = await _userAccountDataRepository.GetAsync(command.LoginOrEmail);
             if (user is null)
             {
                 throw new ValidationException("Invalid credentials");
@@ -38,7 +37,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.Login
 
             VerifyLoginCredentials(command.Password, user.Hash, user.Salt);
 
-            var jwtTokenString = CreateTokenString(user.Email, user.Role);
+            var jwtTokenString = CreateTokenString(user.Id, user.Email, user.Role);
 
             return jwtTokenString;
         }
@@ -52,10 +51,12 @@ namespace BC7.Business.Implementation.Authentications.Commands.Login
             }
         }
 
-        private string CreateTokenString(string email, string role)
+        private string CreateTokenString(Guid id, string email, string role)
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Value.SecretKey));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+
 
             var tokenOptions = new JwtSecurityToken(
                 issuer: "http://localhost:4200", // TODO: Address to change in the future
@@ -63,10 +64,11 @@ namespace BC7.Business.Implementation.Authentications.Commands.Login
                 claims: new List<Claim>
                 {
                     // TODO: More claims if needed
-                    new Claim(ClaimTypes.Name, email),
+                    new Claim(ClaimTypes.Sid, id.ToString()),
+                    new Claim(ClaimTypes.Email, email),
                     new Claim(ClaimTypes.Role, role)
                 },
-                expires: DateTime.Now.AddMinutes(15),
+                expires: DateTime.Now.AddMinutes(15), // To rethink
                 signingCredentials: signinCredentials
             );
 

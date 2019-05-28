@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
+using BC7.Business.Implementation.Users.Commands.UpdateUser;
 using BC7.Business.Implementation.Users.Requests.GetMultiAccounts;
 using BC7.Business.Models;
 using MediatR;
@@ -76,6 +79,21 @@ namespace BC7.Api.Controllers
             var request = new GetMultiAccountsRequest { UserAccountId = userId };
 
             return Ok(await _mediator.Send(request));
+        }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserModel model)
+        {
+            var command = _mapper.Map<UpdateUserCommand>(model);
+            var sidClaim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid);
+
+            command.UserId = id;
+            command.RequestedUserId = Guid.Parse(sidClaim?.Value);
+
+            await _mediator.Send(command);;
+
+            return NoContent();
         }
     }
 }
