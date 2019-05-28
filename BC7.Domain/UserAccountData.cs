@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BC7.Common.Extensions;
 using BC7.Infrastructure.CustomExceptions;
+using BC7.Security;
 
 namespace BC7.Domain
 {
     public class UserAccountData
     {
+        private readonly string[] _availableRoles = { UserRolesHelper.User, UserRolesHelper.Admin, UserRolesHelper.Root };
+
         public Guid Id { get; private set; }
         public string Email { get; private set; }
         public string Login { get; private set; }
@@ -121,5 +125,54 @@ namespace BC7.Domain
             IsMembershipFeePaid = true;
         }
 
+        public void UpdateInformation(string firstName, string lastName, string street, string city, string zipCode, string country, string btcWalletAddress)
+        {
+            if (firstName.IsNullOrWhiteSpace())
+            {
+                throw new DomainException("Invalid firstName.");
+            }
+            if (lastName.IsNullOrWhiteSpace())
+            {
+                throw new DomainException("Invalid lastName.");
+            }
+            if (street.IsNullOrWhiteSpace())
+            {
+                throw new DomainException("Invalid street.");
+            }
+            if (city.IsNullOrWhiteSpace())
+            {
+                throw new DomainException("Invalid city.");
+            }
+            if (zipCode.IsNullOrWhiteSpace())
+            {
+                throw new DomainException("Invalid zipCode.");
+            }
+            if (country.IsNullOrWhiteSpace())
+            {
+                throw new DomainException("Invalid country.");
+            }
+            if (btcWalletAddress.IsNullOrWhiteSpace())
+            {
+                throw new DomainException("Invalid btcWalletAddress.");
+            }
+
+            FirstName = firstName;
+            LastName = lastName;
+            Street = street;
+            City = city;
+            ZipCode = zipCode;
+            Country = country;
+            BtcWalletAddress = btcWalletAddress;
+        }
+
+        public void UpdateRole(string newRole)
+        {
+            if (!_availableRoles.Any(x => x.Contains(newRole)))
+            {
+                throw new DomainException($"Role - {newRole} - is invalid");
+            }
+
+            Role = newRole;
+        }
     }
 }
