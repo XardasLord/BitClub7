@@ -10,8 +10,7 @@ namespace BC7.Domain
         public Guid Id { get; private set; }
         public Guid UserAccountDataId { get; private set; }
         public virtual UserAccountData UserAccountData { get; private set; }
-
-        // TODO: Change it to SponsorId
+        
         public Guid? SponsorId { get; private set; }
         public virtual UserMultiAccount Sponsor { get; private set; }
 

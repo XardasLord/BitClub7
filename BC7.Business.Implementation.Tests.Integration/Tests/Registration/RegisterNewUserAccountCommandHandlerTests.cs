@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using BC7.Business.Implementation.Tests.Integration.Base;
+using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
-using BC7.Domain;
-using BC7.Security;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -105,55 +103,29 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Registration
 
         private async Task CreateExistingUsersInDatabase()
         {
-            var existingUserAccountData = new UserAccountData
-            (
-                id: Guid.NewGuid(),
-                login: "ExistingLogin",
-                email: "Email",
-                firstName: "FirstName",
-                lastName: "LastName",
-                street: "Street",
-                city: "City",
-                country: "Country",
-                zipCode: "ZipCode",
-                btcWalletAddress: "BtcWalletAddress",
-                role: UserRolesHelper.Admin
-            );
-            existingUserAccountData.SetPassword("salt", "hash");
+            var fakerGenerator = new FakerGenerator();
+
+            var existingUserAccountData = fakerGenerator.GetUserAccountDataFakerGenerator().Generate();
 
             _context.UserAccountsData.Add(existingUserAccountData);
-
             await _context.SaveChangesAsync();
 
-            var multiAccount1 = new UserMultiAccount
-            (
-                id: Guid.NewGuid(),
-                userAccountDataId: existingUserAccountData.Id,
-                sponsorId: null,
-                multiAccountName: "111"
-            );
-            multiAccount1.SetReflink("reflink111");
+            var multiAccount1 = fakerGenerator.GetUserMultiAccountFakerGenerator()
+                .RuleFor(x => x.UserAccountDataId, existingUserAccountData.Id)
+                .Generate();
 
-            var multiAccount2 = new UserMultiAccount
-            (
-                id: Guid.NewGuid(),
-                userAccountDataId: existingUserAccountData.Id,
-                sponsorId: null,
-                multiAccountName: "222"
-            );
-            multiAccount2.SetReflink("reflink222");
+            var multiAccount2 = fakerGenerator.GetUserMultiAccountFakerGenerator()
+                .RuleFor(x => x.UserAccountDataId, existingUserAccountData.Id)
+                .RuleFor(x => x.MultiAccountName, "222")
+                .Generate();
 
-            var multiAccount3 = new UserMultiAccount
-            (
-                id: Guid.NewGuid(),
-                userAccountDataId: existingUserAccountData.Id,
-                sponsorId: null,
-                multiAccountName: "333"
-            );
-            multiAccount3.SetReflink("reflink333");
+            var multiAccount3 = fakerGenerator.GetUserMultiAccountFakerGenerator()
+                .RuleFor(x => x.UserAccountDataId, existingUserAccountData.Id)
+                .RuleFor(x => x.MultiAccountName, "333")
+                .RuleFor(x => x.RefLink, "reflink333")
+                .Generate();
 
             _context.UserMultiAccounts.AddRange(multiAccount1, multiAccount2, multiAccount3);
-
             await _context.SaveChangesAsync();
         }
     }

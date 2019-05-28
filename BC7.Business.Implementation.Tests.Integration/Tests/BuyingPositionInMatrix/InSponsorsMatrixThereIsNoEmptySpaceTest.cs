@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatrix;
 using BC7.Business.Implementation.Tests.Integration.Base;
+using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
 using BC7.Domain;
-using BC7.Security;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -30,79 +30,41 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
         [Given(StepTitle = "And given created default accounts and matrices in database")]
         async Task AndGivenCreatedDefaultAccountsAndMatricesInDatabase()
         {
-            var existingUserAccountData = new UserAccountData
-            (
-                id: Guid.NewGuid(),
-                login: "ExistingLogin",
-                email: "Email",
-                firstName: "FirstName",
-                lastName: "LastName",
-                street: "Street",
-                city: "City",
-                country: "Country",
-                zipCode: "ZipCode",
-                btcWalletAddress: "BtcWalletAddress",
-                role: UserRolesHelper.User
-            );
-            existingUserAccountData.SetPassword("salt", "hash");
-            existingUserAccountData.PaidMembershipFee();
+            var fakerGenerator = new FakerGenerator();
 
-            var otherUser = new UserAccountData(
-                id: Guid.NewGuid(),
-                login: "OtherLogin",
-                email: "OtherEmail",
-                firstName: "OtherFirstName",
-                lastName: "OtherLastName",
-                street: "OtherStreet",
-                city: "OtherCity",
-                country: "OtherCountry",
-                zipCode: "OtherZipCode",
-                btcWalletAddress: "OtherBtcWalletAddress",
-                role: UserRolesHelper.User
-            );
-            otherUser.SetPassword("salt", "hash");
-            otherUser.PaidMembershipFee();
+            var existingUserAccountData = fakerGenerator.GetUserAccountDataFakerGenerator()
+                .RuleFor(x => x.IsMembershipFeePaid, true)
+                .Generate();
+
+            var otherUser = fakerGenerator.GetUserAccountDataFakerGenerator()
+                .RuleFor(x => x.IsMembershipFeePaid, true)
+                .Generate();
 
             _context.UserAccountsData.AddRange(existingUserAccountData, otherUser);
             await _context.SaveChangesAsync();
 
             // Multi accounts
-            var otherMultiAccount = new UserMultiAccount
-            (
-                id: Guid.Parse("d4887060-fb76-429b-95db-113fef65d68d"),
-                userAccountDataId: otherUser.Id,
-                sponsorId: null,
-                multiAccountName: "otherMultiAccountName"
-            );
-            otherMultiAccount.SetReflink("otherUserReflink12345");
-            otherMultiAccount.SetAsMainAccount();
+            var otherMultiAccount = fakerGenerator.GetUserMultiAccountFakerGenerator()
+                .RuleFor(x => x.Id, Guid.Parse("d4887060-fb76-429b-95db-113fef65d68d"))
+                .RuleFor(x => x.UserAccountDataId, otherUser.Id)
+                .RuleFor(x => x.IsMainAccount, true)
+                .Generate();
 
-            var otherMultiAccount2 = new UserMultiAccount
-            (
-                id: Guid.NewGuid(),
-                userAccountDataId: otherUser.Id,
-                sponsorId: null,
-                multiAccountName: "otherMultiAccountName2"
-            );
-            otherMultiAccount2.SetReflink("otherUserReflink123456789");
+            var otherMultiAccount2 = fakerGenerator.GetUserMultiAccountFakerGenerator()
+                .RuleFor(x => x.UserAccountDataId, otherUser.Id)
+                .Generate();
 
-            var otherMultiAccount3 = new UserMultiAccount
-            (
-                id: Guid.NewGuid(),
-                userAccountDataId: otherUser.Id,
-                sponsorId: null,
-                multiAccountName: "otherMultiAccountName3"
-            );
-            otherMultiAccount3.SetReflink("3");
+            var otherMultiAccount3 = fakerGenerator.GetUserMultiAccountFakerGenerator()
+                .RuleFor(x => x.UserAccountDataId, otherUser.Id)
+                .Generate();
 
-            var myMultiAccount = new UserMultiAccount
-            (
-                id: Guid.Parse("032d748c-9cef-4a5a-92bd-3fd9a4a0e499"),
-                userAccountDataId: existingUserAccountData.Id,
-                sponsorId: otherMultiAccount.Id,
-                multiAccountName: "myMultiAccountName"
-            );
-            myMultiAccount.SetAsMainAccount();
+            var myMultiAccount = fakerGenerator.GetUserMultiAccountFakerGenerator()
+                .RuleFor(x => x.Id, Guid.Parse("032d748c-9cef-4a5a-92bd-3fd9a4a0e499"))
+                .RuleFor(x => x.UserAccountDataId, existingUserAccountData.Id)
+                .RuleFor(x => x.SponsorId, otherMultiAccount.Id)
+                .RuleFor(x => x.RefLink, null as string)
+                .RuleFor(x => x.IsMainAccount, true)
+                .Generate();
 
             _context.UserMultiAccounts.AddRange(myMultiAccount, otherMultiAccount, otherMultiAccount2, otherMultiAccount3);
             await _context.SaveChangesAsync();

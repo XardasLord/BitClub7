@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using BC7.Business.Implementation.Payments.Events;
 using BC7.Business.Implementation.Tests.Integration.Base;
+using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
 using BC7.Domain;
-using BC7.Security;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -28,31 +28,19 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Payment
 
         async Task AndGivenPaymentAndUserAccountInDatabase()
         {
-            var payment = new PaymentHistory
-            (
-                id: Guid.NewGuid(),
-                paymentId: Guid.Parse("ab1a5483-fd98-4fe0-b859-240b718c3ac3"),
-                orderId: Guid.NewGuid(),
-                amountToPay: 0.008M,
-                paymentFor: PaymentForHelper.MembershipsFee
-            );
+            var fakerGenerator = new FakerGenerator();
+
+            var payment = fakerGenerator.GetPaymentHistoryFakerGenerator()
+                .RuleFor(x => x.PaymentId, f => Guid.Parse("ab1a5483-fd98-4fe0-b859-240b718c3ac3"))
+                .RuleFor(x => x.AmountToPay, f => 0.008M)
+                .RuleFor(x => x.PaymentFor, f => PaymentForHelper.MembershipsFee)
+                .Generate();
 
             _context.PaymentHistories.Add(payment);
 
-            var user = new UserAccountData(
-                id: Guid.Parse("590565b0-df3e-49f0-866c-ececbe696611"),
-                login: "OtherLogin",
-                email: "OtherEmail",
-                firstName: "OtherFirstName",
-                lastName: "OtherLastName",
-                street: "OtherStreet",
-                city: "OtherCity",
-                country: "OtherCountry",
-                zipCode: "OtherZipCode",
-                btcWalletAddress: "OtherBtcWalletAddress",
-                role: UserRolesHelper.User
-            );
-            user.SetPassword("salt", "hash");
+            var user = fakerGenerator.GetUserAccountDataFakerGenerator()
+                .RuleFor(x => x.Id, f => Guid.Parse("590565b0-df3e-49f0-866c-ececbe696611"))
+                .Generate();
 
             _context.UserAccountsData.Add(user);
             await _context.SaveChangesAsync();

@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BC7.Business.Implementation.Authentications.Commands.Login;
 using BC7.Business.Implementation.Tests.Integration.Base;
+using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
 using BC7.Business.Implementation.Users.Requests.GetMultiAccounts;
 using BC7.Business.Models;
 using BC7.Domain;
-using BC7.Security;
 using BC7.Security.PasswordUtilities;
 using FluentAssertions;
 using NUnit.Framework;
@@ -25,40 +24,20 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.GettingMultiAccoun
         {
             _sut = new GetMultiAccountsRequestHandler(_mapper, _userAccountDataRepository);
         }
-        
+
         async Task AndGivenCreatedDefaultAccountsInDatabase()
         {
-            var hashSalt = PasswordEncryptionUtilities.GenerateSaltedHash("Password12345");
-            var myUserAccountData = new UserAccountData
-            (
-                id: Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499"),
-                login: "Test123",
-                email: "Email",
-                firstName: "FirstName",
-                lastName: "LastName",
-                street: "Street",
-                city: "City",
-                country: "Country",
-                zipCode: "ZipCode",
-                btcWalletAddress: "BtcWalletAddress",
-                role: UserRolesHelper.User
-            );
-            myUserAccountData.SetPassword(hashSalt.Salt, hashSalt.Hash);
+            var fakerGenerator = new FakerGenerator();
 
-            var otherUser = new UserAccountData(
-                id: Guid.NewGuid(),
-                login: "OtherLogin",
-                email: "OtherEmail",
-                firstName: "OtherFirstName",
-                lastName: "OtherLastName",
-                street: "OtherStreet",
-                city: "OtherCity",
-                country: "OtherCountry",
-                zipCode: "OtherZipCode",
-                btcWalletAddress: "OtherBtcWalletAddress",
-                role: UserRolesHelper.User
-            );
-            otherUser.SetPassword("salt", "hash");
+            var hashSalt = PasswordEncryptionUtilities.GenerateSaltedHash("Password12345");
+
+            var myUserAccountData = fakerGenerator.GetUserAccountDataFakerGenerator()
+                .RuleFor(x => x.Id, Guid.Parse("042d748c-9cef-4a5a-92bd-3fd9a4a0e499"))
+                .RuleFor(x => x.Salt, hashSalt.Salt)
+                .RuleFor(x => x.Hash, hashSalt.Hash)
+                .Generate();
+
+            var otherUser = fakerGenerator.GetUserAccountDataFakerGenerator().Generate();
 
             _context.UserAccountsData.AddRange(myUserAccountData, otherUser);
             await _context.SaveChangesAsync();

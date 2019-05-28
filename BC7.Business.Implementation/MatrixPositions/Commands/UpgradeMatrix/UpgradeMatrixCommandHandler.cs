@@ -64,7 +64,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
             }
                 
             var adminAccountId = adminPositionOnLowerMatrix.UserMultiAccountId.Value;
-            var adminPositionOnUpgradingLevel = await _matrixPositionRepository.GetPositionForAccountAtLevelAsync(adminAccountId, command.MatrixLevel);
+            var adminPositionOnUpgradingLevel = await _matrixPositionHelper.GetPositionForAccountAtLevelAsync(adminAccountId, command.MatrixLevel);
             if (adminPositionOnUpgradingLevel is null)
             {
                 //TODO: Event to notify admin that someone wants to upgrade his matrix
@@ -84,7 +84,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
                 throw new ValidationException("User with given ID was not found");
             }
 
-            _userMatrixPositionOnLowerMatrix = await _matrixPositionRepository.GetPositionForAccountAtLevelAsync(_multiAccount.Id, _lowerLevelMatrix);
+            _userMatrixPositionOnLowerMatrix = await _matrixPositionHelper.GetPositionForAccountAtLevelAsync(_multiAccount.Id, _lowerLevelMatrix);
             if (_userMatrixPositionOnLowerMatrix is null)
             {
                 throw new ValidationException($"User does not have position in the lower level matrix: {_lowerLevelMatrix}");
@@ -125,7 +125,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
             var userAccount = await _userAccountDataRepository.GetAsync(_multiAccount.UserAccountDataId);
             var userMultiAccountIds = userAccount.UserMultiAccounts.Select(x => x.Id).ToList(); // Need for cycles in the future
 
-            var sponsorPositionOnUpgradedMatrix = await _matrixPositionRepository.GetPositionForAccountAtLevelAsync(_multiAccount.SponsorId.Value, _command.MatrixLevel);
+            var sponsorPositionOnUpgradedMatrix = await _matrixPositionHelper.GetPositionForAccountAtLevelAsync(_multiAccount.SponsorId.Value, _command.MatrixLevel);
             if (sponsorPositionOnUpgradedMatrix is null)
             {
                 // TODO: Use the admin side LEFT or RIGHT here

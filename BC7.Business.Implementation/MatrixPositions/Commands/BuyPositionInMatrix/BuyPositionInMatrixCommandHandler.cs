@@ -43,7 +43,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
             var sponsorAccountId = userMultiAccount.SponsorId.Value;
 
-            var invitingUserMatrix = await _matrixPositionRepository.GetMatrixForGivenMultiAccountAsync(sponsorAccountId, command.MatrixLevel);
+            var invitingUserMatrix = await _matrixPositionHelper.GetMatrixForGivenMultiAccountAsync(sponsorAccountId, command.MatrixLevel);
             if (invitingUserMatrix is null)
             {
                 throw new ValidationException($"The inviting user from reflink does not have matrix on level: {command.MatrixLevel}");

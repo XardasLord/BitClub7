@@ -22,24 +22,6 @@ namespace BC7.Repository.Implementation
             return _context.Set<MatrixPosition>().SingleAsync(x => x.Id == id);
         }
 
-        public Task<MatrixPosition> GetPositionForAccountAtLevelAsync(Guid userMultiAccountId, int matrixLevel = 0)
-        {
-            return _context.Set<MatrixPosition>()
-                .Where(x => x.UserMultiAccountId == userMultiAccountId)
-                .Where(x => x.MatrixLevel == matrixLevel)
-                .SingleOrDefaultAsync(); // Cycles available later
-        }
-
-        public Task<MatrixPosition> GetTopParentAsync(MatrixPosition matrixPosition, int matrixLevel = 0)
-        {
-            return _context.Set<MatrixPosition>()
-                .Where(x => x.Left < matrixPosition.Left)
-                .Where(x => x.Right > matrixPosition.Right)
-                .Where(x => x.DepthLevel == matrixPosition.DepthLevel - 2)
-                .Where(x => x.MatrixLevel == matrixLevel)
-                .SingleOrDefaultAsync();
-        }
-
         public async Task<IEnumerable<MatrixPosition>> GetMatrixAsync(MatrixPosition matrixPosition, int matrixLevel = 0)
         {
            return await _context.Set<MatrixPosition>()
@@ -49,25 +31,6 @@ namespace BC7.Repository.Implementation
                 .Where(x => x.DepthLevel <= matrixPosition.DepthLevel + 2) // Each matrix has 2 depth level
                 .Where(x => x.MatrixLevel == matrixLevel)
                 .ToListAsync();
-        }
-
-        public async Task<IEnumerable<MatrixPosition>> GetMatrixForGivenMultiAccountAsync(Guid userMultiAccountId, int matrixLevel = 0)
-        {
-            var userMatrixPosition = await GetPositionForAccountAtLevelAsync(userMultiAccountId, matrixLevel);
-            if (userMatrixPosition == null)
-            {
-                return null;
-            }
-
-            var matrixAccounts = await _context.Set<MatrixPosition>()
-                .Where(x => x.Left >= userMatrixPosition.Left)
-                .Where(x => x.Right <= userMatrixPosition.Right)
-                .Where(x => x.DepthLevel >= userMatrixPosition.DepthLevel)
-                .Where(x => x.DepthLevel <= userMatrixPosition.DepthLevel + 2) // Each matrix has 2 depth level
-                .Where(x => x.MatrixLevel == matrixLevel)
-                .ToListAsync();
-
-            return matrixAccounts;
         }
 
         public Task UpdateAsync(MatrixPosition matrixPosition)
