@@ -11,5 +11,6 @@ namespace BC7.Repository
         Task<List<Article>> GetAllAsync();
         Task CreateAsync(Article article);
         Task UpdateAsync(Article article);
+        Task DeleteAsync(Guid id);
     }
 }

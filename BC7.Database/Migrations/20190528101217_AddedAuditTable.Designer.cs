@@ -4,14 +4,16 @@ using BC7.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BC7.Database.Migrations
 {
     [DbContext(typeof(BitClub7Context))]
-    partial class BitClub7ContextModelSnapshot : ModelSnapshot
+    [Migration("20190528101217_AddedAuditTable")]
+    partial class AddedAuditTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
