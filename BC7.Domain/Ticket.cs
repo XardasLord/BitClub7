@@ -45,5 +45,10 @@ namespace BC7.Domain
                 throw new DomainException("Invalid text");
             }
         }
+
+        public void UpdateTicketNumber()
+        {
+            FullTicketNumber = $"ticket-{Number:000000}";
+        }
     }
 }

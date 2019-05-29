@@ -20,7 +20,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Ticket
 
         void GivenSystemUnderTest()
         {
-            _sut = new CreateTicketCommandHandler(_ticketRepository);
+            _sut = new CreateTicketCommandHandler(_ticketRepository, _mediator);
         }
 
         void AndGivenCommandPrepared()
@@ -43,6 +43,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Ticket
             var ticket = await _context.Set<Domain.Ticket>().SingleAsync();
 
             ticket.Number.Should().Be(1);
+            ticket.FullTicketNumber.Should().Be("ticket-000001");
             ticket.Email.Should().Be("test@email.com");
             ticket.Subject.Should().Be("Example subject");
             ticket.Text.Should().Be("Example text");
