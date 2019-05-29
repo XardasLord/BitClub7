@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BC7.Business.Implementation.Tests.Integration.Base;
 using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
 using BC7.Business.Implementation.Users.Commands.UpdateUser;
+using BC7.Business.Models;
 using BC7.Security;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.User
         private UpdateUserCommandHandler _sut;
         private UpdateUserCommand _command;
         private readonly Guid _updatedUserId = Guid.NewGuid();
+        private readonly string _updatedUserEmail = "test@email.com";
+        private readonly string _updatedUserRole = UserRolesHelper.User;
 
         void GivenSystemUnderTest()
         {
@@ -33,7 +36,8 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.User
 
             var user = fakerGenerator.GetUserAccountDataFakerGenerator()
                 .RuleFor(x => x.Id, _updatedUserId)
-                .RuleFor(x => x.Role, UserRolesHelper.User)
+                .RuleFor(x => x.Email, _updatedUserEmail)
+                .RuleFor(x => x.Role, _updatedUserRole)
                 .Generate();
 
             _context.UserAccountsData.Add(user);
@@ -45,7 +49,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.User
             _command = new UpdateUserCommand()
             {
                 UserId = _updatedUserId,
-                RequestedUserId = _updatedUserId,
+                RequestedUser = new LoggedUserModel(_updatedUserId, _updatedUserEmail, _updatedUserRole),
                 FirstName = "Updated first name",
                 LastName = "Updated last name",
                 Street = "Updated street",

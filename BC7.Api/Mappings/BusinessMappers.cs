@@ -22,7 +22,7 @@ namespace BC7.Api.Mappings
 
             CreateMap<UpdateUserModel, UpdateUserCommand>()
                 .ForMember(x => x.UserId, opt => opt.Ignore())
-                .ForMember(x => x.RequestedUserId, opt => opt.Ignore());
+                .ForMember(x => x.RequestedUser, opt => opt.Ignore());
         }
     }
 }

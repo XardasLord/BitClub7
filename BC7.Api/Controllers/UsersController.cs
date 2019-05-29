@@ -94,14 +94,24 @@ namespace BC7.Api.Controllers
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserModel model)
         {
             var command = _mapper.Map<UpdateUserCommand>(model);
-            var sidClaim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid); // Maybe create a class which represents logged user (from HttpContext.User.Claims - jwt)
 
             command.UserId = id;
-            command.RequestedUserId = Guid.Parse(sidClaim?.Value);
+            command.RequestedUser = GetLoggerUserFromJwt();
 
             await _mediator.Send(command);;
 
             return NoContent();
+        }
+
+        private LoggedUserModel GetLoggerUserFromJwt()
+        {
+            var claims = HttpContext.User.Claims.ToList();
+
+            var id = claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid)?.Value;
+            var email = claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            var role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+
+            return new LoggedUserModel(Guid.Parse(id), email, role);
         }
     }
 }
