@@ -190,11 +190,9 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
 
         void AndGivenCommandPrepared()
         {
-            _command = new BuyPositionInMatrixCommand
-            {
-                UserMultiAccountId = Guid.Parse("032d748c-9cef-4a5a-92bd-3fd9a4a0e499"),
-                MatrixLevel = 0
-            };
+            _command = new BuyPositionInMatrixCommand(
+                userMultiAccountId: Guid.Parse("032d748c-9cef-4a5a-92bd-3fd9a4a0e499"),
+                matrixLevel: 0);
         }
 
         async Task WhenHandlerHandlesTheCommand()
