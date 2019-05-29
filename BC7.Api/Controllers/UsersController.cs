@@ -81,12 +81,20 @@ namespace BC7.Api.Controllers
             return Ok(await _mediator.Send(request));
         }
 
+        /// <summary>
+        /// Update user data
+        /// </summary>
+        /// <param name="id">User ID to update</param>
+        /// <param name="model">Model with properties to update</param>
+        /// <returns>Returns NoContent(204)</returns>
+        /// <response code="204">Success - user updated</response>
+        /// <response code="403">Failed - only logged in users have access</response>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserModel model)
         {
             var command = _mapper.Map<UpdateUserCommand>(model);
-            var sidClaim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid);
+            var sidClaim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid); // Maybe create a class which represents logged user (from HttpContext.User.Claims - jwt)
 
             command.UserId = id;
             command.RequestedUserId = Guid.Parse(sidClaim?.Value);
