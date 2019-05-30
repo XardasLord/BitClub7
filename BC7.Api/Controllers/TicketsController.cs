@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BC7.Business.Implementation.Tickets.Commands.CreateTicket;
+using BC7.Business.Implementation.Tickets.Requests.GetTickets;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,19 @@ namespace BC7.Api.Controllers
         public TicketsController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        /// <summary>
+        /// Get all tickets
+        /// </summary>
+        /// <returns>Returns model with list of tickets</returns>
+        /// <response code="200">Success - returns model with list of tickets</response>
+        /// <response code="403">Fail - only root users have access</response>
+        [HttpGet]
+        [Authorize(Roles = "Root")]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _mediator.Send(new GetTicketsRequest()));
         }
 
         /// <summary>
