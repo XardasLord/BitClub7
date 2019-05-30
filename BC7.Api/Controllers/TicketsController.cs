@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using BC7.Business.Implementation.Tickets.Commands.CreateTicket;
+using BC7.Business.Implementation.Tickets.Requests.GetTicket;
 using BC7.Business.Implementation.Tickets.Requests.GetTickets;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -29,6 +31,21 @@ namespace BC7.Api.Controllers
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _mediator.Send(new GetTicketsRequest()));
+        }
+
+        /// <summary>
+        /// Get ticket by its ID
+        /// </summary>
+        /// <param name="id">ID of a ticket</param>
+        /// <returns>Returns ticket</returns>
+        /// <response code="200">Success - returns ticket</response>
+        /// <response code="403">Fail - only root users have access</response>
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Root")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            var request = new GetTicketRequest { Id = id };
+            return Ok(await _mediator.Send(request));
         }
 
         /// <summary>
