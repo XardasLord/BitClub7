@@ -22,4 +22,8 @@
     <ProjectReference Include="..\BC7.Security\BC7.Security.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Tickets\Requests\GetTickets\" />
+  </ItemGroup>
+
 </Project>

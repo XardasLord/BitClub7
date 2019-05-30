@@ -6,7 +6,7 @@ using BC7.Domain;
 using BC7.Repository;
 using MediatR;
 
-namespace BC7.Business.Implementation.Tickets.Commands
+namespace BC7.Business.Implementation.Tickets.Commands.CreateTicket
 {
     public class CreateTicketCommandHandler : IRequestHandler<CreateTicketCommand, Guid>
     {

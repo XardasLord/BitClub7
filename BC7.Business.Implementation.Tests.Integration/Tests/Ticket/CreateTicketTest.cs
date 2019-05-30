@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BC7.Business.Implementation.Tests.Integration.Base;
-using BC7.Business.Implementation.Tickets.Commands;
+using BC7.Business.Implementation.Tickets.Commands.CreateTicket;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;

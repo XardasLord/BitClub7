@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace BC7.Business.Implementation.Tickets.Commands
+namespace BC7.Business.Implementation.Tickets.Commands.CreateTicket
 {
     public class CreateTicketCommand : IRequest<Guid>
     {

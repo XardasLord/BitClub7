@@ -4,6 +4,7 @@ using BC7.Business.Implementation.Articles.Commands.CreateArticle;
 using BC7.Business.Implementation.Articles.Commands.DeleteArticle;
 using BC7.Business.Implementation.Articles.Commands.UpdateArticle;
 using BC7.Business.Implementation.Articles.Requests;
+using BC7.Business.Implementation.Articles.Requests.GetArticles;
 using BC7.Business.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

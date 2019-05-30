@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using BC7.Business.Implementation.Tickets.Commands;
+using BC7.Business.Implementation.Tickets.Commands.CreateTicket;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

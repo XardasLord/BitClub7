@@ -6,7 +6,7 @@ using BC7.Business.Models;
 using BC7.Repository;
 using MediatR;
 
-namespace BC7.Business.Implementation.Articles.Requests
+namespace BC7.Business.Implementation.Articles.Requests.GetArticles
 {
     public class GetArticlesRequestHandler : IRequestHandler<GetArticlesRequest, GetArticlesViewModel>
     {
