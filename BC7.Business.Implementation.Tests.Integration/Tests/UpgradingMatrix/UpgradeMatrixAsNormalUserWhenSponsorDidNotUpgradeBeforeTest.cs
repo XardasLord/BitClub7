@@ -624,9 +624,11 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
 
         void AndGivenCommandPrepared()
         {
-            _command = new UpgradeMatrixCommand(
-                userMultiAccountId: _userMultiAccountId,
-                matrixLevel: 1);
+            _command = new UpgradeMatrixCommand
+            {
+                UserMultiAccountId = _userMultiAccountId,
+                MatrixLevel = 1
+            };
         }
 
         async Task WhenHandlerHandlesTheCommand()

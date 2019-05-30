@@ -34,6 +34,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
         protected IMatrixPositionRepository _matrixPositionRepository;
         protected IPaymentHistoryRepository _paymentHistoryRepository;
         protected IArticleRepository _articleRepository;
+        protected ITicketRepository _ticketRepository;
         protected IOptions<JwtSettings> _jwtSettings;
         protected IOptions<BitBayPayApiSettings> _bitBayPayApiSettings;
         protected IOptions<MatrixStructureSettings> _matrixStructureSettings;
@@ -57,6 +58,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             services.AddTransient<IMatrixPositionRepository, MatrixPositionRepository>();
             services.AddTransient<IPaymentHistoryRepository, PaymentHistoryRepository>();
             services.AddTransient<IArticleRepository, ArticleRepository>();
+            services.AddTransient<ITicketRepository, TicketRepository>();
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
             services.AddAutoMapper();
@@ -83,6 +85,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             _matrixPositionRepository = serviceProvider.GetService<IMatrixPositionRepository>();
             _paymentHistoryRepository = serviceProvider.GetService<IPaymentHistoryRepository>();
             _articleRepository = serviceProvider.GetService<IArticleRepository>();
+            _ticketRepository = serviceProvider.GetService<ITicketRepository>();
             _jwtSettings = serviceProvider.GetService<IOptions<JwtSettings>>();
             _bitBayPayApiSettings = serviceProvider.GetService<IOptions<BitBayPayApiSettings>>();
             _matrixStructureSettings = serviceProvider.GetService<IOptions<MatrixStructureSettings>>();

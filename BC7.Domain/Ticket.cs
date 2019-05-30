@@ -23,7 +23,6 @@ namespace BC7.Domain
             Subject = subject;
             Text = text;
             CreatedAt = DateTimeOffset.Now;
-            //FullTicketNumber // TODO: Ticket number `ticket-000001`
         }
 
         private static void ValidateDomain(Guid id, string email, string subject, string text)
@@ -44,6 +43,11 @@ namespace BC7.Domain
             {
                 throw new DomainException("Invalid text");
             }
+        }
+
+        public void UpdateTicketNumber()
+        {
+            FullTicketNumber = $"ticket-{Number:000000}";
         }
     }
 }

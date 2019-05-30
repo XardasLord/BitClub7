@@ -21,6 +21,10 @@ namespace BC7.Business.Implementation.Tests.Integration.Mappings
             CreateMap<Article, ArticleModel>()
                 .ForMember(x => x.Creator, opt => opt.MapFrom(y => $"{y.Creator.FirstName} {y.Creator.LastName}"));
 
+            CreateMap<Ticket, TicketModel>()
+                .ForMember(x => x.TicketNumber, opt => opt.MapFrom(y => y.FullTicketNumber))
+                .ForMember(x => x.SenderEmail, opt => opt.MapFrom(y => y.Email));
+
             CreateMap<UpdateUserModel, UpdateUserCommand>()
                 .ForMember(x => x.UserId, opt => opt.Ignore())
                 .ForMember(x => x.RequestedUser, opt => opt.Ignore());
