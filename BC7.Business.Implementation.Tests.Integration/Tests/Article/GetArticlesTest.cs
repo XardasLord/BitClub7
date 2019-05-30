@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using BC7.Business.Implementation.Articles.Requests;
+using BC7.Business.Implementation.Articles.Requests.GetArticles;
 using BC7.Business.Implementation.Tests.Integration.Base;
 using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
 using FluentAssertions;

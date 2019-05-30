@@ -62,5 +62,18 @@ namespace BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator
                     text: f.Lorem.Text()))
                 .RuleFor(x => x.CreatedAt, DateTimeOffset.Now);
         }
+
+        public Faker<Ticket> GetTicketsFakerGenerator()
+        {
+            return new Faker<Ticket>(Local)
+                .CustomInstantiator(f => new Ticket(
+                    id: Guid.NewGuid(),
+                    email: f.Lorem.Sentence(),
+                    subject: f.Lorem.Sentence(),
+                    text: f.Lorem.Text()
+                ))
+                .RuleFor(x => x.CreatedAt, DateTimeOffset.Now)
+                .RuleFor(x => x.FullTicketNumber, f => f.Random.Number(100).ToString()); // TODO: Some custom function to set `ticket-000001`?
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using BC7.Business.Models;
 
-namespace BC7.Business.Implementation.Articles.Requests
+namespace BC7.Business.Implementation.Articles.Requests.GetArticles
 {
     public class GetArticlesViewModel
     {

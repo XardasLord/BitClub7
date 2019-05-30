@@ -1,4 +1,5 @@
 ﻿using System;
+using BC7.Business.Models;
 using MediatR;
 
 namespace BC7.Business.Implementation.Users.Commands.UpdateUser
@@ -6,7 +7,7 @@ namespace BC7.Business.Implementation.Users.Commands.UpdateUser
     public class UpdateUserCommand : IRequest
     {
         public Guid UserId { get; set; }
-        public Guid RequestedUserId { get; set; }
+        public LoggedUserModel RequestedUser { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Street { get; set; }

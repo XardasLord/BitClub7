@@ -28,7 +28,6 @@ namespace BC7.Business.Implementation.Authentications.Commands.Login
 
         public async Task<string> Handle(LoginCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
-            // TODO: Move to helper
             var user = await _userAccountDataRepository.GetAsync(command.LoginOrEmail);
             if (user is null)
             {
@@ -63,7 +62,6 @@ namespace BC7.Business.Implementation.Authentications.Commands.Login
                 audience: "http://localhost:4200",
                 claims: new List<Claim>
                 {
-                    // TODO: More claims if needed
                     new Claim(ClaimTypes.Sid, id.ToString()),
                     new Claim(ClaimTypes.Email, email),
                     new Claim(ClaimTypes.Role, role)

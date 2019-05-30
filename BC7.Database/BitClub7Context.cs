@@ -54,6 +54,7 @@ namespace BC7.Database
         public DbSet<MatrixPosition> MatrixPositions { get; set; }
         public DbSet<PaymentHistory> PaymentHistories { get; set; }
         public DbSet<Article> Articles { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
         public DbSet<AuditEntry> AuditEntries { get; set; }
         public DbSet<AuditEntryProperty> AuditEntryProperties { get; set; }
     }

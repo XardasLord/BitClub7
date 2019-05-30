@@ -128,7 +128,6 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
             var sponsorPositionOnUpgradedMatrix = await _matrixPositionHelper.GetPositionForAccountAtLevelAsync(_multiAccount.SponsorId.Value, _command.MatrixLevel);
             if (sponsorPositionOnUpgradedMatrix is null)
             {
-                // TODO: Use the admin side LEFT or RIGHT here
                 upgradedPosition = await _matrixPositionHelper.FindTheNearestEmptyPositionFromGivenAccountWhereInParentsMatrixThereIsNoAnyMultiAccountAsync(
                     adminPosition.UserMultiAccountId.Value, userMultiAccountIds, _command.MatrixLevel, adminStructure);
             }

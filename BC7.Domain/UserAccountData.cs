@@ -100,8 +100,6 @@ namespace BC7.Domain
             {
                 throw new DomainException("Invalid role.");
             }
-
-            // TODO: btcWalletAddress validation
         }
 
         public void SetPassword(string salt, string hash)

@@ -18,6 +18,7 @@ namespace BC7.Database
         DbSet<MatrixPosition> MatrixPositions { get; set; }
         DbSet<PaymentHistory> PaymentHistories { get; set; }
         DbSet<Article> Articles { get; set; }
+        DbSet<Ticket> Tickets { get; set; }
         DbSet<AuditEntry> AuditEntries { get; set; }
         DbSet<AuditEntryProperty> AuditEntryProperties { get; set; }
     }

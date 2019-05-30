@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using BC7.Business.Models;
 using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
 using BC7.Repository;
@@ -20,9 +21,8 @@ namespace BC7.Business.Implementation.Users.Commands.UpdateUser
         public async Task<Unit> Handle(UpdateUserCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
             var userToUpdate = await _userAccountDataRepository.GetAsync(command.UserId);
-            var requestedUser = await _userAccountDataRepository.GetAsync(command.RequestedUserId);
 
-            ValidatePermission(userToUpdate, requestedUser, command.Role);
+            ValidatePermission(userToUpdate, command.RequestedUser, command.Role);
 
             userToUpdate.UpdateInformation(command.FirstName, command.LastName, command.Street, command.City, command.ZipCode, command.Country, command.BtcWalletAddress);
             userToUpdate.UpdateRole(command.Role);
@@ -32,7 +32,7 @@ namespace BC7.Business.Implementation.Users.Commands.UpdateUser
             return Unit.Value;
         }
 
-        private static void ValidatePermission(UserAccountData userToUpdate, UserAccountData requestedUser, string newRole)
+        private static void ValidatePermission(UserAccountData userToUpdate, LoggedUserModel requestedUser, string newRole)
         {
             if (requestedUser.Id != userToUpdate.Id && requestedUser.Role != UserRolesHelper.Root)
             {

@@ -25,11 +25,10 @@ namespace BC7.Business.Implementation.Payments.Commands.PayMatrixLevel
 
         public async Task<string> Handle(PayMatrixLevelCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
-            // TODO: Integration test
             await ValidateCommand(command);
 
             var orderId = command.UserMultiAccountId;
-            var paymentResponse = await _bitBayPayFacade.CreatePayment(orderId, command.Amount); // TODO: Find a way to determine the amount to pay from the configuration
+            var paymentResponse = await _bitBayPayFacade.CreatePayment(orderId, command.Amount);
 
             ValidateResponse(paymentResponse);
 
