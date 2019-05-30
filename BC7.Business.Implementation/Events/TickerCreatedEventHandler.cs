@@ -21,6 +21,8 @@ namespace BC7.Business.Implementation.Events
             ticket.UpdateTicketNumber();
 
             await _ticketRepository.UpdateAsync(ticket);
+            
+            //TODO: Send an email to support?
         }
     }
 }
