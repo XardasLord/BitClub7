@@ -27,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Repository", "BC7.Repos
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Repository.Implementation", "BC7.Repository.Implementation\BC7.Repository.Implementation.csproj", "{E0D24F97-A2DD-412A-BE5D-DE2D4C97B1E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BC7.Business.Implementation.Tests.Unit", "BC7.Business.Implementation.Tests.Unit\BC7.Business.Implementation.Tests.Unit.csproj", "{546FB941-EA3C-47EC-B563-B4031E3C68E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Business.Implementation.Tests.Unit", "BC7.Business.Implementation.Tests.Unit\BC7.Business.Implementation.Tests.Unit.csproj", "{546FB941-EA3C-47EC-B563-B4031E3C68E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BC7.Common.Tests.Unit", "BC7.Common.Tests.Unit\BC7.Common.Tests.Unit.csproj", "{72D8A05A-8F8F-467C-9668-B772942B0335}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{546FB941-EA3C-47EC-B563-B4031E3C68E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{546FB941-EA3C-47EC-B563-B4031E3C68E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{546FB941-EA3C-47EC-B563-B4031E3C68E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72D8A05A-8F8F-467C-9668-B772942B0335}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72D8A05A-8F8F-467C-9668-B772942B0335}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72D8A05A-8F8F-467C-9668-B772942B0335}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72D8A05A-8F8F-467C-9668-B772942B0335}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
