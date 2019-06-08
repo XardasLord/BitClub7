@@ -5,6 +5,7 @@ using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Business.Validators;
 using BC7.Infrastructure.Implementation.RequestPipelines;
 using FluentValidation.AspNetCore;
+using Hangfire;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.AspNetCore.Builder;
@@ -31,6 +32,8 @@ namespace BC7.Api
             services.ConfigureApplicationDependencies(Configuration);
             services.ConfigureApplicationJwtAuthorization(Configuration);
             services.ConfigureApplicationCors();
+
+            services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("BitClub7DB")));
 
             services.AddAutoMapper();
 
@@ -65,6 +68,9 @@ namespace BC7.Api
             app.UseHttpsRedirection();
             app.UseCors("AllowAll");
             app.UseMvc();
+
+            app.UseHangfireServer();
+            app.UseHangfireDashboard();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
