@@ -69,8 +69,7 @@ namespace BC7.Api
             app.UseCors("AllowAll");
             app.UseMvc();
 
-            app.UseHangfireServer();
-            app.UseHangfireDashboard();
+            app.UseHangfire();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
