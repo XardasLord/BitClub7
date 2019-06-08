@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using AutoMapper;
 using BC7.Api.ConfigurationExtensions;
+using BC7.Api.Hangfire;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Business.Validators;
 using BC7.Infrastructure.Implementation.RequestPipelines;
@@ -33,14 +34,19 @@ namespace BC7.Api
             services.ConfigureApplicationJwtAuthorization(Configuration);
             services.ConfigureApplicationCors();
 
-            services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("BitClub7DB")));
-
             services.AddAutoMapper();
 
             // Mediator
             services.AddMediatR(typeof(RegisterNewUserAccountCommand).GetTypeInfo().Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IRequestPreProcessor<>), typeof(RequestPreProcessorLogger<>));
+
+            services.AddHangfire(config =>
+            {
+                config.UseSqlServerStorage(Configuration.GetConnectionString("BitClub7DB"));
+                config.UseMediatR(services.BuildServiceProvider().GetRequiredService<IMediator>());
+            });
+
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
