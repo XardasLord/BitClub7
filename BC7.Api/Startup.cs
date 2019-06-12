@@ -66,6 +66,9 @@ namespace BC7.Api
             app.UseCors("AllowAll");
             app.UseMvc();
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
