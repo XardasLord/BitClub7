@@ -74,8 +74,11 @@ namespace BC7.Api
             app.UseHttpsRedirection();
             app.UseCors("AllowAll");
             app.UseMvc();
-
+            
             app.UseHangfire();
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
