@@ -2,6 +2,7 @@
 {
     public class ApplicationSettings
     {
-        public string Host { get; set; }
+        public string ApiUrl { get; set; }
+        public string AllowedOrigins { get; set; }
     }
 }

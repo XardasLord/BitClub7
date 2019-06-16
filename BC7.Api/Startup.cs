@@ -30,7 +30,7 @@ namespace BC7.Api
         {
             services.ConfigureApplicationDependencies(Configuration);
             services.ConfigureApplicationJwtAuthorization(Configuration);
-            services.ConfigureApplicationCors();
+            services.ConfigureApplicationCors(Configuration);
 
             services.AddAutoMapper();
 
@@ -63,7 +63,7 @@ namespace BC7.Api
             app.ConfigureCustomExceptionMiddleware();
             app.UseAuthentication();
             app.UseHttpsRedirection();
-            app.UseCors("AllowAll");
+            app.UseCors("BitClub7Policy");
             app.UseMvc();
 
             app.UseDefaultFiles();
