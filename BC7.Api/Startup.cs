@@ -43,7 +43,7 @@ namespace BC7.Api
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterNewUserModelValidator>());
 
-            services.ConfigureSwaggerUI();
+            services.ConfigureSwaggerUi();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
