@@ -25,6 +25,7 @@ namespace BC7.Api.Controllers
         /// <param name="command">A command with user main account ID and amount to pay</param>
         /// <returns>Returns the Url where the payment can be done</returns>
         /// <response code="200">Returns the Url where the payment can be done</response>
+        /// <response code="401">Failed - only logged in users have access</response>
         [HttpPost("membershipsFee")]
         [Authorize]
         public async Task<IActionResult> PayMembershipsFee([FromBody] PayMembershipsFeeCommand command)
@@ -37,6 +38,8 @@ namespace BC7.Api.Controllers
         /// </summary>
         /// <param name="command">A command with user main account ID and amount to pay and a matrix level to buy entrance to</param>
         /// <returns>Returns the Url where the payment can be done</returns>
+        /// <response code="200">Returns the Url where the payment can be done</response>
+        /// <response code="401">Failed - only logged in users have access</response>
         [HttpPost("matrixLevel")]
         [Authorize]
         public async Task<IActionResult> PayForMatrixLevel([FromBody] PayMatrixLevelCommand command)
