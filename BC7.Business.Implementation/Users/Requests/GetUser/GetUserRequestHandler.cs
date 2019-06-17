@@ -20,7 +20,7 @@ namespace BC7.Business.Implementation.Users.Requests.GetUser
             _mapper = mapper;
         }
 
-        public async Task<UserAccountDataModel> Handle(GetUserRequest request, CancellationToken cancellationToken)
+        public async Task<UserAccountDataModel> Handle(GetUserRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             ValidateRequest(request);
 
