@@ -7,6 +7,7 @@ using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Business.Implementation.Users.Commands.UpdateUser;
 using BC7.Business.Implementation.Users.Requests.GetMultiAccounts;
+using BC7.Business.Implementation.Users.Requests.GetUser;
 using BC7.Business.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -43,6 +44,19 @@ namespace BC7.Api.Controllers
 
             // TODO: Created (201) maybe?
             return Ok(new { Id = resultId });
+        }
+
+        /// <summary>
+        /// Get user's data by ID
+        /// </summary>
+        /// <param name="userId">User ID to get</param>
+        /// <returns>Returns the user model with his data</returns>
+        /// <response code="200">Returns the user model with his data</response>
+        [HttpGet("{userId}")]
+        [Authorize]
+        public async Task<IActionResult> GetUser(Guid userId)
+        {
+            return Ok(await _mediator.Send(new GetUserRequest { UserId = userId }));
         }
 
         /// <summary>
@@ -98,7 +112,7 @@ namespace BC7.Api.Controllers
             command.UserId = id;
             command.RequestedUser = GetLoggerUserFromJwt();
 
-            await _mediator.Send(command);;
+            await _mediator.Send(command); ;
 
             return NoContent();
         }
