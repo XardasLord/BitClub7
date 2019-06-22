@@ -44,7 +44,7 @@ namespace BC7.Api.Controllers
 
             var userId = await _mediator.Send(command);
             
-            return CreatedAtAction(nameof(GetUser), new { Id = userId }, new { Id = userId });
+            return CreatedAtAction(nameof(GetUser), new { userId = userId }, new { Id = userId });
         }
 
         /// <summary>
