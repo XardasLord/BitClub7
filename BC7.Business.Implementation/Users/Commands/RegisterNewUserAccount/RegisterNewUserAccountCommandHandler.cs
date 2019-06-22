@@ -123,7 +123,7 @@ namespace BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount
 
         private async Task<Guid> GetRandomSponsorId()
         {
-            var randomSponsor = await _userMultiAccountHelper.GetRandomUserMultiAccount();
+            var randomSponsor = await _userMultiAccountHelper.GetRandomUserMultiAccountSponsor();
 
             return randomSponsor.Id;
         }

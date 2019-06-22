@@ -20,9 +20,10 @@ namespace BC7.Business.Implementation.Helpers
             _userAccountDataRepository = userAccountDataRepository;
         }
 
-        public Task<UserMultiAccount> GetRandomUserMultiAccount()
+        public Task<UserMultiAccount> GetRandomUserMultiAccountSponsor()
         {
             return _context.Set<UserMultiAccount>()
+                .Where(x => x.RefLink != null)
                 .OrderBy(r => Guid.NewGuid())
                 .Take(1)
                 .FirstAsync();
