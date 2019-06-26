@@ -10,94 +10,109 @@ namespace BC7.Database.Extensions
         public static void Seed(this ModelBuilder modelBuilder)
         {
             // TODO: Hash and salt for roots
-            var root1 = new UserAccountData
+            var root = new UserAccountData
             (
                 Guid.NewGuid(),
-                login: "LoginRoot1",
-                email: "EmailRoot1",
-                firstName: "FirstNameRoot1",
-                lastName: "LastNameRoot1",
-                street: "StreetRoot1",
-                city: "CityRoot1",
-                zipCode: "ZipCodeRoot1",
-                country: "CountryRoot1",
-                btcWalletAddress: "BtcWalletAddressRoot1",
+                login: "root",
+                email: "root@bitclub7.com",
+                firstName: "FirstNameRoot",
+                lastName: "LastNameRoot",
+                street: "StreetRoot",
+                city: "CityRoot",
+                zipCode: "ZipCodeRoot",
+                country: "CountryRoot",
+                btcWalletAddress: "BtcWalletAddressRoot",
                 role: UserRolesHelper.Root
             );
-            var root2 = new UserAccountData
+            root.SetPassword("salt1", "hash1");
+            root.PaidMembershipFee();
+            
+            var admin = new UserAccountData
             (
                 Guid.NewGuid(),
-                login: "LoginRoot2",
-                email: "EmailRoot2",
-                firstName: "FirstNameRoot2",
-                lastName: "LastNameRoot2",
-                street: "StreetRoot2",
-                city: "CityRoot2",
-                zipCode: "ZipCodeRoot2",
-                country: "CountryRoot2",
-                btcWalletAddress: "BtcWalletAddressRoot2",
-                role: UserRolesHelper.Root
+                login: "admin",
+                email: "admin@bitclub7.com",
+                firstName: "FirstNameAdmin",
+                lastName: "LastNameAdmin",
+                street: "StreetAdmin",
+                city: "CityAdmin",
+                zipCode: "ZipCodeAdmin",
+                country: "CountryAdmin",
+                btcWalletAddress: "BtcWalletAddressAdmin",
+                role: UserRolesHelper.Admin
             );
-            var root3 = new UserAccountData
-            (
-                Guid.NewGuid(),
-                login: "LoginRoot3",
-                email: "EmailRoot3",
-                firstName: "FirstNameRoot3",
-                lastName: "LastNameRoot3",
-                street: "StreetRoot3",
-                city: "CityRoot3",
-                zipCode: "ZipCodeRoot3",
-                country: "CountryRoot3",
-                btcWalletAddress: "BtcWalletAddressRoot3",
-                role: UserRolesHelper.Root
-            );
-            root1.SetPassword("salt1", "hash1");
-            root2.SetPassword("salt2", "hash2");
-            root3.SetPassword("salt3", "hash3");
-            root1.PaidMembershipFee();
-            root2.PaidMembershipFee();
-            root3.PaidMembershipFee();
+            root.SetPassword("salt1", "hash1");
+            root.PaidMembershipFee();
 
-            modelBuilder.Entity<UserAccountData>().HasData(root1, root2, root3);
+            modelBuilder.Entity<UserAccountData>().HasData(root, admin);
 
 
             var root1MultiAccount = new UserMultiAccount
             (
                 id: Guid.NewGuid(),
-                userAccountDataId: root1.Id,
+                userAccountDataId: root.Id,
                 sponsorId: null,
-                multiAccountName: "LoginRoot1"
+                multiAccountName: "root-001"
             );
             root1MultiAccount.SetAsMainAccount();
-            root1MultiAccount.SetReflink("111111");
 
             var root2MultiAccount = new UserMultiAccount
             (
                 id: Guid.NewGuid(),
-                userAccountDataId: root2.Id,
+                userAccountDataId: root.Id,
                 sponsorId: null,
-                multiAccountName: "LoginRoot2"
+                multiAccountName: "root-002"
             );
-            root2MultiAccount.SetAsMainAccount();
-            root2MultiAccount.SetReflink("222222");
 
             var root3MultiAccount = new UserMultiAccount
             (
                 id: Guid.NewGuid(),
-                userAccountDataId: root3.Id,
+                userAccountDataId: root.Id,
                 sponsorId: null,
-                multiAccountName: "LoginRoot3"
+                multiAccountName: "root-003"
             );
-            root3MultiAccount.SetAsMainAccount();
-            root3MultiAccount.SetReflink("333333");
 
-            modelBuilder.Entity<UserMultiAccount>().HasData(root1MultiAccount, root2MultiAccount, root3MultiAccount);
+            var admin1MultiAccount = new UserMultiAccount
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: admin.Id,
+                sponsorId: null,
+                multiAccountName: "admin-001"
+            );
+            admin1MultiAccount.SetAsMainAccount();
+
+            var admin2MultiAccount = new UserMultiAccount
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: admin.Id,
+                sponsorId: null,
+                multiAccountName: "admin-002"
+            );
+
+            var admin3MultiAccount = new UserMultiAccount
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: admin.Id,
+                sponsorId: null,
+                multiAccountName: "admin-003"
+            );
+
+            var admin4MultiAccount = new UserMultiAccount
+            (
+                id: Guid.NewGuid(),
+                userAccountDataId: admin.Id,
+                sponsorId: null,
+                multiAccountName: "admin-004"
+            );
+
+            modelBuilder.Entity<UserMultiAccount>().HasData(
+                root1MultiAccount, root2MultiAccount, root3MultiAccount,
+                admin1MultiAccount, admin2MultiAccount, admin3MultiAccount, admin4MultiAccount);
 
 
             var root1MatrixPosition = new MatrixPosition
             (
-                // root1
+                // root-001
                 id: Guid.NewGuid(),
                 matrixLevel: 0,
                 parentId: null,
@@ -108,7 +123,7 @@ namespace BC7.Database.Extensions
             );
             var root2MatrixPosition = new MatrixPosition
             (
-                // root2
+                // root-002
                 id: Guid.NewGuid(),
                 matrixLevel: 0,
                 parentId: root1MatrixPosition.Id,
@@ -119,7 +134,7 @@ namespace BC7.Database.Extensions
             );
             var root3MatrixPosition = new MatrixPosition
             (
-                // root3
+                // root-003
                 id: Guid.NewGuid(),
                 matrixLevel: 0,
                 parentId: root1MatrixPosition.Id,
@@ -128,6 +143,7 @@ namespace BC7.Database.Extensions
                 left: 8,
                 right: 13
             );
+            // TODO: Admins in matrix on lvl0
             var empty1MatrixPosition = new MatrixPosition
             (
                 id: Guid.NewGuid(),
