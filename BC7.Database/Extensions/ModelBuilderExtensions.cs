@@ -24,7 +24,8 @@ namespace BC7.Database.Extensions
                 btcWalletAddress: "BtcWalletAddressRoot",
                 role: UserRolesHelper.Root
             );
-            root.SetPassword("salt1", "hash1");
+            var hashSaltForRoot = Security.PasswordUtilities.PasswordEncryptionUtilities.GenerateSaltedHash("test$123");
+            root.SetPassword(hashSaltForRoot.Salt, hashSaltForRoot.Hash);
             root.PaidMembershipFee();
             
             var admin = new UserAccountData
@@ -41,7 +42,8 @@ namespace BC7.Database.Extensions
                 btcWalletAddress: "BtcWalletAddressAdmin",
                 role: UserRolesHelper.Admin
             );
-            root.SetPassword("salt1", "hash1");
+            var hashSaltForAdmin = Security.PasswordUtilities.PasswordEncryptionUtilities.GenerateSaltedHash("test$123");
+            root.SetPassword(hashSaltForAdmin.Salt, hashSaltForAdmin.Hash);
             root.PaidMembershipFee();
 
             modelBuilder.Entity<UserAccountData>().HasData(root, admin);
