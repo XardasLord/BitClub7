@@ -9,7 +9,7 @@ namespace BC7.Database.Extensions
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            // TODO: Hash and salt for roots
+
             var root = new UserAccountData
             (
                 Guid.NewGuid(),
@@ -27,7 +27,7 @@ namespace BC7.Database.Extensions
             var hashSaltForRoot = Security.PasswordUtilities.PasswordEncryptionUtilities.GenerateSaltedHash("test$123");
             root.SetPassword(hashSaltForRoot.Salt, hashSaltForRoot.Hash);
             root.PaidMembershipFee();
-            
+
             var admin = new UserAccountData
             (
                 Guid.NewGuid(),
@@ -112,6 +112,7 @@ namespace BC7.Database.Extensions
                 admin1MultiAccount, admin2MultiAccount, admin3MultiAccount, admin4MultiAccount);
 
 
+            #region Seed Matrix Level 0
             var root1MatrixPosition = new MatrixPosition
             (
                 // root-001
@@ -121,7 +122,7 @@ namespace BC7.Database.Extensions
                 userMultiAccountId: root1MultiAccount.Id,
                 depthLevel: 0,
                 left: 1,
-                right: 14
+                right: 30
             );
             var root2MatrixPosition = new MatrixPosition
             (
@@ -132,7 +133,7 @@ namespace BC7.Database.Extensions
                 userMultiAccountId: root2MultiAccount.Id,
                 depthLevel: 1,
                 left: 2,
-                right: 7
+                right: 15
             );
             var root3MatrixPosition = new MatrixPosition
             (
@@ -142,45 +143,218 @@ namespace BC7.Database.Extensions
                 parentId: root1MatrixPosition.Id,
                 userMultiAccountId: root3MultiAccount.Id,
                 depthLevel: 1,
-                left: 8,
-                right: 13
+                left: 16,
+                right: 29
             );
-            // TODO: Admins in matrix on lvl0
-            var empty1MatrixPosition = new MatrixPosition
+            var admin1MatrixPosition = new MatrixPosition
+            (
+                // admin-001
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: root2MatrixPosition.Id,
+                userMultiAccountId: admin1MultiAccount.Id,
+                depthLevel: 2,
+                left: 3,
+                right: 8
+            );
+            var admin2MatrixPosition = new MatrixPosition
             (
                 id: Guid.NewGuid(),
                 matrixLevel: 0,
                 parentId: root2MatrixPosition.Id,
-                userMultiAccountId: null,
+                userMultiAccountId: admin2MultiAccount.Id,
                 depthLevel: 2,
-                left: 3,
-                right: 4
+                left: 9,
+                right: 14
+            );
+            var admin3MatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: root3MatrixPosition.Id,
+                userMultiAccountId: admin3MultiAccount.Id,
+                depthLevel: 2,
+                left: 17,
+                right: 22
+            );
+            var admin4MatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: root3MatrixPosition.Id,
+                userMultiAccountId: admin4MultiAccount.Id,
+                depthLevel: 2,
+                left: 23,
+                right: 28
+            );
+            var empty1MatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: admin1MatrixPosition.Id,
+                userMultiAccountId: null,
+                depthLevel: 3,
+                left: 4,
+                right: 5
             );
             var empty2MatrixPosition = new MatrixPosition
             (
                 id: Guid.NewGuid(),
                 matrixLevel: 0,
-                parentId: root2MatrixPosition.Id,
+                parentId: admin1MatrixPosition.Id,
                 userMultiAccountId: null,
-                depthLevel: 2,
-                left: 5,
-                right: 6
+                depthLevel: 3,
+                left: 6,
+                right: 7
             );
             var empty3MatrixPosition = new MatrixPosition
             (
                 id: Guid.NewGuid(),
                 matrixLevel: 0,
-                parentId: root3MatrixPosition.Id,
+                parentId: admin2MatrixPosition.Id,
                 userMultiAccountId: null,
-                depthLevel: 2,
-                left: 9,
-                right: 10
+                depthLevel: 3,
+                left: 10,
+                right: 11
             );
             var empty4MatrixPosition = new MatrixPosition
             (
                 id: Guid.NewGuid(),
                 matrixLevel: 0,
-                parentId: root3MatrixPosition.Id,
+                parentId: admin2MatrixPosition.Id,
+                userMultiAccountId: null,
+                depthLevel: 3,
+                left: 12,
+                right: 13
+            );
+            var empty5MatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: admin3MatrixPosition.Id,
+                userMultiAccountId: null,
+                depthLevel: 3,
+                left: 18,
+                right: 19
+            );
+            var empty6MatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: admin3MatrixPosition.Id,
+                userMultiAccountId: null,
+                depthLevel: 3,
+                left: 20,
+                right: 21
+            );
+            var empty7MatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: admin4MatrixPosition.Id,
+                userMultiAccountId: null,
+                depthLevel: 3,
+                left: 24,
+                right: 25
+            );
+            var empty8MatrixPosition = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 0,
+                parentId: admin4MatrixPosition.Id,
+                userMultiAccountId: null,
+                depthLevel: 3,
+                left: 26,
+                right: 27
+            );
+
+            modelBuilder.Entity<MatrixPosition>().HasData(
+                root1MatrixPosition,
+                root2MatrixPosition,
+                root3MatrixPosition,
+                admin1MatrixPosition,
+                admin2MatrixPosition,
+                admin3MatrixPosition,
+                admin4MatrixPosition,
+                empty1MatrixPosition,
+                empty2MatrixPosition,
+                empty3MatrixPosition,
+                empty4MatrixPosition,
+                empty5MatrixPosition,
+                empty6MatrixPosition,
+                empty7MatrixPosition,
+                empty8MatrixPosition
+            );
+            #endregion
+            #region Seed Matrix Level 1
+            var root1MatrixPositionLvl1 = new MatrixPosition
+            (
+                // root-001
+                id: Guid.NewGuid(),
+                matrixLevel: 1,
+                parentId: null,
+                userMultiAccountId: root1MultiAccount.Id,
+                depthLevel: 0,
+                left: 1,
+                right: 14
+            );
+            var root2MatrixPositionLvl1 = new MatrixPosition
+            (
+                // root-002
+                id: Guid.NewGuid(),
+                matrixLevel: 1,
+                parentId: root1MatrixPositionLvl1.Id,
+                userMultiAccountId: root2MultiAccount.Id,
+                depthLevel: 1,
+                left: 2,
+                right: 7
+            );
+            var root3MatrixPositionLvl1 = new MatrixPosition
+            (
+                // root-003
+                id: Guid.NewGuid(),
+                matrixLevel: 1,
+                parentId: root1MatrixPositionLvl1.Id,
+                userMultiAccountId: root3MultiAccount.Id,
+                depthLevel: 1,
+                left: 8,
+                right: 13
+            );
+            var empty1MatrixPositionLvl1 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 1,
+                parentId: root2MatrixPositionLvl1.Id,
+                userMultiAccountId: null,
+                depthLevel: 2,
+                left: 3,
+                right: 4
+            );
+            var empty2MatrixPositionLvl1 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 1,
+                parentId: root2MatrixPositionLvl1.Id,
+                userMultiAccountId: null,
+                depthLevel: 2,
+                left: 5,
+                right: 6
+            );
+            var empty3MatrixPositionLvl1 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 1,
+                parentId: root3MatrixPositionLvl1.Id,
+                userMultiAccountId: null,
+                depthLevel: 2,
+                left: 9,
+                right: 10
+            );
+            var empty4MatrixPositionLvl1 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 1,
+                parentId: root3MatrixPositionLvl1.Id,
                 userMultiAccountId: null,
                 depthLevel: 2,
                 left: 11,
@@ -188,14 +362,97 @@ namespace BC7.Database.Extensions
             );
 
             modelBuilder.Entity<MatrixPosition>().HasData(
-                root1MatrixPosition,
-                root2MatrixPosition,
-                root3MatrixPosition,
-                empty1MatrixPosition,
-                empty2MatrixPosition,
-                empty3MatrixPosition,
-                empty4MatrixPosition
+                root1MatrixPositionLvl1,
+                root2MatrixPositionLvl1,
+                root3MatrixPositionLvl1,
+                empty1MatrixPositionLvl1,
+                empty2MatrixPositionLvl1,
+                empty3MatrixPositionLvl1,
+                empty4MatrixPositionLvl1
             );
+            #endregion
+            #region Seed Matrix Level 2
+            var root1MatrixPositionLvl2 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 2,
+                parentId: null,
+                userMultiAccountId: root1MultiAccount.Id,
+                depthLevel: 0,
+                left: 1,
+                right: 14
+            );
+            var root2MatrixPositionLvl2 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 2,
+                parentId: root1MatrixPositionLvl2.Id,
+                userMultiAccountId: root2MultiAccount.Id,
+                depthLevel: 1,
+                left: 2,
+                right: 7
+            );
+            var root3MatrixPositionLvl2 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 2,
+                parentId: root1MatrixPositionLvl2.Id,
+                userMultiAccountId: root3MultiAccount.Id,
+                depthLevel: 1,
+                left: 8,
+                right: 13
+            );
+            var empty1MatrixPositionLvl2 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 2,
+                parentId: root2MatrixPositionLvl2.Id,
+                userMultiAccountId: null,
+                depthLevel: 2,
+                left: 3,
+                right: 4
+            );
+            var empty2MatrixPositionLvl2 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 2,
+                parentId: root2MatrixPositionLvl2.Id,
+                userMultiAccountId: null,
+                depthLevel: 2,
+                left: 5,
+                right: 6
+            );
+            var empty3MatrixPositionLvl2 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 2,
+                parentId: root3MatrixPositionLvl2.Id,
+                userMultiAccountId: null,
+                depthLevel: 2,
+                left: 9,
+                right: 10
+            );
+            var empty4MatrixPositionLvl2 = new MatrixPosition
+            (
+                id: Guid.NewGuid(),
+                matrixLevel: 2,
+                parentId: root3MatrixPositionLvl2.Id,
+                userMultiAccountId: null,
+                depthLevel: 2,
+                left: 11,
+                right: 12
+            );
+
+            modelBuilder.Entity<MatrixPosition>().HasData(
+                root1MatrixPositionLvl2,
+                root2MatrixPositionLvl2,
+                root3MatrixPositionLvl2,
+                empty1MatrixPositionLvl2,
+                empty2MatrixPositionLvl2,
+                empty3MatrixPositionLvl2,
+                empty4MatrixPositionLvl2
+            );
+            #endregion
         }
 
         public static void Configuration(this ModelBuilder modelBuilder)
