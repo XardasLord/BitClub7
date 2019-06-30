@@ -42,8 +42,8 @@ namespace BC7.Database.Extensions
                 role: UserRolesHelper.Admin
             );
             var hashSaltForAdmin = Security.PasswordUtilities.PasswordEncryptionUtilities.GenerateSaltedHash("test$123");
-            root.SetPassword(hashSaltForAdmin.Salt, hashSaltForAdmin.Hash);
-            root.PaidMembershipFee();
+            admin.SetPassword(hashSaltForAdmin.Salt, hashSaltForAdmin.Hash);
+            admin.PaidMembershipFee();
 
             modelBuilder.Entity<UserAccountData>().HasData(root, admin);
 
