@@ -24,7 +24,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
 
         void GivenSystemUnderTest()
         {
-            _sut = new BuyPositionInMatrixCommandHandler(_userMultiAccountRepository, _userAccountDataRepository, _matrixPositionRepository, _matrixPositionHelper, _mediator);
+            _sut = new BuyPositionInMatrixCommandHandler(_userMultiAccountRepository, _userAccountDataRepository, _matrixPositionRepository, _matrixPositionHelper, _paymentHistoryHelper, _mediator);
         }
 
         [Given(StepTitle = "And given created default accounts and matrices in database")]
@@ -65,6 +65,17 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.BuyingPositionInMa
 
             _context.UserMultiAccounts.AddRange(myMultiAccount, otherMultiAccount, otherMultiAccount2);
             await _context.SaveChangesAsync();
+
+            // Payments
+            var payment = fakerGenerator.GetPaymentHistoryFakerGenerator()
+                .RuleFor(x => x.PaymentFor, PaymentForHelper.MatrixLevelPositionsDictionary[0])
+                .RuleFor(x => x.Status, PaymentStatusHelper.Paid)
+                .RuleFor(x => x.OrderId, Guid.Parse("032d748c-9cef-4a5a-92bd-3fd9a4a0e499"))
+                .Generate();
+
+            _context.PaymentHistories.Add(payment);
+            await _context.SaveChangesAsync();
+
 
             // Matrices
             var myMatrixPosition = new MatrixPosition

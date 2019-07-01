@@ -16,12 +16,12 @@ namespace BC7.Business.Implementation.Helpers
             _paymentHistoryRepository = paymentHistoryRepository;
         }
 
-        public async Task<bool> DoesUserPaidForMatrixLevelAsync(int matrixLevelUpgrade, Guid userMultiAccountId)
+        public async Task<bool> DoesUserPaidForMatrixLevelAsync(int matrixLevel, Guid userMultiAccountId)
         {
             var userPayments = await _paymentHistoryRepository.GetPaymentsByUser(userMultiAccountId);
 
             return userPayments.Any(
-                x => x.PaymentFor == PaymentForHelper.MatrixLevelPositionsDictionary[matrixLevelUpgrade] &&
+                x => x.PaymentFor == PaymentForHelper.MatrixLevelPositionsDictionary[matrixLevel] &&
                      (x.Status == PaymentStatusHelper.Paid || x.Status == PaymentStatusHelper.Completed)
             );
         }
