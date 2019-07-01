@@ -73,590 +73,590 @@ namespace BC7.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("5a5af626-cf3d-40c7-b05b-94da55551fff"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(1335),
+                            Id = new Guid("f85b8f04-5d1f-4261-bf8b-626c1bdd392c"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(1911),
                             DepthLevel = 0,
                             Left = 1,
                             MatrixLevel = 0,
                             Right = 30,
-                            UserMultiAccountId = new Guid("f7283501-3c65-473f-b2c5-84b094c522a6")
+                            UserMultiAccountId = new Guid("441c799c-e2b7-4f1c-b141-db3c6c1af034")
                         },
                         new
                         {
-                            Id = new Guid("3dfb5c5d-af7e-4df0-a332-04b2893d23ab"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(1919),
+                            Id = new Guid("2bde30b3-599a-4e41-b820-9dc589937071"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(2818),
                             DepthLevel = 1,
                             Left = 2,
                             MatrixLevel = 0,
-                            ParentId = new Guid("5a5af626-cf3d-40c7-b05b-94da55551fff"),
+                            ParentId = new Guid("f85b8f04-5d1f-4261-bf8b-626c1bdd392c"),
                             Right = 15,
-                            UserMultiAccountId = new Guid("2c06de2f-a710-4642-8903-ab6b7c57b5f5")
+                            UserMultiAccountId = new Guid("c1b6ef5c-6e70-4982-bca3-f5407d1e431e")
                         },
                         new
                         {
-                            Id = new Guid("1acb5125-97e2-4fe8-85d8-aeb260640f5f"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(1931),
+                            Id = new Guid("93f69513-67b1-4c34-befa-e81707335d35"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(2877),
                             DepthLevel = 1,
                             Left = 16,
                             MatrixLevel = 0,
-                            ParentId = new Guid("5a5af626-cf3d-40c7-b05b-94da55551fff"),
+                            ParentId = new Guid("f85b8f04-5d1f-4261-bf8b-626c1bdd392c"),
                             Right = 29,
-                            UserMultiAccountId = new Guid("ff63a56b-7de8-4746-8c79-6e775d53582b")
+                            UserMultiAccountId = new Guid("975ec706-0f87-4c21-adbf-215f0b36d5cf")
                         },
                         new
                         {
-                            Id = new Guid("5cb0ee5a-e892-426b-b4a0-6eb8a68fff3f"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(1934),
+                            Id = new Guid("4d87f944-4a53-4431-abee-0a64e1d8a0f4"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(2880),
                             DepthLevel = 2,
                             Left = 3,
                             MatrixLevel = 0,
-                            ParentId = new Guid("3dfb5c5d-af7e-4df0-a332-04b2893d23ab"),
+                            ParentId = new Guid("2bde30b3-599a-4e41-b820-9dc589937071"),
                             Right = 8,
-                            UserMultiAccountId = new Guid("eb8c3fa0-4fb9-47ce-bd7e-92f5976f1c64")
+                            UserMultiAccountId = new Guid("bde6962c-a69f-4070-b9c7-d5a3c5421a6e")
                         },
                         new
                         {
-                            Id = new Guid("44247d80-7a01-4ba5-b7eb-91ea2fe9df86"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(1936),
+                            Id = new Guid("9bfba368-c480-48d0-b8a5-7669af6123fe"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(2882),
                             DepthLevel = 2,
                             Left = 9,
                             MatrixLevel = 0,
-                            ParentId = new Guid("3dfb5c5d-af7e-4df0-a332-04b2893d23ab"),
+                            ParentId = new Guid("2bde30b3-599a-4e41-b820-9dc589937071"),
                             Right = 14,
-                            UserMultiAccountId = new Guid("20b2dad2-b2be-42af-af47-afd0e936634f")
+                            UserMultiAccountId = new Guid("6d1d38db-8f4d-48c8-af76-7bc5e50b1cb1")
                         },
                         new
                         {
-                            Id = new Guid("27c9473f-77a4-4b8b-aba8-d4f974d0e864"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(1939),
+                            Id = new Guid("00f8f3ec-f9cf-478b-b3d1-2a338cd35054"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(2885),
                             DepthLevel = 2,
                             Left = 17,
                             MatrixLevel = 0,
-                            ParentId = new Guid("1acb5125-97e2-4fe8-85d8-aeb260640f5f"),
+                            ParentId = new Guid("93f69513-67b1-4c34-befa-e81707335d35"),
                             Right = 22,
-                            UserMultiAccountId = new Guid("577e391c-df4e-42cc-a5f2-c0111e8d2c83")
+                            UserMultiAccountId = new Guid("f5d34aaa-455b-4be0-8d77-7017ee3ffde5")
                         },
                         new
                         {
-                            Id = new Guid("ee94cf3e-199b-408e-a770-fa7f161e34f6"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(1942),
+                            Id = new Guid("2e8d71f8-24a4-48ac-8088-12b1351327cf"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(2894),
                             DepthLevel = 2,
                             Left = 23,
                             MatrixLevel = 0,
-                            ParentId = new Guid("1acb5125-97e2-4fe8-85d8-aeb260640f5f"),
+                            ParentId = new Guid("93f69513-67b1-4c34-befa-e81707335d35"),
                             Right = 28,
-                            UserMultiAccountId = new Guid("ddf2f3ec-a989-418a-8460-2fbcb9281b1b")
+                            UserMultiAccountId = new Guid("e374d579-ef95-46ab-99b9-c947a0eb62de")
                         },
                         new
                         {
-                            Id = new Guid("7408a3e1-6f6f-49e6-8812-a4bccd1f2c9a"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(1951),
+                            Id = new Guid("2daf2a6f-7cec-4ff3-b15d-5c8356031d04"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(2897),
                             DepthLevel = 3,
                             Left = 4,
                             MatrixLevel = 0,
-                            ParentId = new Guid("5cb0ee5a-e892-426b-b4a0-6eb8a68fff3f"),
+                            ParentId = new Guid("4d87f944-4a53-4431-abee-0a64e1d8a0f4"),
                             Right = 5
                         },
                         new
                         {
-                            Id = new Guid("bca10fe3-59e3-4c89-9a9a-c2471e01bd27"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(1951),
+                            Id = new Guid("f52b3c6f-bfba-4090-bc8d-7bc0f04dc87a"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(2900),
                             DepthLevel = 3,
                             Left = 6,
                             MatrixLevel = 0,
-                            ParentId = new Guid("5cb0ee5a-e892-426b-b4a0-6eb8a68fff3f"),
+                            ParentId = new Guid("4d87f944-4a53-4431-abee-0a64e1d8a0f4"),
                             Right = 7
                         },
                         new
                         {
-                            Id = new Guid("9322fc0f-b204-4d52-a2f5-aefe556b6e77"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(1954),
+                            Id = new Guid("438ebaf1-9835-46ed-b37b-4abe905848c1"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(2900),
                             DepthLevel = 3,
                             Left = 10,
                             MatrixLevel = 0,
-                            ParentId = new Guid("44247d80-7a01-4ba5-b7eb-91ea2fe9df86"),
+                            ParentId = new Guid("9bfba368-c480-48d0-b8a5-7669af6123fe"),
                             Right = 11
                         },
                         new
                         {
-                            Id = new Guid("2b5e23b5-cd92-48e3-bbab-fd1309de9612"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(1957),
+                            Id = new Guid("ec2bacb3-fa9a-46eb-a998-5c1218ae8aab"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(2903),
                             DepthLevel = 3,
                             Left = 12,
                             MatrixLevel = 0,
-                            ParentId = new Guid("44247d80-7a01-4ba5-b7eb-91ea2fe9df86"),
+                            ParentId = new Guid("9bfba368-c480-48d0-b8a5-7669af6123fe"),
                             Right = 13
                         },
                         new
                         {
-                            Id = new Guid("8ef18845-399b-45e4-9f79-cd7ce9a51880"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(1957),
+                            Id = new Guid("43d3a359-e00e-4379-9e89-671da81e7a1e"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(2906),
                             DepthLevel = 3,
                             Left = 18,
                             MatrixLevel = 0,
-                            ParentId = new Guid("27c9473f-77a4-4b8b-aba8-d4f974d0e864"),
+                            ParentId = new Guid("00f8f3ec-f9cf-478b-b3d1-2a338cd35054"),
                             Right = 19
                         },
                         new
                         {
-                            Id = new Guid("98c6ce9e-6d37-4f79-84b5-6f72f3bffbf3"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(1960),
+                            Id = new Guid("c4c58868-ef2d-4c2e-b6d3-db48d46cdd5d"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(2906),
                             DepthLevel = 3,
                             Left = 20,
                             MatrixLevel = 0,
-                            ParentId = new Guid("27c9473f-77a4-4b8b-aba8-d4f974d0e864"),
+                            ParentId = new Guid("00f8f3ec-f9cf-478b-b3d1-2a338cd35054"),
                             Right = 21
                         },
                         new
                         {
-                            Id = new Guid("984781d1-e1aa-4d3d-af82-376cd2807c8b"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(1963),
+                            Id = new Guid("06a52c28-e984-4a93-bac8-8f515480a2ac"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(2909),
                             DepthLevel = 3,
                             Left = 24,
                             MatrixLevel = 0,
-                            ParentId = new Guid("ee94cf3e-199b-408e-a770-fa7f161e34f6"),
+                            ParentId = new Guid("2e8d71f8-24a4-48ac-8088-12b1351327cf"),
                             Right = 25
                         },
                         new
                         {
-                            Id = new Guid("801965bd-e13b-4078-a1c2-d00002ce5570"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(1963),
+                            Id = new Guid("b2e1041f-26a7-4b65-9ada-908f16ff53f7"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(2915),
                             DepthLevel = 3,
                             Left = 26,
                             MatrixLevel = 0,
-                            ParentId = new Guid("ee94cf3e-199b-408e-a770-fa7f161e34f6"),
+                            ParentId = new Guid("2e8d71f8-24a4-48ac-8088-12b1351327cf"),
                             Right = 27
                         },
                         new
                         {
-                            Id = new Guid("6ea13f12-4f0f-4efd-876e-78566edce08f"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2328),
+                            Id = new Guid("de35ee8e-5217-41f3-9902-407b082d5c7a"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3234),
                             DepthLevel = 0,
                             Left = 1,
                             MatrixLevel = 1,
                             Right = 14,
-                            UserMultiAccountId = new Guid("f7283501-3c65-473f-b2c5-84b094c522a6")
+                            UserMultiAccountId = new Guid("441c799c-e2b7-4f1c-b141-db3c6c1af034")
                         },
                         new
                         {
-                            Id = new Guid("e80dab1b-52fb-4a82-8597-b385ab6e9b07"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2331),
+                            Id = new Guid("0dacc2f1-c2b2-42aa-95bc-cc090ac0781e"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3236),
                             DepthLevel = 1,
                             Left = 2,
                             MatrixLevel = 1,
-                            ParentId = new Guid("6ea13f12-4f0f-4efd-876e-78566edce08f"),
+                            ParentId = new Guid("de35ee8e-5217-41f3-9902-407b082d5c7a"),
                             Right = 7,
-                            UserMultiAccountId = new Guid("2c06de2f-a710-4642-8903-ab6b7c57b5f5")
+                            UserMultiAccountId = new Guid("c1b6ef5c-6e70-4982-bca3-f5407d1e431e")
                         },
                         new
                         {
-                            Id = new Guid("5640c90b-70ea-41d9-a361-f2cddc9bbd9b"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2334),
+                            Id = new Guid("a50347be-ef95-47cc-8001-d65120945ae1"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3239),
                             DepthLevel = 1,
                             Left = 8,
                             MatrixLevel = 1,
-                            ParentId = new Guid("6ea13f12-4f0f-4efd-876e-78566edce08f"),
+                            ParentId = new Guid("de35ee8e-5217-41f3-9902-407b082d5c7a"),
                             Right = 13,
-                            UserMultiAccountId = new Guid("ff63a56b-7de8-4746-8c79-6e775d53582b")
+                            UserMultiAccountId = new Guid("975ec706-0f87-4c21-adbf-215f0b36d5cf")
                         },
                         new
                         {
-                            Id = new Guid("b435eef8-44f6-4145-9c5d-8a5761d4c877"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2337),
+                            Id = new Guid("0dd4a5b4-136b-4d67-ae2e-9cc0b0e86426"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3239),
                             DepthLevel = 2,
                             Left = 3,
                             MatrixLevel = 1,
-                            ParentId = new Guid("e80dab1b-52fb-4a82-8597-b385ab6e9b07"),
+                            ParentId = new Guid("0dacc2f1-c2b2-42aa-95bc-cc090ac0781e"),
                             Right = 4
                         },
                         new
                         {
-                            Id = new Guid("a464e75c-f6a5-4888-baba-92a6ba7f8a50"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2337),
+                            Id = new Guid("20847eaf-a4ae-47a4-9ca1-11666c52ed5e"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3242),
                             DepthLevel = 2,
                             Left = 5,
                             MatrixLevel = 1,
-                            ParentId = new Guid("e80dab1b-52fb-4a82-8597-b385ab6e9b07"),
+                            ParentId = new Guid("0dacc2f1-c2b2-42aa-95bc-cc090ac0781e"),
                             Right = 6
                         },
                         new
                         {
-                            Id = new Guid("ca744662-cf8e-4131-9ba0-52a575bc9de2"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2340),
+                            Id = new Guid("d24790ea-aad8-45e0-9bdf-32095094c072"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3245),
                             DepthLevel = 2,
                             Left = 9,
                             MatrixLevel = 1,
-                            ParentId = new Guid("5640c90b-70ea-41d9-a361-f2cddc9bbd9b"),
+                            ParentId = new Guid("a50347be-ef95-47cc-8001-d65120945ae1"),
                             Right = 10
                         },
                         new
                         {
-                            Id = new Guid("04a9e3ce-d632-4b3c-ae95-f163acad0957"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2340),
+                            Id = new Guid("f3c6bc8a-cac9-4cc2-832b-fe7621c32e70"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3245),
                             DepthLevel = 2,
                             Left = 11,
                             MatrixLevel = 1,
-                            ParentId = new Guid("5640c90b-70ea-41d9-a361-f2cddc9bbd9b"),
+                            ParentId = new Guid("a50347be-ef95-47cc-8001-d65120945ae1"),
                             Right = 12
                         },
                         new
                         {
-                            Id = new Guid("cc3f900a-b2f4-4b6f-b6b2-caa17af265ca"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2369),
+                            Id = new Guid("50ac185b-e596-4469-9b84-af83420e6bc0"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3280),
                             DepthLevel = 0,
                             Left = 1,
                             MatrixLevel = 2,
                             Right = 14,
-                            UserMultiAccountId = new Guid("f7283501-3c65-473f-b2c5-84b094c522a6")
+                            UserMultiAccountId = new Guid("441c799c-e2b7-4f1c-b141-db3c6c1af034")
                         },
                         new
                         {
-                            Id = new Guid("f31fc5a8-6f26-437f-8906-04d35caf90cf"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2378),
+                            Id = new Guid("cacc8dcc-711a-4527-a95b-eb8704d92572"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3283),
                             DepthLevel = 1,
                             Left = 2,
                             MatrixLevel = 2,
-                            ParentId = new Guid("cc3f900a-b2f4-4b6f-b6b2-caa17af265ca"),
+                            ParentId = new Guid("50ac185b-e596-4469-9b84-af83420e6bc0"),
                             Right = 7,
-                            UserMultiAccountId = new Guid("2c06de2f-a710-4642-8903-ab6b7c57b5f5")
+                            UserMultiAccountId = new Guid("c1b6ef5c-6e70-4982-bca3-f5407d1e431e")
                         },
                         new
                         {
-                            Id = new Guid("7b400f63-441d-40cf-9bf9-00d55a6677b1"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2381),
+                            Id = new Guid("b298bd5e-cca8-4c88-accc-cb9daebbac43"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3286),
                             DepthLevel = 1,
                             Left = 8,
                             MatrixLevel = 2,
-                            ParentId = new Guid("cc3f900a-b2f4-4b6f-b6b2-caa17af265ca"),
+                            ParentId = new Guid("50ac185b-e596-4469-9b84-af83420e6bc0"),
                             Right = 13,
-                            UserMultiAccountId = new Guid("ff63a56b-7de8-4746-8c79-6e775d53582b")
+                            UserMultiAccountId = new Guid("975ec706-0f87-4c21-adbf-215f0b36d5cf")
                         },
                         new
                         {
-                            Id = new Guid("3e7095fd-8d15-42ad-b22c-499cc51bd0cc"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2381),
+                            Id = new Guid("bbf68af4-33bd-4141-9d52-70577a056416"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3289),
                             DepthLevel = 2,
                             Left = 3,
                             MatrixLevel = 2,
-                            ParentId = new Guid("f31fc5a8-6f26-437f-8906-04d35caf90cf"),
+                            ParentId = new Guid("cacc8dcc-711a-4527-a95b-eb8704d92572"),
                             Right = 4
                         },
                         new
                         {
-                            Id = new Guid("43d4ad62-830e-4e27-a346-776e1f939de2"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2384),
+                            Id = new Guid("ef6af0b3-4efd-431a-96c9-7951db8ff4ee"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3289),
                             DepthLevel = 2,
                             Left = 5,
                             MatrixLevel = 2,
-                            ParentId = new Guid("f31fc5a8-6f26-437f-8906-04d35caf90cf"),
+                            ParentId = new Guid("cacc8dcc-711a-4527-a95b-eb8704d92572"),
                             Right = 6
                         },
                         new
                         {
-                            Id = new Guid("6b3b8b8b-c494-45ed-88eb-9792c334e213"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2387),
+                            Id = new Guid("aea0c28c-8733-48fb-8cdd-e96c776ba543"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3292),
                             DepthLevel = 2,
                             Left = 9,
                             MatrixLevel = 2,
-                            ParentId = new Guid("7b400f63-441d-40cf-9bf9-00d55a6677b1"),
+                            ParentId = new Guid("b298bd5e-cca8-4c88-accc-cb9daebbac43"),
                             Right = 10
                         },
                         new
                         {
-                            Id = new Guid("afd2bf2c-06e5-4e39-80a1-c413f48a550b"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2390),
+                            Id = new Guid("77492f5f-da59-4b08-b732-ac902827d8d6"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3295),
                             DepthLevel = 2,
                             Left = 11,
                             MatrixLevel = 2,
-                            ParentId = new Guid("7b400f63-441d-40cf-9bf9-00d55a6677b1"),
+                            ParentId = new Guid("b298bd5e-cca8-4c88-accc-cb9daebbac43"),
                             Right = 12
                         },
                         new
                         {
-                            Id = new Guid("8633e62c-f439-408c-b3a7-09b98e12077b"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2405),
+                            Id = new Guid("55b831a0-fede-4d1d-b1de-afb300331242"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3310),
                             DepthLevel = 0,
                             Left = 1,
                             MatrixLevel = 3,
                             Right = 14,
-                            UserMultiAccountId = new Guid("f7283501-3c65-473f-b2c5-84b094c522a6")
+                            UserMultiAccountId = new Guid("441c799c-e2b7-4f1c-b141-db3c6c1af034")
                         },
                         new
                         {
-                            Id = new Guid("9b22206e-ba7d-48a3-be72-26b7f6074db3"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2405),
+                            Id = new Guid("cc96d0e4-74c8-4752-a330-989939af3579"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3318),
                             DepthLevel = 1,
                             Left = 2,
                             MatrixLevel = 3,
-                            ParentId = new Guid("8633e62c-f439-408c-b3a7-09b98e12077b"),
+                            ParentId = new Guid("55b831a0-fede-4d1d-b1de-afb300331242"),
                             Right = 7,
-                            UserMultiAccountId = new Guid("2c06de2f-a710-4642-8903-ab6b7c57b5f5")
+                            UserMultiAccountId = new Guid("c1b6ef5c-6e70-4982-bca3-f5407d1e431e")
                         },
                         new
                         {
-                            Id = new Guid("33ff46a1-fb5d-4634-b5a5-86de8c84f6a1"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2413),
+                            Id = new Guid("98c5b782-a1d8-49cb-99b1-d98c9900b8ad"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3318),
                             DepthLevel = 1,
                             Left = 8,
                             MatrixLevel = 3,
-                            ParentId = new Guid("8633e62c-f439-408c-b3a7-09b98e12077b"),
+                            ParentId = new Guid("55b831a0-fede-4d1d-b1de-afb300331242"),
                             Right = 13,
-                            UserMultiAccountId = new Guid("ff63a56b-7de8-4746-8c79-6e775d53582b")
+                            UserMultiAccountId = new Guid("975ec706-0f87-4c21-adbf-215f0b36d5cf")
                         },
                         new
                         {
-                            Id = new Guid("ab1bd571-25f4-4f09-8ce3-154c2df8efac"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2416),
+                            Id = new Guid("5c3a20e3-334b-4020-a1d1-2bc2257a8938"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3321),
                             DepthLevel = 2,
                             Left = 3,
                             MatrixLevel = 3,
-                            ParentId = new Guid("9b22206e-ba7d-48a3-be72-26b7f6074db3"),
+                            ParentId = new Guid("cc96d0e4-74c8-4752-a330-989939af3579"),
                             Right = 4
                         },
                         new
                         {
-                            Id = new Guid("ffd650af-99a8-4103-b3d9-3b0c9682f4ba"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2416),
+                            Id = new Guid("ba73bbb5-0d9d-4f56-9ee3-94450e4c3824"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3324),
                             DepthLevel = 2,
                             Left = 5,
                             MatrixLevel = 3,
-                            ParentId = new Guid("9b22206e-ba7d-48a3-be72-26b7f6074db3"),
+                            ParentId = new Guid("cc96d0e4-74c8-4752-a330-989939af3579"),
                             Right = 6
                         },
                         new
                         {
-                            Id = new Guid("69b6e0c1-1f3c-417d-b19a-40d617c43753"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2419),
+                            Id = new Guid("8a3a8474-1233-4621-b7ba-2c4570518135"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3324),
                             DepthLevel = 2,
                             Left = 9,
                             MatrixLevel = 3,
-                            ParentId = new Guid("33ff46a1-fb5d-4634-b5a5-86de8c84f6a1"),
+                            ParentId = new Guid("98c5b782-a1d8-49cb-99b1-d98c9900b8ad"),
                             Right = 10
                         },
                         new
                         {
-                            Id = new Guid("46c9af90-3595-478e-9aba-f14aebc978be"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2422),
+                            Id = new Guid("928f6f4f-d6b7-4f7f-a791-efa9152078e9"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3327),
                             DepthLevel = 2,
                             Left = 11,
                             MatrixLevel = 3,
-                            ParentId = new Guid("33ff46a1-fb5d-4634-b5a5-86de8c84f6a1"),
+                            ParentId = new Guid("98c5b782-a1d8-49cb-99b1-d98c9900b8ad"),
                             Right = 12
                         },
                         new
                         {
-                            Id = new Guid("0df78f75-566f-4e02-87e2-8e030f1fb3c9"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2437),
+                            Id = new Guid("b147e664-c083-4110-8aeb-b54e78365aa1"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3342),
                             DepthLevel = 0,
                             Left = 1,
                             MatrixLevel = 4,
                             Right = 14,
-                            UserMultiAccountId = new Guid("f7283501-3c65-473f-b2c5-84b094c522a6")
+                            UserMultiAccountId = new Guid("441c799c-e2b7-4f1c-b141-db3c6c1af034")
                         },
                         new
                         {
-                            Id = new Guid("443e45dd-eeea-4886-a72e-aae6f64b339f"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2437),
+                            Id = new Guid("2036142b-541f-4124-b09d-b1b39c2c1ba0"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3342),
                             DepthLevel = 1,
                             Left = 2,
                             MatrixLevel = 4,
-                            ParentId = new Guid("0df78f75-566f-4e02-87e2-8e030f1fb3c9"),
+                            ParentId = new Guid("b147e664-c083-4110-8aeb-b54e78365aa1"),
                             Right = 7,
-                            UserMultiAccountId = new Guid("2c06de2f-a710-4642-8903-ab6b7c57b5f5")
+                            UserMultiAccountId = new Guid("c1b6ef5c-6e70-4982-bca3-f5407d1e431e")
                         },
                         new
                         {
-                            Id = new Guid("6b09c107-e332-4245-be21-a43c3a4496fe"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2486),
+                            Id = new Guid("1babc389-43c0-4e1f-9506-f251e6372b17"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3351),
                             DepthLevel = 1,
                             Left = 8,
                             MatrixLevel = 4,
-                            ParentId = new Guid("0df78f75-566f-4e02-87e2-8e030f1fb3c9"),
+                            ParentId = new Guid("b147e664-c083-4110-8aeb-b54e78365aa1"),
                             Right = 13,
-                            UserMultiAccountId = new Guid("ff63a56b-7de8-4746-8c79-6e775d53582b")
+                            UserMultiAccountId = new Guid("975ec706-0f87-4c21-adbf-215f0b36d5cf")
                         },
                         new
                         {
-                            Id = new Guid("2dccbb21-75da-478c-9e50-0d66d207cbef"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2495),
+                            Id = new Guid("29a74bb5-013e-40a1-8b7a-58b7b11dd398"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3354),
                             DepthLevel = 2,
                             Left = 3,
                             MatrixLevel = 4,
-                            ParentId = new Guid("443e45dd-eeea-4886-a72e-aae6f64b339f"),
+                            ParentId = new Guid("2036142b-541f-4124-b09d-b1b39c2c1ba0"),
                             Right = 4
                         },
                         new
                         {
-                            Id = new Guid("7a502e73-5d16-4bd0-8946-f835761663f9"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2495),
+                            Id = new Guid("2fd26ed3-c8e8-455d-ad71-cd1952b889ee"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3354),
                             DepthLevel = 2,
                             Left = 5,
                             MatrixLevel = 4,
-                            ParentId = new Guid("443e45dd-eeea-4886-a72e-aae6f64b339f"),
+                            ParentId = new Guid("2036142b-541f-4124-b09d-b1b39c2c1ba0"),
                             Right = 6
                         },
                         new
                         {
-                            Id = new Guid("20b76e7e-d8cf-4f0e-abae-d7f54015d121"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2498),
+                            Id = new Guid("cd62fe7d-c451-4df7-8a8c-3d69a7ef51a8"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3356),
                             DepthLevel = 2,
                             Left = 9,
                             MatrixLevel = 4,
-                            ParentId = new Guid("6b09c107-e332-4245-be21-a43c3a4496fe"),
+                            ParentId = new Guid("1babc389-43c0-4e1f-9506-f251e6372b17"),
                             Right = 10
                         },
                         new
                         {
-                            Id = new Guid("9385719f-7be6-4f43-8ef0-8f865752ac54"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2501),
+                            Id = new Guid("ad847c40-882a-410c-8b07-6458dc1f33b3"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3359),
                             DepthLevel = 2,
                             Left = 11,
                             MatrixLevel = 4,
-                            ParentId = new Guid("6b09c107-e332-4245-be21-a43c3a4496fe"),
+                            ParentId = new Guid("1babc389-43c0-4e1f-9506-f251e6372b17"),
                             Right = 12
                         },
                         new
                         {
-                            Id = new Guid("907b592a-cc92-440c-a3d7-a851f0636023"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2516),
+                            Id = new Guid("89cf4d81-0226-401e-9a49-8b1211caf441"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3371),
                             DepthLevel = 0,
                             Left = 1,
                             MatrixLevel = 5,
                             Right = 14,
-                            UserMultiAccountId = new Guid("f7283501-3c65-473f-b2c5-84b094c522a6")
+                            UserMultiAccountId = new Guid("441c799c-e2b7-4f1c-b141-db3c6c1af034")
                         },
                         new
                         {
-                            Id = new Guid("ae83af06-06fc-43c2-80b3-ef8deb73b689"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2519),
+                            Id = new Guid("e82a3015-3bd5-4664-aac1-32090e2091a9"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3374),
                             DepthLevel = 1,
                             Left = 2,
                             MatrixLevel = 5,
-                            ParentId = new Guid("907b592a-cc92-440c-a3d7-a851f0636023"),
+                            ParentId = new Guid("89cf4d81-0226-401e-9a49-8b1211caf441"),
                             Right = 7,
-                            UserMultiAccountId = new Guid("2c06de2f-a710-4642-8903-ab6b7c57b5f5")
+                            UserMultiAccountId = new Guid("c1b6ef5c-6e70-4982-bca3-f5407d1e431e")
                         },
                         new
                         {
-                            Id = new Guid("8f17ca0f-3438-4f54-b42c-e4fb38599786"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2519),
+                            Id = new Guid("1b2c7f23-962c-43e3-9367-54df4f17b7e0"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3377),
                             DepthLevel = 1,
                             Left = 8,
                             MatrixLevel = 5,
-                            ParentId = new Guid("907b592a-cc92-440c-a3d7-a851f0636023"),
+                            ParentId = new Guid("89cf4d81-0226-401e-9a49-8b1211caf441"),
                             Right = 13,
-                            UserMultiAccountId = new Guid("ff63a56b-7de8-4746-8c79-6e775d53582b")
+                            UserMultiAccountId = new Guid("975ec706-0f87-4c21-adbf-215f0b36d5cf")
                         },
                         new
                         {
-                            Id = new Guid("0a2949ca-6bf1-4a41-935d-06f40c258892"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2522),
+                            Id = new Guid("f3e5b60f-cd06-4a88-98fa-8fff6e17b346"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3383),
                             DepthLevel = 2,
                             Left = 3,
                             MatrixLevel = 5,
-                            ParentId = new Guid("ae83af06-06fc-43c2-80b3-ef8deb73b689"),
+                            ParentId = new Guid("e82a3015-3bd5-4664-aac1-32090e2091a9"),
                             Right = 4
                         },
                         new
                         {
-                            Id = new Guid("9b153ec7-5aee-4871-9872-4e047fd5263e"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2527),
+                            Id = new Guid("9a348e77-da5e-4f09-bda8-5cb0555eea2e"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3386),
                             DepthLevel = 2,
                             Left = 5,
                             MatrixLevel = 5,
-                            ParentId = new Guid("ae83af06-06fc-43c2-80b3-ef8deb73b689"),
+                            ParentId = new Guid("e82a3015-3bd5-4664-aac1-32090e2091a9"),
                             Right = 6
                         },
                         new
                         {
-                            Id = new Guid("a463d564-63ab-4080-9f96-a87f6fbaac50"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2530),
+                            Id = new Guid("607cc017-54e8-478a-9ef5-e92278aa870a"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3386),
                             DepthLevel = 2,
                             Left = 9,
                             MatrixLevel = 5,
-                            ParentId = new Guid("8f17ca0f-3438-4f54-b42c-e4fb38599786"),
+                            ParentId = new Guid("1b2c7f23-962c-43e3-9367-54df4f17b7e0"),
                             Right = 10
                         },
                         new
                         {
-                            Id = new Guid("fc91662d-e282-4529-b9f5-0b4e968da928"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2530),
+                            Id = new Guid("2672defa-e166-4c9b-b9b4-6b559473143b"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3389),
                             DepthLevel = 2,
                             Left = 11,
                             MatrixLevel = 5,
-                            ParentId = new Guid("8f17ca0f-3438-4f54-b42c-e4fb38599786"),
+                            ParentId = new Guid("1b2c7f23-962c-43e3-9367-54df4f17b7e0"),
                             Right = 12
                         },
                         new
                         {
-                            Id = new Guid("559717ea-163a-4f88-bfea-cfdce35bdc29"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2545),
+                            Id = new Guid("b3bcc637-b794-4263-8ef5-e29c4f222a04"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3400),
                             DepthLevel = 0,
                             Left = 1,
                             MatrixLevel = 6,
                             Right = 14,
-                            UserMultiAccountId = new Guid("f7283501-3c65-473f-b2c5-84b094c522a6")
+                            UserMultiAccountId = new Guid("441c799c-e2b7-4f1c-b141-db3c6c1af034")
                         },
                         new
                         {
-                            Id = new Guid("2da184da-69e7-430a-b303-2e478e55aeed"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2548),
+                            Id = new Guid("70b21a08-2d7c-4afe-9dc1-79e365880cd7"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3403),
                             DepthLevel = 1,
                             Left = 2,
                             MatrixLevel = 6,
-                            ParentId = new Guid("559717ea-163a-4f88-bfea-cfdce35bdc29"),
+                            ParentId = new Guid("b3bcc637-b794-4263-8ef5-e29c4f222a04"),
                             Right = 7,
-                            UserMultiAccountId = new Guid("2c06de2f-a710-4642-8903-ab6b7c57b5f5")
+                            UserMultiAccountId = new Guid("c1b6ef5c-6e70-4982-bca3-f5407d1e431e")
                         },
                         new
                         {
-                            Id = new Guid("fdd7fca0-63d2-4fbc-aed3-066c81da3262"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2551),
+                            Id = new Guid("0191e80e-66e7-49da-ad48-0ae26717c0aa"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3403),
                             DepthLevel = 1,
                             Left = 8,
                             MatrixLevel = 6,
-                            ParentId = new Guid("559717ea-163a-4f88-bfea-cfdce35bdc29"),
+                            ParentId = new Guid("b3bcc637-b794-4263-8ef5-e29c4f222a04"),
                             Right = 13,
-                            UserMultiAccountId = new Guid("ff63a56b-7de8-4746-8c79-6e775d53582b")
+                            UserMultiAccountId = new Guid("975ec706-0f87-4c21-adbf-215f0b36d5cf")
                         },
                         new
                         {
-                            Id = new Guid("75e8f7b6-7a14-4323-9a7d-23909251d80d"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2554),
+                            Id = new Guid("fbe104b5-364d-435f-b7c3-c79a6b013cd8"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3406),
                             DepthLevel = 2,
                             Left = 3,
                             MatrixLevel = 6,
-                            ParentId = new Guid("2da184da-69e7-430a-b303-2e478e55aeed"),
+                            ParentId = new Guid("70b21a08-2d7c-4afe-9dc1-79e365880cd7"),
                             Right = 4
                         },
                         new
                         {
-                            Id = new Guid("6c28d050-e499-4908-873a-24d69b717d19"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2557),
+                            Id = new Guid("868c959a-3d3b-4f98-9ad1-1afdcbc3e692"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3441),
                             DepthLevel = 2,
                             Left = 5,
                             MatrixLevel = 6,
-                            ParentId = new Guid("2da184da-69e7-430a-b303-2e478e55aeed"),
+                            ParentId = new Guid("70b21a08-2d7c-4afe-9dc1-79e365880cd7"),
                             Right = 6
                         },
                         new
                         {
-                            Id = new Guid("be45b1fc-8649-4ef6-9296-b6e785b21fb1"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2565),
+                            Id = new Guid("f7b96740-38c7-4c18-8172-13e350b783fc"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3444),
                             DepthLevel = 2,
                             Left = 9,
                             MatrixLevel = 6,
-                            ParentId = new Guid("fdd7fca0-63d2-4fbc-aed3-066c81da3262"),
+                            ParentId = new Guid("0191e80e-66e7-49da-ad48-0ae26717c0aa"),
                             Right = 10
                         },
                         new
                         {
-                            Id = new Guid("c8456d59-f31a-426c-80e6-d45274f505d5"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 88, DateTimeKind.Utc).AddTicks(2568),
+                            Id = new Guid("7d871840-f354-4ec8-be1c-86958874c70f"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 105, DateTimeKind.Utc).AddTicks(3444),
                             DepthLevel = 2,
                             Left = 11,
                             MatrixLevel = 6,
-                            ParentId = new Guid("fdd7fca0-63d2-4fbc-aed3-066c81da3262"),
+                            ParentId = new Guid("0191e80e-66e7-49da-ad48-0ae26717c0aa"),
                             Right = 12
                         });
                 });
@@ -780,37 +780,37 @@ namespace BC7.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d89d7a45-91f4-4347-8b65-f46cf61dbe5d"),
+                            Id = new Guid("870a7b28-8564-4b0d-9190-054381e29c94"),
                             BtcWalletAddress = "BtcWalletAddressRoot",
                             City = "CityRoot",
                             Country = "CountryRoot",
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 50, 971, DateTimeKind.Utc).AddTicks(8397),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 57, 989, DateTimeKind.Utc).AddTicks(4320),
                             Email = "root@bitclub7.com",
                             FirstName = "FirstNameRoot",
-                            Hash = "Sc8cdO+purS95CSscawE5gUtZ1n2073wEcExUdlFJvyykbZ8MrmB9JATz4p/gHK5IKb2QdZCdLxiwV1NmvE5haDHbD+G51OPBOxq5Bx9C9nwgdXtm+8gohkPvK+SyDtPIUiazZGsbiMP9GItdff8Tx1sgf0CqBw3s1WOsfPxZB7kCa6oLGlfME4pqiNiH12z4tO56iaDWmzxqV7wfRpJ1VwvNBFY+MCCLoRQVKQTRokrjZr7kV9V5fSqGOMUoM+ZfoxKEboMJdkQN5DKnuzE+/HaSVqKxrn0Y2DCCrwJLGmqdkeQSh4C4FJsyl39K/iuIC0bVohUOhdcxlSNOfW/GA==",
+                            Hash = "RTZC5gPA3PvU1wh5v8OZcU0CDxUAA+ULZ5QPK+UF2D7BoBGsiZNZTFEP9TL9jCGEsMkHFWZne6YpQGoZQcl2oFFy6DsHIaliyP3BOdGlzlp1XnhN4tnNakD9ExU3hM/6tKtOzhlWAiRsrNAU6wbNKrKofWKTMx9VM1sPsHKUoICWuZuio/BQJLV4ShApxL1MNssD5pTsHZMiIar7H5IEkJyndiXTEEVOcQnUF09KCIEjAOzsqOSv8Z1fPkDc6QXyIRKSHcOiVyS0ZdRaoCjpofvPc5zBAnqA2K/cHIjliIeTdYwQXAltOIKU2Xnr6lxKiE5OhO3B0VVaYvUw9S5Fvw==",
                             IsMembershipFeePaid = true,
                             LastName = "LastNameRoot",
                             Login = "root",
                             Role = "Root",
-                            Salt = "MtJ8oklAP5Q=",
+                            Salt = "VQHv7XzASWI=",
                             Street = "StreetRoot",
                             ZipCode = "ZipCodeRoot"
                         },
                         new
                         {
-                            Id = new Guid("0de42c7f-bc1c-4734-9a95-14ae590073b3"),
+                            Id = new Guid("b34995c4-8a31-49df-81cc-66159918700d"),
                             BtcWalletAddress = "BtcWalletAddressAdmin",
                             City = "CityAdmin",
                             Country = "CountryAdmin",
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 31, DateTimeKind.Utc).AddTicks(3611),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 48, DateTimeKind.Utc).AddTicks(3918),
                             Email = "admin@bitclub7.com",
                             FirstName = "FirstNameAdmin",
-                            Hash = "QoI0a3MYeg/G8onsLCVElQfdy7byynXnpBs/GFWbDdFlz3Tnhecywq+ejsnBBgn3O/zOaJVDugVc4iGOV5t4ovOo7Vkqzuw5GpC+u82p1Hob19O+mjtk7g5gTzyyJnI3an+DuHZxC7Y4CWhO0/zVjLsxu5Fsi6s/dsLxdqVn2gx9wkf7T8dLQrzQWDwmuAP/zUcym7NMvbptat+dPxIH5nKq6r8QWwsQPFSuFYWsH7rrKtzRwYK2Y/1kZOlGrTyH+/tYlJnp9GCFMWch7fTX39fn4NA34sw9HHWhLGeRmGACsz5OXPuaESv0NqtabglJeU1js/U2jB38dScMyC5kKg==",
+                            Hash = "jvGNNvIDW80tDzgGFlJV6xzxgPYtDm4CyX3wbIiv7lTBG8otFDXYjcVZ9kx7ArwkO6SMQ7L3JxZyrhb/EKtGPEV0oAQEm6owUXBCBO+aS+8+6h4soVel4ynY+uQMCWTvzbzdDOjj4jBhkBwzJB+kbvGwDolP4WLTRhKNvYJNuEUZFxZs4f6alqjJWjIWu9EY/IjmJWp4MXl78Qer7Wou7OUyOE7A/vh3Au/4zVN2aqd3Zz1xQL7elvmTKze3jAE0lNxH63OHrTySq6MSdPQv87Atodl2QMx5ZyXEzhA4mupk6PToWWPU1ddR9noEBbCHCgaj9dB6rZI86vBuhA8CcA==",
                             IsMembershipFeePaid = true,
                             LastName = "LastNameAdmin",
                             Login = "admin",
                             Role = "Admin",
-                            Salt = "a8sYtCTk5eY=",
+                            Salt = "0jG6iqjmF+0=",
                             Street = "StreetAdmin",
                             ZipCode = "ZipCodeAdmin"
                         });
@@ -846,59 +846,63 @@ namespace BC7.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f7283501-3c65-473f-b2c5-84b094c522a6"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 87, DateTimeKind.Utc).AddTicks(2203),
+                            Id = new Guid("441c799c-e2b7-4f1c-b141-db3c6c1af034"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 104, DateTimeKind.Utc).AddTicks(866),
                             IsMainAccount = true,
                             MultiAccountName = "root-001",
-                            UserAccountDataId = new Guid("d89d7a45-91f4-4347-8b65-f46cf61dbe5d")
+                            UserAccountDataId = new Guid("870a7b28-8564-4b0d-9190-054381e29c94")
                         },
                         new
                         {
-                            Id = new Guid("2c06de2f-a710-4642-8903-ab6b7c57b5f5"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 87, DateTimeKind.Utc).AddTicks(3728),
+                            Id = new Guid("c1b6ef5c-6e70-4982-bca3-f5407d1e431e"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 104, DateTimeKind.Utc).AddTicks(3292),
                             IsMainAccount = false,
                             MultiAccountName = "root-002",
-                            UserAccountDataId = new Guid("d89d7a45-91f4-4347-8b65-f46cf61dbe5d")
+                            UserAccountDataId = new Guid("870a7b28-8564-4b0d-9190-054381e29c94")
                         },
                         new
                         {
-                            Id = new Guid("ff63a56b-7de8-4746-8c79-6e775d53582b"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 87, DateTimeKind.Utc).AddTicks(3739),
+                            Id = new Guid("975ec706-0f87-4c21-adbf-215f0b36d5cf"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 104, DateTimeKind.Utc).AddTicks(3303),
                             IsMainAccount = false,
                             MultiAccountName = "root-003",
-                            UserAccountDataId = new Guid("d89d7a45-91f4-4347-8b65-f46cf61dbe5d")
+                            UserAccountDataId = new Guid("870a7b28-8564-4b0d-9190-054381e29c94")
                         },
                         new
                         {
-                            Id = new Guid("eb8c3fa0-4fb9-47ce-bd7e-92f5976f1c64"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 87, DateTimeKind.Utc).AddTicks(3742),
+                            Id = new Guid("bde6962c-a69f-4070-b9c7-d5a3c5421a6e"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 104, DateTimeKind.Utc).AddTicks(3306),
                             IsMainAccount = true,
                             MultiAccountName = "admin-001",
-                            UserAccountDataId = new Guid("0de42c7f-bc1c-4734-9a95-14ae590073b3")
+                            RefLink = "xm3dgjTbckuxSfk0",
+                            UserAccountDataId = new Guid("b34995c4-8a31-49df-81cc-66159918700d")
                         },
                         new
                         {
-                            Id = new Guid("20b2dad2-b2be-42af-af47-afd0e936634f"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 87, DateTimeKind.Utc).AddTicks(3751),
+                            Id = new Guid("6d1d38db-8f4d-48c8-af76-7bc5e50b1cb1"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 104, DateTimeKind.Utc).AddTicks(4778),
                             IsMainAccount = false,
                             MultiAccountName = "admin-002",
-                            UserAccountDataId = new Guid("0de42c7f-bc1c-4734-9a95-14ae590073b3")
+                            RefLink = "CbJGE3bl65zWhUwK",
+                            UserAccountDataId = new Guid("b34995c4-8a31-49df-81cc-66159918700d")
                         },
                         new
                         {
-                            Id = new Guid("577e391c-df4e-42cc-a5f2-c0111e8d2c83"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 87, DateTimeKind.Utc).AddTicks(3754),
+                            Id = new Guid("f5d34aaa-455b-4be0-8d77-7017ee3ffde5"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 104, DateTimeKind.Utc).AddTicks(4796),
                             IsMainAccount = false,
                             MultiAccountName = "admin-003",
-                            UserAccountDataId = new Guid("0de42c7f-bc1c-4734-9a95-14ae590073b3")
+                            RefLink = "nB1Mw99LCQuKXUY2",
+                            UserAccountDataId = new Guid("b34995c4-8a31-49df-81cc-66159918700d")
                         },
                         new
                         {
-                            Id = new Guid("ddf2f3ec-a989-418a-8460-2fbcb9281b1b"),
-                            CreatedAt = new DateTime(2019, 6, 30, 19, 47, 51, 87, DateTimeKind.Utc).AddTicks(3763),
+                            Id = new Guid("e374d579-ef95-46ab-99b9-c947a0eb62de"),
+                            CreatedAt = new DateTime(2019, 7, 1, 13, 38, 58, 104, DateTimeKind.Utc).AddTicks(4799),
                             IsMainAccount = false,
                             MultiAccountName = "admin-004",
-                            UserAccountDataId = new Guid("0de42c7f-bc1c-4734-9a95-14ae590073b3")
+                            RefLink = "2ERrHKzmA7bigBeY",
+                            UserAccountDataId = new Guid("b34995c4-8a31-49df-81cc-66159918700d")
                         });
                 });
 

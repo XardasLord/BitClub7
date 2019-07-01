@@ -80,6 +80,7 @@ namespace BC7.Database.Extensions
                 sponsorId: null,
                 multiAccountName: "admin-001"
             );
+            admin1MultiAccount.SetReflink("xm3dgjTbckuxSfk0");
             admin1MultiAccount.SetAsMainAccount();
 
             var admin2MultiAccount = new UserMultiAccount
@@ -89,6 +90,7 @@ namespace BC7.Database.Extensions
                 sponsorId: null,
                 multiAccountName: "admin-002"
             );
+            admin2MultiAccount.SetReflink("CbJGE3bl65zWhUwK");
 
             var admin3MultiAccount = new UserMultiAccount
             (
@@ -97,6 +99,7 @@ namespace BC7.Database.Extensions
                 sponsorId: null,
                 multiAccountName: "admin-003"
             );
+            admin3MultiAccount.SetReflink("nB1Mw99LCQuKXUY2");
 
             var admin4MultiAccount = new UserMultiAccount
             (
@@ -105,6 +108,7 @@ namespace BC7.Database.Extensions
                 sponsorId: null,
                 multiAccountName: "admin-004"
             );
+            admin4MultiAccount.SetReflink("2ERrHKzmA7bigBeY");
 
             modelBuilder.Entity<UserMultiAccount>().HasData(
                 root1MultiAccount, root2MultiAccount, root3MultiAccount,
