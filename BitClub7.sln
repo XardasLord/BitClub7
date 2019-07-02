@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Repository.Implementati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Business.Implementation.Tests.Unit", "BC7.Business.Implementation.Tests.Unit\BC7.Business.Implementation.Tests.Unit.csproj", "{546FB941-EA3C-47EC-B563-B4031E3C68E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BC7.Common.Tests.Unit", "BC7.Common.Tests.Unit\BC7.Common.Tests.Unit.csproj", "{72D8A05A-8F8F-467C-9668-B772942B0335}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BC7.Common.Tests.Unit", "BC7.Common.Tests.Unit\BC7.Common.Tests.Unit.csproj", "{72D8A05A-8F8F-467C-9668-B772942B0335}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
