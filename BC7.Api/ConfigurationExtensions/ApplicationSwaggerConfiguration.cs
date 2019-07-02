@@ -9,13 +9,13 @@ namespace BC7.Api.ConfigurationExtensions
 {
     public static class ApplicationSwaggerConfiguration
     {
-        public static IServiceCollection ConfigureSwaggerUI(this IServiceCollection services)
+        public static IServiceCollection ConfigureSwaggerUi(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info
                 {
-                    Version = "v0.1 alpha",
+                    Version = "v1.0.0",
                     Title = "BitClub7",
                     Description = "BitClub7 API",
                     TermsOfService = "None",

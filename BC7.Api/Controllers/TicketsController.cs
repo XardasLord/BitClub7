@@ -5,6 +5,7 @@ using BC7.Business.Implementation.Tickets.Requests.GetTicket;
 using BC7.Business.Implementation.Tickets.Requests.GetTickets;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BC7.Api.Controllers
@@ -53,13 +54,15 @@ namespace BC7.Api.Controllers
         /// </summary>
         /// <param name="command">Command with email, subject and text</param>
         /// <returns>Returns ID of the newly created ticket</returns>
-        /// <response code="200">Success - returns ID of the newly created ticket</response>
+        /// <response code="201">Success - returns ID of the newly created ticket</response>
         [HttpPost]
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Create([FromBody] CreateTicketCommand command)
         {
             var ticketId = await _mediator.Send(command);
-            return Ok(new { Id = ticketId });
+
+            return CreatedAtAction(nameof(Get), new {Id = ticketId}, new { Id = ticketId });
         }
     }
 }

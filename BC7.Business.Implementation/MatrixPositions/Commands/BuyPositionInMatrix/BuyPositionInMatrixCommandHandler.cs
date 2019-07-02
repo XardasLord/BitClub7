@@ -19,6 +19,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
         private readonly IUserAccountDataRepository _userAccountDataRepository;
         private readonly IMatrixPositionRepository _matrixPositionRepository;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
+        private readonly IPaymentHistoryHelper _paymentHistoryHelper;
         private readonly IMediator _mediator;
 
         public BuyPositionInMatrixCommandHandler(
@@ -26,12 +27,14 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             IUserAccountDataRepository userAccountDataRepository,
             IMatrixPositionRepository matrixPositionRepository,
             IMatrixPositionHelper matrixPositionHelper,
+            IPaymentHistoryHelper paymentHistoryHelper,
             IMediator mediator)
         {
             _userMultiAccountRepository = userMultiAccountRepository;
             _userAccountDataRepository = userAccountDataRepository;
             _matrixPositionRepository = matrixPositionRepository;
             _matrixPositionHelper = matrixPositionHelper;
+            _paymentHistoryHelper = paymentHistoryHelper;
             _mediator = mediator;
         }
 
@@ -39,7 +42,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
         {
             var userMultiAccount = await _userMultiAccountRepository.GetAsync(command.UserMultiAccountId);
 
-            ValidateUserMultiAccount(userMultiAccount);
+            await ValidateUserMultiAccount(userMultiAccount, command.MatrixLevel);
 
             var sponsorAccountId = userMultiAccount.SponsorId.Value;
 
@@ -80,7 +83,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
         }
 
 
-        private static void ValidateUserMultiAccount(UserMultiAccount userMultiAccount)
+        private async Task ValidateUserMultiAccount(UserMultiAccount userMultiAccount, int matrixLevel)
         {
             if (userMultiAccount is null) throw new ArgumentNullException(nameof(userMultiAccount));
             if (userMultiAccount.MatrixPositions.Any())
@@ -93,8 +96,10 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
                 throw new ValidationException("The main account did not buy pay the membership's fee yet");
             }
 
-            // TODO: Add check if user paid for the matrix position on this level (available in etap 1)
-
+            if (await _paymentHistoryHelper.DoesUserPaidForMatrixLevelAsync(matrixLevel, userMultiAccount.Id) == false)
+            {
+                throw new ValidationException($"User didn't pay for the matrix at level {matrixLevel} yet");
+            }
 
             if (!userMultiAccount.SponsorId.HasValue)
             {

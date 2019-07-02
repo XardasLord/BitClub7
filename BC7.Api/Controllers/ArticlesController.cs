@@ -8,6 +8,7 @@ using BC7.Business.Implementation.Articles.Requests.GetArticles;
 using BC7.Business.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BC7.Api.Controllers
@@ -53,14 +54,17 @@ namespace BC7.Api.Controllers
         /// </summary>
         /// <param name="command">Command object contains user ID, title and text of the article</param>
         /// <returns>Returns OK (200)</returns>
-        /// <response code="200">Success - returns ID of the newly created article</response>
+        /// <response code="201">Success - returns ID of the newly created article</response>
         /// <response code="403">Failed - only root users have access</response>
         [HttpPost]
         [Authorize(Roles = "Root")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Create(CreateArticleCommand command)
         {
-            // TODO: Maybe 201 created?
-            return Ok(new { Id = await _mediator.Send(command) });
+            var articleId = await _mediator.Send(command);
+
+            return CreatedAtAction(nameof(Get), new { Id = articleId }, new { Id = articleId });
         }
 
         /// <summary>

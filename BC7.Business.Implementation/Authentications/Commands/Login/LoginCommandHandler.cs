@@ -54,9 +54,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.Login
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Value.SecretKey));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-
-
-
+            
             var tokenOptions = new JwtSecurityToken(
                 issuer: "http://localhost:4200", // TODO: Address to change in the future
                 audience: "http://localhost:4200",
@@ -66,7 +64,7 @@ namespace BC7.Business.Implementation.Authentications.Commands.Login
                     new Claim(ClaimTypes.Email, email),
                     new Claim(ClaimTypes.Role, role)
                 },
-                expires: DateTime.Now.AddMinutes(15), // To rethink
+                expires: DateTime.Now.AddHours(1), // To rethink
                 signingCredentials: signinCredentials
             );
 

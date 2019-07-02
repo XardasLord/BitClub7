@@ -30,7 +30,7 @@ namespace BC7.Api
         {
             services.ConfigureApplicationDependencies(Configuration);
             services.ConfigureApplicationJwtAuthorization(Configuration);
-            services.ConfigureApplicationCors();
+            services.ConfigureApplicationCors(Configuration);
 
             services.AddAutoMapper();
 
@@ -43,7 +43,7 @@ namespace BC7.Api
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterNewUserModelValidator>());
 
-            services.ConfigureSwaggerUI();
+            services.ConfigureSwaggerUi();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,8 +63,11 @@ namespace BC7.Api
             app.ConfigureCustomExceptionMiddleware();
             app.UseAuthentication();
             app.UseHttpsRedirection();
-            app.UseCors("AllowAll");
+            app.UseCors("BitClub7Policy");
             app.UseMvc();
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

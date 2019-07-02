@@ -28,6 +28,8 @@ namespace BC7.Business.Implementation.Tests.Integration.Mappings
             CreateMap<UpdateUserModel, UpdateUserCommand>()
                 .ForMember(x => x.UserId, opt => opt.Ignore())
                 .ForMember(x => x.RequestedUser, opt => opt.Ignore());
+
+            CreateMap<UserAccountData, UserAccountDataModel>();
         }
     }
 }

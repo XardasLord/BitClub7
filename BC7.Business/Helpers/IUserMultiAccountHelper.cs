@@ -6,7 +6,7 @@ namespace BC7.Business.Helpers
 {
     public interface IUserMultiAccountHelper
     {
-        Task<UserMultiAccount> GetRandomUserMultiAccount();
+        Task<UserMultiAccount> GetRandomUserMultiAccountSponsor();
         Task<string> GenerateNextMultiAccountName(Guid userAccountDataId);
     }
 }
