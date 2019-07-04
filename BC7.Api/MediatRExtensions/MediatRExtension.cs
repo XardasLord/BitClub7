@@ -9,6 +9,11 @@ namespace BC7.Api.MediatRExtensions
         {
             BackgroundJob.Enqueue<HangfireMediator>(m => m.SendCommand(request));
         }
+
+        public static void Enqueue(this IMediator mediator, INotification @event)
+        {
+            BackgroundJob.Enqueue<HangfireMediator>(m => m.PublishEvent(@event));
+        }
     }
 
     public class HangfireMediator
@@ -23,6 +28,11 @@ namespace BC7.Api.MediatRExtensions
         public void SendCommand(IRequest request)
         {
             _mediator.Send(request);
+        }
+
+        public void PublishEvent(INotification @event)
+        {
+            _mediator.Publish(@event);
         }
     }
 }

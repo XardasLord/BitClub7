@@ -46,8 +46,7 @@ namespace BC7.Api
                 config.UseSqlServerStorage(Configuration.GetConnectionString("BitClub7DB"));
                 config.UseMediatR(services.BuildServiceProvider().GetRequiredService<IMediator>());
             });
-
-
+            
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterNewUserModelValidator>());
