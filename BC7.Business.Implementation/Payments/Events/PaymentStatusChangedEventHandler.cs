@@ -10,11 +10,16 @@ namespace BC7.Business.Implementation.Payments.Events
     public class PaymentStatusChangedEventHandler : INotificationHandler<PaymentStatusChangedEvent>
     {
         private readonly IUserAccountDataRepository _userAccountDataRepository;
+        private readonly IUserMultiAccountRepository _userMultiAccountRepository;
         private readonly IPaymentHistoryRepository _paymentHistoryRepository;
 
-        public PaymentStatusChangedEventHandler(IPaymentHistoryRepository paymentHistoryRepository, IUserAccountDataRepository userAccountDataRepository)
+        public PaymentStatusChangedEventHandler(
+            IPaymentHistoryRepository paymentHistoryRepository, 
+            IUserAccountDataRepository userAccountDataRepository,
+            IUserMultiAccountRepository userMultiAccountRepository)
         {
             _userAccountDataRepository = userAccountDataRepository;
+            _userMultiAccountRepository = userMultiAccountRepository;
             _paymentHistoryRepository = paymentHistoryRepository;
         }
 
@@ -35,10 +40,17 @@ namespace BC7.Business.Implementation.Payments.Events
             {
                 case "MembershipsFee": // TODO: Maybe it should be enum for the simplicity? If yes then migration is necessary to change the PaymentFor table in domain
                     return MembershipsFeePaid(orderId);
-                    //TODO: Other types in the future
+                case "MatrixLevel0":
+                case "MatrixLevel1":
+                case "MatrixLevel2":
+                case "MatrixLevel3":
+                case "MatrixLevel4":
+                case "MatrixLevel5":
+                case "MatrixLevel6":
+                    return Task.CompletedTask;
+                default:
+                    throw new ValidationException($"Unknown paymentFor value: {paymentFor}");
             }
-
-            throw new ValidationException($"Unknown paymentFor value: {paymentFor}");
         }
 
         private async Task MembershipsFeePaid(Guid orderId)

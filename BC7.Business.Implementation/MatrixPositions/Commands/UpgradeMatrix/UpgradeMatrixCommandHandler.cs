@@ -68,6 +68,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
             if (adminPositionOnUpgradingLevel is null)
             {
                 //TODO: Event to notify admin that someone wants to upgrade his matrix
+                //TODO: Use hangfire for this
                 return new UpgradeMatrixResult(Guid.Empty, "Cannot upgrade because admin didn't upgrade his matrix yet. E-mail notification has been sent to admin");
             }
 
