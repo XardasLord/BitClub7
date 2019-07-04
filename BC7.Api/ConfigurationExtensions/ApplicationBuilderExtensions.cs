@@ -1,6 +1,8 @@
-﻿using BC7.Database;
+﻿using System.Collections.Generic;
+using BC7.Database;
 using BC7.Infrastructure.Implementation.ErrorHandling;
 using Hangfire;
+using Hangfire.Dashboard;
 using Hangfire.Dashboard.BasicAuthorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -55,7 +57,8 @@ namespace BC7.Api.ConfigurationExtensions
             app.UseHangfireServer();
             app.UseHangfireDashboard("/hangfire", new DashboardOptions
             {
-                Authorization = new[] { filter } // Basic auth with logic/password defined
+                Authorization = new List<IDashboardAuthorizationFilter>()
+                //Authorization = new[] { filter } // Basic auth with logic/password defined
                 //Authorization = new[] { new HangfireAuthorizationFilter() } // Login in the future maybe with httpContext authorization, based on role, etc.
             });
 

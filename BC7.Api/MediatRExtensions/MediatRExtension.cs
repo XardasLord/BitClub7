@@ -32,7 +32,7 @@ namespace BC7.Api.MediatRExtensions
 
         public void PublishEvent(INotification @event)
         {
-            _mediator.Publish(@event);
+            _mediator.Publish(@event).Wait();
         }
     }
 }

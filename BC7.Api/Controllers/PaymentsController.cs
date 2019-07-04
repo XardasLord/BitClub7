@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using BC7.Api.MediatRExtensions;
 using BC7.Business.Implementation.Payments.Commands.PayMatrixLevel;
 using BC7.Business.Implementation.Payments.Commands.PayMembershipsFee;
 using BC7.Business.Implementation.Payments.Events;
@@ -55,9 +56,9 @@ namespace BC7.Api.Controllers
         /// <response code="200">Nothing</response>
         [HttpPost("paymentNotification")]
         [AllowAnonymous]
-        public async Task<IActionResult> PaymentNotification([FromBody] PaymentStatusChangedEvent @event)
+        public IActionResult PaymentNotification([FromBody] PaymentStatusChangedEvent @event)
         {
-            await _mediator.Publish(@event);
+            _mediator.Enqueue(@event);
             return Ok();
         }
     }
