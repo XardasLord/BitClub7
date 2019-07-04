@@ -1,5 +1,7 @@
 ﻿using BC7.Database;
 using BC7.Infrastructure.Implementation.ErrorHandling;
+using Hangfire;
+using Hangfire.Dashboard.BasicAuthorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,9 +28,38 @@ namespace BC7.Api.ConfigurationExtensions
             return app;
         }
 
-        public static void ConfigureCustomExceptionMiddleware(this IApplicationBuilder app)
+        public static IApplicationBuilder ConfigureCustomExceptionMiddleware(this IApplicationBuilder app)
         {
             app.UseMiddleware<ExceptionMiddleware>();
+
+            return app;
+        }
+
+        public static IApplicationBuilder UseHangfire(this IApplicationBuilder app)
+        {
+            var filter = new BasicAuthAuthorizationFilter(
+                new BasicAuthAuthorizationFilterOptions
+                {
+                    RequireSsl = false,
+                    LoginCaseSensitive = true,
+                    Users = new[]
+                    {
+                        new BasicAuthAuthorizationUser
+                        {
+                            Login = "dashboard",
+                            PasswordClear = "Test$123"
+                        }
+                    }
+                });
+            
+            app.UseHangfireServer();
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { filter } // Basic auth with logic/password defined
+                //Authorization = new[] { new HangfireAuthorizationFilter() } // Login in the future maybe with httpContext authorization, based on role, etc.
+            });
+
+            return app;
         }
     }
 }

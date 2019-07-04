@@ -72,23 +72,23 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             var serviceProvider = services.AddEntityFrameworkSqlServer()
                 .BuildServiceProvider();
 
-            _context = serviceProvider.GetService<IBitClub7Context>();
-            _mapper = serviceProvider.GetService<IMapper>();
-            _mediator = serviceProvider.GetService<IMediator>();
-            _reflinkHelper = serviceProvider.GetService<IReflinkHelper>();
-            _userAccountDataHelper = serviceProvider.GetService<IUserAccountDataHelper>();
-            _matrixPositionHelper = serviceProvider.GetService<IMatrixPositionHelper>();
-            _userMultiAccountHelper = serviceProvider.GetService<IUserMultiAccountHelper>();
-            _paymentHistoryHelper = serviceProvider.GetService<IPaymentHistoryHelper>();
-            _userAccountDataRepository = serviceProvider.GetService<IUserAccountDataRepository>();
-            _userMultiAccountRepository = serviceProvider.GetService<IUserMultiAccountRepository>();
-            _matrixPositionRepository = serviceProvider.GetService<IMatrixPositionRepository>();
-            _paymentHistoryRepository = serviceProvider.GetService<IPaymentHistoryRepository>();
-            _articleRepository = serviceProvider.GetService<IArticleRepository>();
-            _ticketRepository = serviceProvider.GetService<ITicketRepository>();
-            _jwtSettings = serviceProvider.GetService<IOptions<JwtSettings>>();
-            _bitBayPayApiSettings = serviceProvider.GetService<IOptions<BitBayPayApiSettings>>();
-            _matrixStructureSettings = serviceProvider.GetService<IOptions<MatrixStructureSettings>>();
+            _context = serviceProvider.GetRequiredService<IBitClub7Context>();
+            _mapper = serviceProvider.GetRequiredService<IMapper>();
+            _mediator = serviceProvider.GetRequiredService<IMediator>();
+            _reflinkHelper = serviceProvider.GetRequiredService<IReflinkHelper>();
+            _userAccountDataHelper = serviceProvider.GetRequiredService<IUserAccountDataHelper>();
+            _matrixPositionHelper = serviceProvider.GetRequiredService<IMatrixPositionHelper>();
+            _userMultiAccountHelper = serviceProvider.GetRequiredService<IUserMultiAccountHelper>();
+            _paymentHistoryHelper = serviceProvider.GetRequiredService<IPaymentHistoryHelper>();
+            _userAccountDataRepository = serviceProvider.GetRequiredService<IUserAccountDataRepository>();
+            _userMultiAccountRepository = serviceProvider.GetRequiredService<IUserMultiAccountRepository>();
+            _matrixPositionRepository = serviceProvider.GetRequiredService<IMatrixPositionRepository>();
+            _paymentHistoryRepository = serviceProvider.GetRequiredService<IPaymentHistoryRepository>();
+            _articleRepository = serviceProvider.GetRequiredService<IArticleRepository>();
+            _ticketRepository = serviceProvider.GetRequiredService<ITicketRepository>();
+            _jwtSettings = serviceProvider.GetRequiredService<IOptions<JwtSettings>>();
+            _bitBayPayApiSettings = serviceProvider.GetRequiredService<IOptions<BitBayPayApiSettings>>();
+            _matrixStructureSettings = serviceProvider.GetRequiredService<IOptions<MatrixStructureSettings>>();
 
             _context.Database.Migrate();
             await ClearDatabase();
