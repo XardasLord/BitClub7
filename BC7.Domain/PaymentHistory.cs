@@ -17,9 +17,6 @@ namespace BC7.Domain
             {4, "MatrixLevel4"},
             {5, "MatrixLevel5"},
             {6, "MatrixLevel6"},
-            {7, "MatrixLevel7"},
-            {8, "MatrixLevel8"},
-            {9, "MatrixLevel9"},
         };
     }
 

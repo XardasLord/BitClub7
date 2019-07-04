@@ -1,10 +1,12 @@
 ﻿using System.Reflection;
 using AutoMapper;
 using BC7.Api.ConfigurationExtensions;
+using BC7.Api.Hangfire;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Business.Validators;
 using BC7.Infrastructure.Implementation.RequestPipelines;
 using FluentValidation.AspNetCore;
+using Hangfire;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.AspNetCore.Builder;
@@ -39,6 +41,12 @@ namespace BC7.Api
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IRequestPreProcessor<>), typeof(RequestPreProcessorLogger<>));
 
+            services.AddHangfire(config =>
+            {
+                config.UseSqlServerStorage(Configuration.GetConnectionString("BitClub7DB"));
+                config.UseMediatR(services.BuildServiceProvider().GetRequiredService<IMediator>());
+            });
+            
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterNewUserModelValidator>());
@@ -65,6 +73,8 @@ namespace BC7.Api
             app.UseHttpsRedirection();
             app.UseCors("BitClub7Policy");
             app.UseMvc();
+            
+            app.UseHangfire();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
