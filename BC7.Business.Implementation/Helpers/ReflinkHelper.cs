@@ -16,7 +16,7 @@ namespace BC7.Business.Implementation.Helpers
             
             var randomStrings = new string(Enumerable.Repeat(Chars, Length).Select(s => s[random.Next(s.Length)]).ToArray());
             var hashSalt = PasswordEncryptionUtilities.GenerateSaltedHash(randomStrings);
-            var hash = hashSalt.Hash.Substring(0, Math.Min(hashSalt.Hash.Length, 32));
+            var hash = hashSalt.Hash.Substring(0, Math.Min(hashSalt.Hash.Length, Length));
 
             return hash;
         }
