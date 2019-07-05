@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using BC7.Api.MediatRExtensions;
 using BC7.Business.Implementation.Payments.Commands.PayMatrixLevel;
 using BC7.Business.Implementation.Payments.Commands.PayMembershipsFee;
 using BC7.Business.Implementation.Payments.Events;
+using BC7.Infrastructure.Implementation.Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

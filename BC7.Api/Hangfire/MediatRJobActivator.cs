@@ -1,5 +1,5 @@
 ﻿using System;
-using BC7.Api.MediatRExtensions;
+using BC7.Infrastructure.Implementation.Hangfire;
 using Hangfire;
 using MediatR;
 
