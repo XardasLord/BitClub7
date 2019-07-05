@@ -23,7 +23,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Payment
 
         void GivenSystemUnderTest()
         {
-            _sut = new PaymentStatusChangedEventHandler(_paymentHistoryRepository, _userAccountDataRepository);
+            _sut = new PaymentStatusChangedEventHandler(_paymentHistoryRepository, _userAccountDataRepository, _userMultiAccountRepository);
         }
 
         async Task AndGivenPaymentAndUserAccountInDatabase()

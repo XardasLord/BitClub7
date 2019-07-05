@@ -7,6 +7,7 @@ using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Business.Implementation.Users.Commands.UpdateUser;
 using BC7.Business.Implementation.Users.Requests.GetMultiAccounts;
+using BC7.Business.Implementation.Users.Requests.GetPaymentHistories;
 using BC7.Business.Implementation.Users.Requests.GetUser;
 using BC7.Business.Models;
 using MediatR;
@@ -95,6 +96,22 @@ namespace BC7.Api.Controllers
         public async Task<IActionResult> GetAllMultiAccounts([FromRoute] Guid userId)
         {
             var request = new GetMultiAccountsRequest { UserAccountId = userId };
+
+            return Ok(await _mediator.Send(request));
+        }
+
+        /// <summary>
+        /// Get payments history for the user ID
+        /// </summary>
+        /// <param name="userId">User ID for whom payments history will be returned</param>
+        /// <returns>Returns list of user payments</returns>
+        /// <response code="200">Returns list of user payments</response>
+        /// <response code="401">Failed - only logged in users have access</response>
+        [HttpGet("{userId}/payments")]
+        [Authorize]
+        public async Task<IActionResult> GetAllPayments([FromRoute] Guid userId)
+        {
+            var request = new GetPaymentHistoriesRequest { UserAccountId = userId };
 
             return Ok(await _mediator.Send(request));
         }

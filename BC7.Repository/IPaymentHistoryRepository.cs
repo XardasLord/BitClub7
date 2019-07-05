@@ -8,7 +8,7 @@ namespace BC7.Repository
     public interface IPaymentHistoryRepository
     {
         Task<PaymentHistory> GetAsync(Guid paymentId);
-        Task<List<PaymentHistory>> GetPaymentsByUser(Guid userId); // IEnumerable would be better
+        Task<List<PaymentHistory>> GetPaymentsByUser(Guid userId);
         Task CreateAsync(PaymentHistory paymentHistory);
         Task UpdateAsync(PaymentHistory paymentHistory);
     }

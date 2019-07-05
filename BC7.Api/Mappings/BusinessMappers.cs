@@ -30,6 +30,9 @@ namespace BC7.Api.Mappings
                 .ForMember(x => x.RequestedUser, opt => opt.Ignore());
 
             CreateMap<UserAccountData, UserAccountDataModel>();
+
+            CreateMap<PaymentHistory, PaymentHistoryModel>()
+                .ForMember(x => x.AccountName, opt => opt.Ignore()); // TODO: PaymentFor better display?
         }
     }
 }
