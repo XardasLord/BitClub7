@@ -28,6 +28,10 @@ namespace BC7.Business.Implementation.Events
 
             await LeftRightValuesReindexation(matrixPositionBought);
             await AddTwoEmptyChildToBoughtPosition(matrixPositionBought);
+
+            // TODO: Event informujący o kupnie pozycji w matrycy
+            // TODO: i trzeba sprawdzić w tym evencie u kogo w pozycji B zostało te miejsce wykupione i w tabeli z wypłatami dodać wpis, że trzeba wypłacić kasę
+            // TODO: Najlepiej hangfire job
         }
 
         private async Task LeftRightValuesReindexation(MatrixPosition matrixPositionBought)
