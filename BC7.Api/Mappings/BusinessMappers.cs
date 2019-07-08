@@ -16,7 +16,8 @@ namespace BC7.Api.Mappings
             CreateMap<UserMultiAccount, UserMultiAccountModel>()
                 .ForMember(x => x.MatrixPositionModels, opt => opt.MapFrom(y => y.MatrixPositions));
 
-            CreateMap<MatrixPosition, MatrixPositionModel>();
+            CreateMap<MatrixPosition, MatrixPositionModel>()
+                .ForMember(x => x.MultiAccountName, opt => opt.Ignore());
 
             CreateMap<Article, ArticleModel>()
                 .ForMember(x => x.Creator, opt => opt.MapFrom(y => $"{y.Creator.FirstName} {y.Creator.LastName}"));
