@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BC7.Database;
 using BC7.Infrastructure.Implementation.ErrorHandling;
+using BC7.Infrastructure.Implementation.Hangfire.Attributes;
 using Hangfire;
 using Hangfire.Dashboard;
 using Hangfire.Dashboard.BasicAuthorization;
@@ -39,6 +40,8 @@ namespace BC7.Api.ConfigurationExtensions
 
         public static IApplicationBuilder UseHangfire(this IApplicationBuilder app)
         {
+            GlobalJobFilters.Filters.Add(new OneYearExpirationTimeAttribute());
+
             var filter = new BasicAuthAuthorizationFilter(
                 new BasicAuthAuthorizationFilterOptions
                 {
