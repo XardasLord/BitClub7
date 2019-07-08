@@ -20,11 +20,11 @@ namespace BC7.Business.Implementation.Tests.Unit
         }
 
         [Test]
-        public void GenerateReflink_WhenCalled_ReflinkHasLengthOf32()
+        public void GenerateReflink_WhenCalled_ReflinkHasLengthOf16()
         {
             var reflink = Act();
 
-            reflink.Length.Should().Be(32);
+            reflink.Length.Should().Be(16);
         }
 
         [Test]

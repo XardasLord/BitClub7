@@ -1,7 +1,7 @@
 ﻿using Hangfire;
 using MediatR;
 
-namespace BC7.Api.MediatRExtensions
+namespace BC7.Infrastructure.Implementation.Hangfire
 {
     public static class MediatRExtension
     {

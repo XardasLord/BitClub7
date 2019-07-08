@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatrix;
 using BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix;
 using BC7.Business.Implementation.MatrixPositions.Requests.GenerateTreeDefinitionFile;
+using BC7.Business.Implementation.MatrixPositions.Requests.GetMatrix;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +48,21 @@ namespace BC7.Api.Controllers
         {
             // TODO: status 201 maybe?
             return Ok(new { Id = await _mediator.Send(command) });
+        }
+
+        /// <summary>
+        /// Get matrix for given MatrixPositionId
+        /// </summary>
+        /// <param name="matrixPositionId">ID of the position to get its matrix</param>
+        /// <returns>Returns matrix for given matrix position ID</returns>
+        /// <response code="200">Returns matrix for given matrix position ID</response>
+        /// <response code="401">Failed - only logged in users have access</response>
+        [HttpGet("{matrixPositionId}/matrix")]
+        [Authorize]
+        public async Task<IActionResult> GetMatrix(Guid matrixPositionId)
+        {
+            var request = new GetMatrixRequest { MatrixPositionId = matrixPositionId };
+            return Ok(await _mediator.Send(request));
         }
 
         /// <summary>
