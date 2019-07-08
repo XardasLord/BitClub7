@@ -28,6 +28,7 @@ namespace BC7.Api.ConfigurationExtensions
             services.AddTransient<IPaymentHistoryRepository, PaymentHistoryRepository>();
             services.AddTransient<IArticleRepository, ArticleRepository>();
             services.AddTransient<ITicketRepository, TicketRepository>();
+            services.AddTransient<IWithdrawalRepository, WithdrawalRepository>();
 
             services.AddTransient<IBitBayPayFacade, BitBayPayFacade>();
 
