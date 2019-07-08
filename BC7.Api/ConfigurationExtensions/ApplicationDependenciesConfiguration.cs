@@ -33,7 +33,8 @@ namespace BC7.Api.ConfigurationExtensions
 
             services.AddDbContext<IBitClub7Context, BitClub7Context>(
                 opts => opts.UseSqlServer(configuration.GetConnectionString("BitClub7DB"),
-                    b => b.MigrationsAssembly(typeof(IBitClub7Context).Namespace))
+                    b => b.MigrationsAssembly(typeof(IBitClub7Context).Namespace)),
+                ServiceLifetime.Transient
             );
 
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));

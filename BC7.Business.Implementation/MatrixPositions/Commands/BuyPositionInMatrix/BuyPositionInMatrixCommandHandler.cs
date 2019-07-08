@@ -6,6 +6,7 @@ using BC7.Business.Helpers;
 using BC7.Business.Implementation.Events;
 using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
+using BC7.Infrastructure.Implementation.Hangfire;
 using BC7.Repository;
 using MediatR;
 // ReSharper disable PossibleInvalidOperationException
@@ -76,8 +77,8 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             matrixPosition.AssignMultiAccount(command.UserMultiAccountId);
             await _matrixPositionRepository.UpdateAsync(matrixPosition);
 
-            await PublishMatrixPositionHasBeenBoughtNotification(matrixPosition.Id);
-            await PublishUserBoughtMatrixPositionNotification(userMultiAccount.Id);
+            PublishMatrixPositionHasBeenBoughtNotification(matrixPosition.Id);
+            PublishUserBoughtMatrixPositionNotification(userMultiAccount.Id);
 
             return matrixPosition.Id;
         }
@@ -115,16 +116,16 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             await _userMultiAccountRepository.UpdateAsync(userMultiAccount);
         }
 
-        private Task PublishMatrixPositionHasBeenBoughtNotification(Guid matrixPositionId)
+        private void PublishMatrixPositionHasBeenBoughtNotification(Guid matrixPositionId)
         {
             var @event = new MatrixPositionHasBeenBoughtEvent(matrixPositionId);
-            return _mediator.Publish(@event);
+            _mediator.Enqueue(@event);
         }
 
-        private Task PublishUserBoughtMatrixPositionNotification(Guid userMultiAccountId)
+        private void PublishUserBoughtMatrixPositionNotification(Guid userMultiAccountId)
         {
             var @event = new UserBoughtMatrixPositionEvent { MultiAccountId = userMultiAccountId };
-            return _mediator.Publish(@event);
+            _mediator.Enqueue(@event);
         }
     }
 }

@@ -16,7 +16,8 @@ namespace BC7.Api.Mappings
             CreateMap<UserMultiAccount, UserMultiAccountModel>()
                 .ForMember(x => x.MatrixPositionModels, opt => opt.MapFrom(y => y.MatrixPositions));
 
-            CreateMap<MatrixPosition, MatrixPositionModel>();
+            CreateMap<MatrixPosition, MatrixPositionModel>()
+                .ForMember(x => x.MultiAccountName, opt => opt.Ignore());
 
             CreateMap<Article, ArticleModel>()
                 .ForMember(x => x.Creator, opt => opt.MapFrom(y => $"{y.Creator.FirstName} {y.Creator.LastName}"));
@@ -30,6 +31,9 @@ namespace BC7.Api.Mappings
                 .ForMember(x => x.RequestedUser, opt => opt.Ignore());
 
             CreateMap<UserAccountData, UserAccountDataModel>();
+
+            CreateMap<PaymentHistory, PaymentHistoryModel>()
+                .ForMember(x => x.AccountName, opt => opt.Ignore()); // TODO: PaymentFor better display?
         }
     }
 }
