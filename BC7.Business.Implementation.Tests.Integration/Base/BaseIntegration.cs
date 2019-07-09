@@ -66,8 +66,9 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             services.AddAutoMapper();
             services.AddMediatR(typeof(RegisterNewUserAccountCommand).Assembly);
 
+            var connectionString = $@"Server=XARDASLORD\SQLEXPRESS;Database=BitClub7_integration_tests_{Guid.NewGuid()};Integrated Security=SSPI";
             services.AddDbContext<IBitClub7Context, BitClub7Context>(
-                opts => opts.UseSqlServer($@"Server=XARDASLORD\SQLEXPRESS;Database=BitClub7_integration_tests_{Guid.NewGuid()};Integrated Security=SSPI",
+                opts => opts.UseSqlServer(connectionString,
                     b => b.MigrationsAssembly(typeof(IBitClub7Context).Namespace))
             );
 
@@ -113,7 +114,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
 
             await _context.SaveChangesAsync();
         }
-        
+
         [TearDown]
         public async Task TearDown()
         {

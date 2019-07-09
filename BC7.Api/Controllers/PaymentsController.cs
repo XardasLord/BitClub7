@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
+using BC7.Business.Implementation.Jobs;
 using BC7.Business.Implementation.Payments.Commands.PayMatrixLevel;
 using BC7.Business.Implementation.Payments.Commands.PayMembershipsFee;
 using BC7.Business.Implementation.Payments.Events;
-using BC7.Infrastructure.Implementation.Hangfire;
+using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,12 @@ namespace BC7.Api.Controllers
     public class PaymentsController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IBackgroundJobClient _backgroundJobClient;
 
-        public PaymentsController(IMediator mediator)
+        public PaymentsController(IMediator mediator, IBackgroundJobClient backgroundJobClient)
         {
             _mediator = mediator;
+            _backgroundJobClient = backgroundJobClient;
         }
 
         /// <summary>
@@ -58,7 +61,9 @@ namespace BC7.Api.Controllers
         [AllowAnonymous]
         public IActionResult PaymentNotification([FromBody] PaymentStatusChangedEvent @event)
         {
-            _mediator.Enqueue(@event);
+            _backgroundJobClient.Enqueue<PaymentStatusChangedEventJob>(
+                job => job.Execute(@event, null));
+
             return Ok();
         }
     }

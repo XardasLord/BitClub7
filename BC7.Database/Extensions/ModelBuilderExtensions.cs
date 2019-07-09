@@ -855,6 +855,16 @@ namespace BC7.Database.Extensions
                 entity.Property(e => e.Text).IsRequired();
                 entity.Property(e => e.CreatedAt).HasDefaultValueSql("getutcdate()");
             });
+
+            modelBuilder.Entity<Withdrawal>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.Amount).IsRequired().HasColumnType("decimal(18,6)");
+                entity.Property(e => e.PaymentSystemType).IsRequired();
+                entity.Property(e => e.UserMultiAccountId).IsRequired();
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("getutcdate()");
+            });
         }
     }
 }

@@ -1,33 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using BC7.Database;
 using BC7.Domain;
+using BC7.Infrastructure.Implementation.Hangfire;
 using BC7.Repository;
-using MediatR;
+using Hangfire.Console;
+using Hangfire.Server;
 using Z.EntityFramework.Plus;
 
-namespace BC7.Business.Implementation.Events
+namespace BC7.Business.Implementation.Jobs
 {
-    public class MatrixPositionHasBeenBoughtEventHandler : INotificationHandler<MatrixPositionHasBeenBoughtEvent>
+    public class MatrixPositionHasBeenBoughtJob : IJob<Guid>
     {
         private readonly IBitClub7Context _context;
         private readonly IMatrixPositionRepository _matrixPositionRepository;
 
-        public MatrixPositionHasBeenBoughtEventHandler(IBitClub7Context context, IMatrixPositionRepository matrixPositionRepository)
+        public MatrixPositionHasBeenBoughtJob(IBitClub7Context context, IMatrixPositionRepository matrixPositionRepository)
         {
             _context = context;
             _matrixPositionRepository = matrixPositionRepository;
         }
 
-        public async Task Handle(MatrixPositionHasBeenBoughtEvent notification, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task Execute(Guid matrixPositionId, PerformContext context)
         {
-            var matrixPositionBought = await _matrixPositionRepository.GetAsync(notification.MatrixPositionId);
+            context.WriteLine($"MatrixPositionHasBeenBoughtJob started with matrixPositionId - {matrixPositionId}");
+
+            var matrixPositionBought = await _matrixPositionRepository.GetAsync(matrixPositionId);
 
             await LeftRightValuesReindexation(matrixPositionBought);
             await AddTwoEmptyChildToBoughtPosition(matrixPositionBought);
+
+            context.WriteLine("MatrixPositionHasBeenBoughtJob completed.");
         }
 
         private async Task LeftRightValuesReindexation(MatrixPosition matrixPositionBought)
