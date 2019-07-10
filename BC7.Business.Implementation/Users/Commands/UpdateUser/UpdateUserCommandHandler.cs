@@ -24,7 +24,7 @@ namespace BC7.Business.Implementation.Users.Commands.UpdateUser
 
             ValidatePermission(userToUpdate, command.RequestedUser, command.Role);
 
-            userToUpdate.UpdateInformation(command.FirstName, command.LastName, command.Street, command.City, command.ZipCode, command.Country, command.BtcWalletAddress);
+            userToUpdate.UpdateInformation(command.FirstName, command.LastName, command.Street, command.City, command.ZipCode, command.Country, command.BtcWalletAddress, command.InitiativeDescription);
             userToUpdate.UpdateRole(command.Role);
 
             await _userAccountDataRepository.UpdateAsync(userToUpdate);
