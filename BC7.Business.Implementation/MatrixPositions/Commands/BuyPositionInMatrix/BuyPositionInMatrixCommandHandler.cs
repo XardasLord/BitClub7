@@ -3,11 +3,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BC7.Business.Helpers;
-using BC7.Business.Implementation.Events;
+using BC7.Business.Implementation.Jobs;
+using BC7.Business.Implementation.Withdrawals.Jobs;
 using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
-using BC7.Infrastructure.Implementation.Hangfire;
 using BC7.Repository;
+using Hangfire;
 using MediatR;
 // ReSharper disable PossibleInvalidOperationException
 // ReSharper disable PossibleMultipleEnumeration
@@ -21,7 +22,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
         private readonly IMatrixPositionRepository _matrixPositionRepository;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
         private readonly IPaymentHistoryHelper _paymentHistoryHelper;
-        private readonly IMediator _mediator;
+        private readonly IBackgroundJobClient _backgroundJobClient;
 
         public BuyPositionInMatrixCommandHandler(
             IUserMultiAccountRepository userMultiAccountRepository,
@@ -29,14 +30,14 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             IMatrixPositionRepository matrixPositionRepository,
             IMatrixPositionHelper matrixPositionHelper,
             IPaymentHistoryHelper paymentHistoryHelper,
-            IMediator mediator)
+            IBackgroundJobClient backgroundJobClient)
         {
             _userMultiAccountRepository = userMultiAccountRepository;
             _userAccountDataRepository = userAccountDataRepository;
             _matrixPositionRepository = matrixPositionRepository;
             _matrixPositionHelper = matrixPositionHelper;
             _paymentHistoryHelper = paymentHistoryHelper;
-            _mediator = mediator;
+            _backgroundJobClient = backgroundJobClient;
         }
 
         public async Task<Guid> Handle(BuyPositionInMatrixCommand command, CancellationToken cancellationToken = default(CancellationToken))
@@ -56,7 +57,9 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             MatrixPosition matrixPosition;
             if (_matrixPositionHelper.CheckIfMatrixHasEmptySpace(invitingUserMatrix))
             {
-                matrixPosition = invitingUserMatrix.First(x => x.UserMultiAccountId == null);
+                matrixPosition = invitingUserMatrix
+                    .OrderBy(x => x.DepthLevel)
+                    .First(x => x.UserMultiAccountId == null);
             }
             else
             {
@@ -77,8 +80,14 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             matrixPosition.AssignMultiAccount(command.UserMultiAccountId);
             await _matrixPositionRepository.UpdateAsync(matrixPosition);
 
-            PublishMatrixPositionHasBeenBoughtNotification(matrixPosition.Id);
-            PublishUserBoughtMatrixPositionNotification(userMultiAccount.Id);
+            _backgroundJobClient.Enqueue<MatrixPositionHasBeenBoughtJob>(
+                job => job.Execute(matrixPosition.Id, null));
+
+            _backgroundJobClient.Enqueue<UserBoughtMatrixPositionJob>(
+                job => job.Execute(userMultiAccount.Id, null));
+
+            _backgroundJobClient.Enqueue<InitWithdrawalJob>(
+                job => job.Execute(matrixPosition.Id, null));
 
             return matrixPosition.Id;
         }
@@ -114,18 +123,6 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
             userMultiAccount.ChangeSponsor(parentPosition.UserMultiAccountId.Value);
             await _userMultiAccountRepository.UpdateAsync(userMultiAccount);
-        }
-
-        private void PublishMatrixPositionHasBeenBoughtNotification(Guid matrixPositionId)
-        {
-            var @event = new MatrixPositionHasBeenBoughtEvent(matrixPositionId);
-            _mediator.Enqueue(@event);
-        }
-
-        private void PublishUserBoughtMatrixPositionNotification(Guid userMultiAccountId)
-        {
-            var @event = new UserBoughtMatrixPositionEvent { MultiAccountId = userMultiAccountId };
-            _mediator.Enqueue(@event);
         }
     }
 }
