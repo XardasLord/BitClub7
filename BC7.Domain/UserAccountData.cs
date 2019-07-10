@@ -24,6 +24,7 @@ namespace BC7.Domain
         public string Country { get; private set; }
         public string BtcWalletAddress { get; private set; }
         public string Role { get; private set; }
+        public string InitiativeDescription { get; private set; }
         public bool IsMembershipFeePaid { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public virtual ICollection<UserMultiAccount> UserMultiAccounts { get; private set; }
@@ -51,6 +52,7 @@ namespace BC7.Domain
             CreatedAt = DateTime.UtcNow;
             Role = role;
             IsMembershipFeePaid = false;
+            InitiativeDescription = null;
         }
 
         private static void ValidateDomain(Guid id, string email, string login, string firstName, string lastName, string street, string city, string zipCode, string country,
@@ -123,7 +125,7 @@ namespace BC7.Domain
             IsMembershipFeePaid = true;
         }
 
-        public void UpdateInformation(string firstName, string lastName, string street, string city, string zipCode, string country, string btcWalletAddress)
+        public void UpdateInformation(string firstName, string lastName, string street, string city, string zipCode, string country, string btcWalletAddress, string initiativeDescription)
         {
             if (firstName.IsNullOrWhiteSpace())
             {
@@ -161,6 +163,7 @@ namespace BC7.Domain
             ZipCode = zipCode;
             Country = country;
             BtcWalletAddress = btcWalletAddress;
+            InitiativeDescription = initiativeDescription;
         }
 
         public void UpdateRole(string newRole)

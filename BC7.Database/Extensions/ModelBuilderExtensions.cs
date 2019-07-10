@@ -807,6 +807,7 @@ namespace BC7.Database.Extensions
                 entity.Property(e => e.ZipCode).IsRequired();
                 entity.Property(e => e.Country).IsRequired();
                 entity.Property(e => e.Role).IsRequired();
+                entity.Property(e => e.InitiativeDescription).HasDefaultValue();
             });
 
             modelBuilder.Entity<UserMultiAccount>(entity =>
