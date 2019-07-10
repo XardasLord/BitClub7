@@ -21,6 +21,7 @@ namespace BC7.Api.ConfigurationExtensions
             services.AddTransient<IUserAccountDataHelper, UserAccountDataHelper>();
             services.AddTransient<IMatrixPositionHelper, MatrixPositionHelper>();
             services.AddTransient<IPaymentHistoryHelper, PaymentHistoryHelper>();
+            services.AddTransient<IWithdrawalHelper, WithdrawalHelper>();
 
             services.AddTransient<IUserAccountDataRepository, UserAccountDataRepository>();
             services.AddTransient<IUserMultiAccountRepository, UserMultiAccountRepository>();
@@ -28,6 +29,7 @@ namespace BC7.Api.ConfigurationExtensions
             services.AddTransient<IPaymentHistoryRepository, PaymentHistoryRepository>();
             services.AddTransient<IArticleRepository, ArticleRepository>();
             services.AddTransient<ITicketRepository, TicketRepository>();
+            services.AddTransient<IWithdrawalRepository, WithdrawalRepository>();
 
             services.AddTransient<IBitBayPayFacade, BitBayPayFacade>();
 
