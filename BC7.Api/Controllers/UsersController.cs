@@ -133,7 +133,7 @@ namespace BC7.Api.Controllers
             command.UserId = id;
             command.RequestedUser = GetLoggerUserFromJwt();
 
-            await _mediator.Send(command); ;
+            await _mediator.Send(command);
 
             return NoContent();
         }

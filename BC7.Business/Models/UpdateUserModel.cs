@@ -10,5 +10,6 @@
         public string Country { get; set; }
         public string BtcWalletAddress { get; set; }
         public string Role { get; set; }
+        public string InitiativeDescription { get; set; }
     }
 }
