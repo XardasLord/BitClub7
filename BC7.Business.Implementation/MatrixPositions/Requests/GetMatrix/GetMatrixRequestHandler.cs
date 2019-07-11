@@ -44,6 +44,12 @@ namespace BC7.Business.Implementation.MatrixPositions.Requests.GetMatrix
                 {
                     matrixPositionModel.MultiAccountName = null;
                 }
+
+                if (tmpPosition.Id == request.MatrixPositionId)
+                {
+                    // It's the owner matrix position, so for frontend I set ParentId value to null
+                    matrixPositionModel.ParentId = null;
+                }
             }
 
             return new MatrixViewModel

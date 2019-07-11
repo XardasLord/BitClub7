@@ -17,11 +17,13 @@ namespace BC7.Business.Implementation.Helpers
     {
         private readonly IBitClub7Context _context;
         private readonly IMatrixPositionRepository _matrixPositionRepository;
+        private readonly IUserMultiAccountRepository _userMultiAccountRepository;
 
-        public MatrixPositionHelper(IBitClub7Context context, IMatrixPositionRepository matrixPositionRepository)
+        public MatrixPositionHelper(IBitClub7Context context, IMatrixPositionRepository matrixPositionRepository, IUserMultiAccountRepository userMultiAccountRepository)
         {
             _context = context;
             _matrixPositionRepository = matrixPositionRepository;
+            _userMultiAccountRepository = userMultiAccountRepository;
         }
 
         public bool CheckIfAnyAccountExistInMatrix(IEnumerable<MatrixPosition> matrix, IEnumerable<Guid> accountIds)
@@ -178,7 +180,14 @@ namespace BC7.Business.Implementation.Helpers
                     nodeRelationships.AppendLine($"\t\"{node.ParentId}\" -> \"{node.Id}\"");
                 }
 
-                nodeDetails.AppendLine($"\t\"{node.Id}\" [label=\"{node.UserMultiAccountId}\"]");
+                var multiAccountName = "";
+                if (node.UserMultiAccountId.HasValue)
+                {
+                    var multiAccount = await _userMultiAccountRepository.GetAsync(node.UserMultiAccountId.Value);
+                    multiAccountName = multiAccount.MultiAccountName;
+                }
+
+                nodeDetails.AppendLine($"\t\"{node.Id}\" [label=\"{multiAccountName}\"]");
             }
 
             nodeRelationships.AppendLine(nodeDetails.ToString());
