@@ -6,6 +6,7 @@ using AutoMapper;
 using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Business.Implementation.Users.Commands.UpdateUser;
+using BC7.Business.Implementation.Users.Requests.GetInitiativeDescriptionForMultiAccount;
 using BC7.Business.Implementation.Users.Requests.GetMultiAccounts;
 using BC7.Business.Implementation.Users.Requests.GetPaymentHistories;
 using BC7.Business.Implementation.Users.Requests.GetUser;
@@ -112,6 +113,20 @@ namespace BC7.Api.Controllers
         public async Task<IActionResult> GetAllPayments([FromRoute] Guid userId)
         {
             var request = new GetPaymentHistoriesRequest { UserAccountId = userId };
+
+            return Ok(await _mediator.Send(request));
+        }
+
+        /// <summary>
+        /// Get initiative description for the multiAccount ID
+        /// </summary>
+        /// <param name="multiAccountId">User multiAccount ID whose initiative description will be returned</param>
+        /// <returns>Returns an initiative description for the multiAccount ID</returns>
+        /// <response code="200">Returns an initiative description for the multiAccount ID</response>
+        [HttpGet("{multiAccountId}/initiative")]
+        public async Task<IActionResult> GetUserInitiative([FromRoute] Guid multiAccountId)
+        {
+            var request = new GetInitiativeDescriptionRequest { MultiAccountId = multiAccountId };
 
             return Ok(await _mediator.Send(request));
         }
