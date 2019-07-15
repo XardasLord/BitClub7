@@ -26,7 +26,8 @@ namespace BC7.Business.Implementation.Articles.Commands.CreateArticle
                 id: Guid.NewGuid(),
                 creatorId: user.Id,
                 title: command.Title,
-                text: command.Text
+                text: command.Text,
+                articleType: command.ArticleType
             );
 
             await _articleRepository.CreateAsync(article);

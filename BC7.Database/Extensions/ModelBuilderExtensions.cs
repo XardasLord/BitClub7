@@ -843,6 +843,7 @@ namespace BC7.Database.Extensions
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.Title).IsRequired();
                 entity.Property(e => e.Text).IsRequired();
+                entity.Property(e => e.ArticleType).IsRequired();
                 entity.Property(e => e.CreatedAt).HasDefaultValueSql("getutcdate()");
             });
 

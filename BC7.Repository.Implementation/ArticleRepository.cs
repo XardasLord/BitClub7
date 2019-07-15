@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BC7.Database;
 using BC7.Domain;
+using BC7.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Z.EntityFramework.Plus;
 
@@ -27,6 +28,14 @@ namespace BC7.Repository.Implementation
         {
             return _context.Set<Article>()
                 .Include(x => x.Creator)
+                .ToListAsync();
+        }
+
+        public Task<List<Article>> GetAllByStatusAsync(ArticleType articleType)
+        {
+            return _context.Set<Article>()
+                .Include(x => x.Creator)
+                .Where(x => x.ArticleType == articleType)
                 .ToListAsync();
         }
 
