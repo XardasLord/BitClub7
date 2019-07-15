@@ -1,5 +1,6 @@
 ﻿using System;
 using BC7.Common.Extensions;
+using BC7.Domain.Enums;
 using BC7.Infrastructure.CustomExceptions;
 
 namespace BC7.Domain
@@ -11,9 +12,10 @@ namespace BC7.Domain
         public virtual UserAccountData Creator { get; private set; }
         public string Title { get; private set; }
         public string Text { get; private set; }
+        public ArticleType ArticleType { get; set; }
         public DateTimeOffset CreatedAt { get; private set; }
 
-        public Article(Guid id, Guid creatorId, string title, string text)
+        public Article(Guid id, Guid creatorId, string title, string text, ArticleType articleType)
         {
             ValidateDomain(id, creatorId, title, text);
 
@@ -21,6 +23,7 @@ namespace BC7.Domain
             CreatorId = creatorId;
             Title = title;
             Text = text;
+            ArticleType = articleType;
             CreatedAt = DateTimeOffset.Now;
         }
 
@@ -48,7 +51,7 @@ namespace BC7.Domain
         {
             if (newTitle.IsNullOrWhiteSpace())
             {
-                throw  new DomainException("Article's title cannot be null or empty");
+                throw new DomainException("Article's title cannot be null or empty");
             }
             if (newText.IsNullOrWhiteSpace())
             {
