@@ -1,5 +1,6 @@
 ﻿using System;
 using BC7.Domain;
+using BC7.Domain.Enums;
 using BC7.Security;
 using Bogus;
 
@@ -59,7 +60,8 @@ namespace BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator
                     id: Guid.NewGuid(), 
                     creatorId:Guid.NewGuid(), 
                     title: f.Lorem.Sentence(),
-                    text: f.Lorem.Text()))
+                    text: f.Lorem.Text(),
+                    articleType: ArticleType.Standard))
                 .RuleFor(x => x.CreatedAt, DateTimeOffset.Now);
         }
 

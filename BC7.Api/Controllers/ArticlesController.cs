@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using BC7.Business.Implementation.Articles.Commands.CreateArticle;
 using BC7.Business.Implementation.Articles.Commands.DeleteArticle;
@@ -6,6 +8,7 @@ using BC7.Business.Implementation.Articles.Commands.UpdateArticle;
 using BC7.Business.Implementation.Articles.Requests.GetArticle;
 using BC7.Business.Implementation.Articles.Requests.GetArticles;
 using BC7.Business.Models;
+using BC7.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,15 +27,34 @@ namespace BC7.Api.Controllers
         }
 
         /// <summary>
-        /// Get all articles
+        /// Get all standard articles
         /// </summary>
         /// <returns>Returns model with list of articles</returns>
         /// <response code="200">Success - returns model with list of articles</response>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllStandardArticles()
         {
-            return Ok(await _mediator.Send(new GetArticlesRequest()));
+            return Ok(await _mediator.Send(new GetArticlesRequest { ArticleType = ArticleType.Standard }));
+        }
+
+        /// <summary>
+        /// Get all articles marked as cryptoblog
+        /// </summary>
+        /// <returns>Returns model with list of cryptoblog articles</returns>
+        /// <response code="200">Success - returns model with list of cryptoblog articles</response>
+        /// <response code="401">Failed - only logged in users have access</response>
+        [HttpGet("cryptoBlogs")]
+        [Authorize]
+        public async Task<IActionResult> GetAllCryptoBlogs()
+        {
+            var request = new GetArticlesRequest
+            {
+                ArticleType = ArticleType.CryptoBlog,
+                RequestedUser = GetLoggerUserFromJwt()
+            };
+
+            return Ok(await _mediator.Send(request));
         }
 
         /// <summary>
@@ -110,6 +132,17 @@ namespace BC7.Api.Controllers
             await _mediator.Send(command);
 
             return NoContent();
+        }
+
+        private LoggedUserModel GetLoggerUserFromJwt()
+        {
+            var claims = HttpContext.User.Claims.ToList();
+
+            var id = claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid)?.Value;
+            var email = claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            var role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+
+            return new LoggedUserModel(Guid.Parse(id), email, role);
         }
     }
 }

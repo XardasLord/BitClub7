@@ -30,7 +30,8 @@ namespace BC7.Business.Implementation.Tests.Integration.Mappings
                 .ForMember(x => x.UserId, opt => opt.Ignore())
                 .ForMember(x => x.RequestedUser, opt => opt.Ignore());
 
-            CreateMap<UserAccountData, UserAccountDataModel>();
+            CreateMap<UserAccountData, UserAccountDataModel>()
+                .ForMember(x => x.MultiAccountsTotalCount, opt => opt.MapFrom(y => y.UserMultiAccounts.Count));
 
             CreateMap<PaymentHistory, PaymentHistoryModel>()
                 .ForMember(x => x.AccountName, opt => opt.Ignore());

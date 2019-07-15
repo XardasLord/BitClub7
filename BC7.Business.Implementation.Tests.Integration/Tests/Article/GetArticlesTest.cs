@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using BC7.Business.Implementation.Articles.Requests;
 using BC7.Business.Implementation.Articles.Requests.GetArticles;
 using BC7.Business.Implementation.Tests.Integration.Base;
 using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
+using BC7.Domain.Enums;
 using FluentAssertions;
 using NUnit.Framework;
 using TestStack.BDDfy;
@@ -13,8 +13,8 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Article
 {
     [Story(
         AsA = "As a user",
-        IWant = "I want to get all articles",
-        SoThat = "So all articles are returned"
+        IWant = "I want to get all standard articles",
+        SoThat = "So all standard articles are returned"
     )]
     public class GetArticlesTest : BaseIntegration
     {
@@ -25,7 +25,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Article
 
         void GivenSystemUnderTest()
         {
-            _sut = new GetArticlesRequestHandler(_mapper, _articleRepository);
+            _sut = new GetArticlesRequestHandler(_mapper, _articleRepository, _userAccountDataRepository);
         }
 
         async Task AndGivenCreatedArticlesInDatabase()
@@ -38,19 +38,29 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Article
                 .RuleFor(x => x.LastName, "Doo")
                 .Generate();
 
-            _context.UserAccountsData.Add(user);
+            var otherUser = fakerGenerator.GetUserAccountDataFakerGenerator().Generate();
 
-            var articles = fakerGenerator.GetArticleFakerGenerator()
+            _context.UserAccountsData.Add(user);
+            _context.UserAccountsData.Add(otherUser);
+
+            var standardArticles = fakerGenerator.GetArticleFakerGenerator()
                 .RuleFor(x => x.CreatorId, _userId)
+                .RuleFor(x => x.ArticleType, ArticleType.Standard)
                 .Generate(5);
 
-            _context.Articles.AddRange(articles);
+            var cryptoBlogArticles = fakerGenerator.GetArticleFakerGenerator()
+                .RuleFor(x => x.CreatorId, otherUser.Id)
+                .RuleFor(x => x.ArticleType, ArticleType.CryptoBlog)
+                .Generate(3);
+
+            _context.Articles.AddRange(standardArticles);
+            _context.Articles.AddRange(cryptoBlogArticles);
             await _context.SaveChangesAsync();
         }
 
         void AndGivenCommandPrepared()
         {
-            _request = new GetArticlesRequest();
+            _request = new GetArticlesRequest { ArticleType = ArticleType.Standard };
         }
 
         async Task WhenHandlerHandlesTheCommand()
