@@ -34,6 +34,14 @@ namespace BC7.Api.Mappings
 
             CreateMap<PaymentHistory, PaymentHistoryModel>()
                 .ForMember(x => x.AccountName, opt => opt.Ignore()); // TODO: PaymentFor better display?
+
+            CreateMap<Withdrawal, WithdrawalModel>()
+                .ForMember(x => x.IsWithdrawn, opt => opt.MapFrom(y => y.WithdrawnAt.HasValue))
+                .ForMember(x => x.BtcWalletAddress, opt => opt.MapFrom(y => y.UserMultiAccount.UserAccountData.BtcWalletAddress))
+                .ForMember(x => x.MultiAccountName, opt => opt.MapFrom(y => y.UserMultiAccount.MultiAccountName))
+                .ForMember(x => x.UserAccountDataId, opt => opt.MapFrom(y => y.UserMultiAccount.UserAccountDataId))
+                .ForMember(x => x.UserMultiAccountId, opt => opt.MapFrom(y => y.UserMultiAccountId))
+                .ForMember(x => x.PaymentFor, opt => opt.Ignore()); // TODO
         }
     }
 }
