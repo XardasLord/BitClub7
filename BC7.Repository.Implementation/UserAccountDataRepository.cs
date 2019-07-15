@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BC7.Database;
 using BC7.Domain;
@@ -13,6 +14,13 @@ namespace BC7.Repository.Implementation
         public UserAccountDataRepository(IBitClub7Context context)
         {
             _context = context;
+        }
+
+        public Task<List<UserAccountData>> GetAllAsync()
+        {
+            return _context.Set<UserAccountData>()
+                .Include(x => x.UserMultiAccounts)
+                .ToListAsync();
         }
 
         public Task<UserAccountData> GetAsync(Guid id)

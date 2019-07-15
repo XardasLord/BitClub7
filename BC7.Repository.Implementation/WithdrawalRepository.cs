@@ -25,6 +25,7 @@ namespace BC7.Repository.Implementation
         {
             return _context.Set<Withdrawal>()
                 .Include(x => x.UserMultiAccount)
+                .ThenInclude(x => x.UserAccountData)
                 .ToListAsync();
         }
 
