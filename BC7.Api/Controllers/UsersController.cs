@@ -10,6 +10,7 @@ using BC7.Business.Implementation.Users.Requests.GetInitiativeDescriptionForMult
 using BC7.Business.Implementation.Users.Requests.GetMultiAccounts;
 using BC7.Business.Implementation.Users.Requests.GetPaymentHistories;
 using BC7.Business.Implementation.Users.Requests.GetUser;
+using BC7.Business.Implementation.Users.Requests.GetUsers;
 using BC7.Business.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -31,6 +32,20 @@ namespace BC7.Api.Controllers
         }
 
         /// <summary>
+        /// Get all users available in the system
+        /// </summary>
+        /// <returns>Returns list of users in the system</returns>
+        /// <response code="200">Success - returns list of users in the system</response>
+        /// <response code="403">Fail - only root users have access</response>
+        [HttpGet]
+        [Authorize(Roles = "Root")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            return Ok(await _mediator.Send(new GetUsersRequest()));
+        }
+
+
+        /// <summary>
         /// Register new user account
         /// </summary>
         /// <param name="model">A model with all user account data</param>
@@ -45,7 +60,7 @@ namespace BC7.Api.Controllers
             command.SponsorRefLink = reflink;
 
             var userId = await _mediator.Send(command);
-            
+
             return CreatedAtAction(nameof(GetUser), new { userId = userId }, new { Id = userId });
         }
 
