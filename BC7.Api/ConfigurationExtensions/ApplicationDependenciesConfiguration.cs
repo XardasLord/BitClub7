@@ -42,6 +42,7 @@ namespace BC7.Api.ConfigurationExtensions
             services.Configure<BitBayPayApiSettings>(configuration.GetSection("BitBayPayApiSettings"));
             services.Configure<ApplicationSettings>(configuration.GetSection("ApplicationSettings"));
             services.Configure<MatrixStructureSettings>(configuration.GetSection("MatrixStructureSettings"));
+            services.Configure<StorageSettings>(configuration.GetSection("StorageSettings"));
 
             return services;
         }
