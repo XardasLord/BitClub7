@@ -39,6 +39,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
         protected IOptions<JwtSettings> _jwtSettings;
         protected IOptions<BitBayPayApiSettings> _bitBayPayApiSettings;
         protected IOptions<MatrixStructureSettings> _matrixStructureSettings;
+        protected IOptions<StorageSettings> _storageSettings;
 
         [SetUp]
         public async Task SetUp()
@@ -93,6 +94,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Base
             _jwtSettings = serviceProvider.GetRequiredService<IOptions<JwtSettings>>();
             _bitBayPayApiSettings = serviceProvider.GetRequiredService<IOptions<BitBayPayApiSettings>>();
             _matrixStructureSettings = serviceProvider.GetRequiredService<IOptions<MatrixStructureSettings>>();
+            _storageSettings = serviceProvider.GetRequiredService<IOptions<StorageSettings>>();
 
             _context.Database.Migrate();
             await ClearDatabase();
