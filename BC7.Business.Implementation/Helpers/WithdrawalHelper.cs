@@ -37,5 +37,10 @@ namespace BC7.Business.Implementation.Helpers
                     throw new ArgumentOutOfRangeException($"Invalid matrixLevel value: {matrixLevel}");
             }
         }
+
+        public decimal CalculateAmountToWithdraw(decimal amount)
+        {
+            return amount - (AdminFee * amount);
+        }
     }
 }
