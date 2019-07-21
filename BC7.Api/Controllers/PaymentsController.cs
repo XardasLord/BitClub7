@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BC7.Business.Implementation.Jobs;
+using BC7.Business.Implementation.Payments.Commands.Donate;
 using BC7.Business.Implementation.Payments.Commands.PayMatrixLevel;
 using BC7.Business.Implementation.Payments.Commands.PayMembershipsFee;
 using BC7.Business.Implementation.Payments.Events;
@@ -47,6 +48,18 @@ namespace BC7.Api.Controllers
         [HttpPost("matrixLevel")]
         [Authorize]
         public async Task<IActionResult> PayForMatrixLevel([FromBody] PayMatrixLevelCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+
+        /// <summary>
+        /// Donation to the project
+        /// </summary>
+        /// <param name="command">A command with project and amount to donate</param>
+        /// <returns>Returns the Url where the payment can be done</returns>
+        /// <response code="200">Returns the Url where the payment can be done</response>
+        [HttpPost("donation")]
+        public async Task<IActionResult> Donate([FromBody] DonateCommand command)
         {
             return Ok(await _mediator.Send(command));
         }

@@ -47,8 +47,9 @@ namespace BC7.Business.Implementation.Withdrawals.Jobs
             var withdrawal = new Withdrawal(
                 Guid.NewGuid(),
                 matrixOwner.UserMultiAccountId.Value,
-                amountToWithdraw, // TODO: calculate value
-                PaymentSystemType.BitBayPay);
+                amountToWithdraw,
+                PaymentSystemType.BitBayPay,
+                WithdrawalForHelper.AssignmentInMatrix);
 
             BackgroundJob.Enqueue<CommitWithdrawalJob>(
                 job => job.Execute(withdrawal, null));
