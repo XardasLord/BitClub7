@@ -26,7 +26,9 @@ namespace BC7.Business.Implementation.Users.Requests.GetInitiativeDescriptionFor
 
             return new GetInitiativeDescriptionViewModel
             {
-                Initiative = multiAccount.UserAccountData.InitiativeDescription
+                Initiative = multiAccount.UserAccountData.InitiativeDescription,
+                ProjectId = multiAccount.MultiAccountName,
+                ProjectCode = multiAccount.RefLink
             };
         }
     }
