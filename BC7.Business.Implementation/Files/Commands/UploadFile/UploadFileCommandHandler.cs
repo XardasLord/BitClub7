@@ -48,7 +48,8 @@ namespace BC7.Business.Implementation.Files.Commands.UploadFile
         {
             var newFileName = CreateFileName(file);
 
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), _storageSettingsOptions.Value.Files, newFileName);
+            var absolutePath = Path.GetFullPath(Directory.GetCurrentDirectory() + _storageSettingsOptions.Value.Files);
+            var filePath = Path.Combine(absolutePath, newFileName);
             using (var fileSteam = new FileStream(filePath, FileMode.Create))
             {
                 await file.CopyToAsync(fileSteam);
