@@ -25,6 +25,7 @@ namespace BC7.Domain
         public string BtcWalletAddress { get; private set; }
         public string Role { get; private set; }
         public string InitiativeDescription { get; private set; }
+        public string Avatar { get; private set; }
         public bool IsMembershipFeePaid { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public virtual ICollection<UserMultiAccount> UserMultiAccounts { get; private set; }
@@ -174,6 +175,16 @@ namespace BC7.Domain
             }
 
             Role = newRole;
+        }
+
+        public void ChangeAvatar(string avatarPath)
+        {
+            if (avatarPath.IsNullOrWhiteSpace())
+            {
+                throw new DomainException("Path to Avatar cannot be null or empty.");
+            }
+
+            Avatar = avatarPath;
         }
     }
 }

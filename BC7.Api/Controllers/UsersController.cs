@@ -3,6 +3,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using BC7.Business.Implementation.Files.Commands.UploadFile;
+using BC7.Business.Implementation.Users.Commands.ChangeAvatar;
 using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
 using BC7.Business.Implementation.Users.Commands.RegisterNewUserAccount;
 using BC7.Business.Implementation.Users.Commands.UpdateUser;
@@ -144,6 +146,33 @@ namespace BC7.Api.Controllers
             var request = new GetInitiativeDescriptionRequest { MultiAccountId = multiAccountId };
 
             return Ok(await _mediator.Send(request));
+        }
+
+        /// <summary>
+        /// Upload avatar file for the user
+        /// </summary>
+        /// <param name="userId">User account data ID for whom avatar is uploaded</param>
+        /// <param name="file">An avatar file</param>
+        /// <returns>Returns NoContent status code</returns>
+        /// <response code="204">Returns NoContent status code</response>
+        /// <response code="401">Failed - only logged in users have access</response>
+        [HttpPatch("{userId}/avatar")]
+        [Authorize]
+        public async Task<IActionResult> AvatarUpload(Guid userId, IFormFile file)
+        {
+            // TODO: Allow only .jpg, .png files
+
+            var uploadFileCommand = new UploadFileCommand { File = file };
+            var result = await _mediator.Send(uploadFileCommand);
+
+            var changeAvatarCommand = new ChangeAvatarCommand
+            {
+                UserAccountDataId = userId,
+                AvatarPath = result.PathToFile
+            };
+            await _mediator.Send(changeAvatarCommand);
+
+            return NoContent();
         }
 
         /// <summary>
