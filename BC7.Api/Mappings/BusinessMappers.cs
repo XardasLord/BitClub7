@@ -42,7 +42,7 @@ namespace BC7.Api.Mappings
                 .ForMember(x => x.MultiAccountName, opt => opt.MapFrom(y => y.UserMultiAccount.MultiAccountName))
                 .ForMember(x => x.UserAccountDataId, opt => opt.MapFrom(y => y.UserMultiAccount.UserAccountDataId))
                 .ForMember(x => x.UserMultiAccountId, opt => opt.MapFrom(y => y.UserMultiAccountId))
-                .ForMember(x => x.PaymentFor, opt => opt.Ignore()); // TODO
+                .ForMember(x => x.PaymentFor, opt => opt.MapFrom(y => y.WithdrawalFor));
         }
     }
 }

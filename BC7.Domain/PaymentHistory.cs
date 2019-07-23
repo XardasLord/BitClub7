@@ -8,6 +8,7 @@ namespace BC7.Domain
     public static class PaymentForHelper
     {
         public static readonly string MembershipsFee = "MembershipsFee";
+        public static readonly string ProjectDonation = "ProjectDonation";
         public static readonly Dictionary<int, string> MatrixLevelPositionsDictionary = new Dictionary<int, string>
         {
             {0, "MatrixLevel0"},

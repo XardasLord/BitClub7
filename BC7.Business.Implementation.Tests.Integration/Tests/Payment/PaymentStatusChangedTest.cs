@@ -5,7 +5,9 @@ using BC7.Business.Implementation.Tests.Integration.Base;
 using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
 using BC7.Domain;
 using FluentAssertions;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using NUnit.Framework;
 using TestStack.BDDfy;
 
@@ -23,7 +25,9 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Payment
 
         void GivenSystemUnderTest()
         {
-            _sut = new PaymentStatusChangedEventHandler(_paymentHistoryRepository, _userAccountDataRepository, _userMultiAccountRepository);
+            var backgroundJobClient = new Mock<IBackgroundJobClient>();
+
+            _sut = new PaymentStatusChangedEventHandler(_paymentHistoryRepository, _userAccountDataRepository, _userMultiAccountRepository, backgroundJobClient.Object);
         }
 
         async Task AndGivenPaymentAndUserAccountInDatabase()
