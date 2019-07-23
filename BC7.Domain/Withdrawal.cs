@@ -1,35 +1,45 @@
 ﻿using System;
+using BC7.Common.Extensions;
 using BC7.Domain.Enums;
 using BC7.Infrastructure.CustomExceptions;
 
 namespace BC7.Domain
 {
+    public static class WithdrawalForHelper
+    {
+        public static readonly string ProjectDonation = "Project donation";
+        public static readonly string AssignmentInMatrix = "Assignment in matrix";
+    }
+
     public class Withdrawal
     {
+
         public Guid Id { get; private set; }
         public Guid? WithdrawalId { get; private set; }
         public Guid UserMultiAccountId { get; private set; }
         public virtual UserMultiAccount UserMultiAccount { get; private set; }
 
         public decimal Amount { get; private set; }
+        public string WithdrawalFor { get; private set; }
         public PaymentSystemType PaymentSystemType { get; private set; }
         public DateTimeOffset? WithdrawnAt { get; private set; }
         public DateTimeOffset CreatedAt { get; private set; }
 
-        public Withdrawal(Guid id, Guid userMultiAccountId, decimal amount, PaymentSystemType paymentSystemType)
+        public Withdrawal(Guid id, Guid userMultiAccountId, decimal amount, PaymentSystemType paymentSystemType, string withdrawalFor)
         {
-            ValidateDomain(id, userMultiAccountId, amount);
+            ValidateDomain(id, userMultiAccountId, amount, withdrawalFor);
 
             Id = id;
             UserMultiAccountId = userMultiAccountId;
             Amount = amount;
             PaymentSystemType = paymentSystemType;
+            WithdrawalFor = withdrawalFor;
             WithdrawalId = null;
             WithdrawnAt = null;
             CreatedAt = DateTimeOffset.Now;
         }
 
-        private static void ValidateDomain(Guid id, Guid userMultiAccountId, decimal amount)
+        private static void ValidateDomain(Guid id, Guid userMultiAccountId, decimal amount, string withdrawalFor)
         {
             if (id == Guid.Empty)
             {
@@ -42,6 +52,10 @@ namespace BC7.Domain
             if (amount <= 0)
             {
                 throw new DomainException($"Invalid amount value: {amount}");
+            }
+            if (withdrawalFor.IsNullOrWhiteSpace())
+            {
+                throw new DomainException("Invalid withdrawalFor value.");
             }
         }
 

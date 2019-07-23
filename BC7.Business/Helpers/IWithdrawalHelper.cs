@@ -3,5 +3,6 @@
     public interface IWithdrawalHelper
     {
         decimal CalculateAmountToWithdraw(int matrixLevel);
+        decimal CalculateAmountToWithdraw(decimal amount);
     }
 }
