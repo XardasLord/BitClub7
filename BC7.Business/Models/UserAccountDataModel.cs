@@ -16,6 +16,7 @@ namespace BC7.Business.Models
         public string BtcWalletAddress { get; private set; }
         public string Role { get; private set; }
         public string InitiativeDescription { get; private set; }
+        public string Avatar { get; private set; }
         public bool IsMembershipFeePaid { get; private set; }
         public int MultiAccountsTotalCount { get; set; }
     }
