@@ -48,7 +48,7 @@ namespace BC7.Business.Implementation.Files.Commands.UploadFile
         {
             var newFileName = CreateFileName(file);
 
-            var absolutePath = Path.GetFullPath(Directory.GetCurrentDirectory() + _storageSettingsOptions.Value.Files);
+            var absolutePath = Path.GetFullPath($"{Directory.GetCurrentDirectory()}\\{_storageSettingsOptions.Value.Files}");
             var filePath = Path.Combine(absolutePath, newFileName);
             using (var fileSteam = new FileStream(filePath, FileMode.Create))
             {
