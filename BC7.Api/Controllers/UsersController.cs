@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using BC7.Business.Implementation.Users.Requests.GetPaymentHistories;
 using BC7.Business.Implementation.Users.Requests.GetUser;
 using BC7.Business.Implementation.Users.Requests.GetUsers;
 using BC7.Business.Models;
+using BC7.Infrastructure.CustomExceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -153,14 +155,18 @@ namespace BC7.Api.Controllers
         /// </summary>
         /// <param name="userId">User account data ID for whom avatar is uploaded</param>
         /// <param name="file">An avatar file</param>
-        /// <returns>Returns NoContent status code</returns>
-        /// <response code="204">Returns NoContent status code</response>
+        /// <returns>Returns absolute path to the avatar file</returns>
+        /// <response code="200">Returns absolute path to the avatar file</response>
         /// <response code="401">Failed - only logged in users have access</response>
         [HttpPatch("{userId}/avatar")]
         [Authorize]
         public async Task<IActionResult> AvatarUpload(Guid userId, IFormFile file)
         {
-            // TODO: Allow only .jpg, .png files
+            string[] allowedAvatarExtensions = { ".png", ".jpg", ".jpeg" };
+            if (file != null && allowedAvatarExtensions.Contains(Path.GetExtension(file.FileName).ToLower()) == false)
+            {
+                throw new ValidationException($"These formats are only allowed: {string.Join(", ", allowedAvatarExtensions)}");
+            }
 
             var uploadFileCommand = new UploadFileCommand { File = file };
             var result = await _mediator.Send(uploadFileCommand);
@@ -172,7 +178,7 @@ namespace BC7.Api.Controllers
             };
             await _mediator.Send(changeAvatarCommand);
 
-            return NoContent();
+            return Ok(result);
         }
 
         /// <summary>
