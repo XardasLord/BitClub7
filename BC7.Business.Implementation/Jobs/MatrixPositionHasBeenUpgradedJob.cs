@@ -12,12 +12,12 @@ using Z.EntityFramework.Plus;
 
 namespace BC7.Business.Implementation.Jobs
 {
-    public class MatrixPositionHasBeenBoughtJob : IJob<Guid>
+    public class MatrixPositionHasBeenUpgradedJob : IJob<Guid>
     {
         private readonly IBitClub7Context _context;
         private readonly IMatrixPositionRepository _matrixPositionRepository;
 
-        public MatrixPositionHasBeenBoughtJob(IBitClub7Context context, IMatrixPositionRepository matrixPositionRepository)
+        public MatrixPositionHasBeenUpgradedJob(IBitClub7Context context, IMatrixPositionRepository matrixPositionRepository)
         {
             _context = context;
             _matrixPositionRepository = matrixPositionRepository;
@@ -25,14 +25,14 @@ namespace BC7.Business.Implementation.Jobs
 
         public async Task Execute(Guid matrixPositionId, PerformContext context)
         {
-            context.WriteLine($"MatrixPositionHasBeenBoughtJob started with matrixPositionId - {matrixPositionId}");
+            context.WriteLine($"MatrixPositionHasBeenUpgradedJob started with matrixPositionId - {matrixPositionId}");
 
             var matrixPositionBought = await _matrixPositionRepository.GetAsync(matrixPositionId);
 
             await LeftRightValuesReindexation(matrixPositionBought);
             await AddTwoEmptyChildToBoughtPosition(matrixPositionBought);
 
-            context.WriteLine("MatrixPositionHasBeenBoughtJob completed.");
+            context.WriteLine("MatrixPositionHasBeenUpgradedJob completed.");
         }
 
         private async Task LeftRightValuesReindexation(MatrixPosition matrixPositionBought)

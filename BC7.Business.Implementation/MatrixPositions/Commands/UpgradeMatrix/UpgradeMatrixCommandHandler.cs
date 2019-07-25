@@ -3,12 +3,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BC7.Business.Helpers;
-using BC7.Business.Implementation.Events;
+using BC7.Business.Implementation.Jobs;
+using BC7.Business.Implementation.Withdrawals.Jobs;
+using BC7.Business.Implementation.Withdrawals.Jobs.JobModels;
 using BC7.Business.Models;
 using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
 using BC7.Repository;
 using BC7.Security;
+using Hangfire;
 using MediatR;
 
 namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
@@ -25,7 +28,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
         private readonly IUserAccountDataRepository _userAccountDataRepository;
         private readonly IPaymentHistoryHelper _paymentHistoryHelper;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
-        private readonly IMediator _mediator;
+        private readonly IBackgroundJobClient _backgroundJobClient;
 
         public UpgradeMatrixCommandHandler(
             IUserMultiAccountRepository userMultiAccountRepository,
@@ -33,14 +36,14 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
             IUserAccountDataRepository userAccountDataRepository,
             IPaymentHistoryHelper paymentHistoryHelper,
             IMatrixPositionHelper matrixPositionHelper,
-            IMediator mediator)
+            IBackgroundJobClient backgroundJobClient)
         {
             _userMultiAccountRepository = userMultiAccountRepository;
             _matrixPositionRepository = matrixPositionRepository;
             _userAccountDataRepository = userAccountDataRepository;
             _paymentHistoryHelper = paymentHistoryHelper;
             _matrixPositionHelper = matrixPositionHelper;
-            _mediator = mediator;
+            _backgroundJobClient = backgroundJobClient;
         }
 
         public async Task<UpgradeMatrixResult> Handle(UpgradeMatrixCommand command, CancellationToken cancellationToken = default(CancellationToken))
@@ -109,7 +112,15 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
 
             await _matrixPositionRepository.UpdateAsync(upgradedPosition);
 
-            await PublishMatrixPositionHasBeenBoughtNotification(upgradedPosition.Id);
+            _backgroundJobClient.Enqueue<MatrixPositionHasBeenUpgradedJob>(
+                job => job.Execute(upgradedPosition.Id, null));
+
+            _backgroundJobClient.Enqueue<InitWithdrawalJob>(
+                job => job.Execute(new InitWithdrawalModel
+                {
+                    MatrixPositionId = upgradedPosition.Id,
+                    WithdrawalFor = WithdrawalForHelper.UpgradedMatrix
+                }, null));
 
             return upgradedPosition.Id;
         }
@@ -146,15 +157,17 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
             upgradedPosition.AssignMultiAccount(_multiAccount.Id);
             await _matrixPositionRepository.UpdateAsync(upgradedPosition);
 
-            await PublishMatrixPositionHasBeenBoughtNotification(upgradedPosition.Id);
+            _backgroundJobClient.Enqueue<MatrixPositionHasBeenUpgradedJob>(
+                job => job.Execute(upgradedPosition.Id, null));
+
+            _backgroundJobClient.Enqueue<InitWithdrawalJob>(
+                job => job.Execute(new InitWithdrawalModel
+                {
+                    MatrixPositionId = upgradedPosition.Id,
+                    WithdrawalFor = WithdrawalForHelper.UpgradedMatrix
+                }, null));
 
             return upgradedPosition.Id;
-        }
-
-        private Task PublishMatrixPositionHasBeenBoughtNotification(Guid matrixPositionId)
-        {
-            var @event = new MatrixPositionHasBeenBoughtEvent(matrixPositionId);
-            return _mediator.Publish(@event);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BC7.Business.Helpers;
 using BC7.Business.Implementation.Jobs;
 using BC7.Business.Implementation.Withdrawals.Jobs;
+using BC7.Business.Implementation.Withdrawals.Jobs.JobModels;
 using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
 using BC7.Repository;
@@ -87,7 +88,11 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
                 job => job.Execute(userMultiAccount.Id, null));
 
             _backgroundJobClient.Enqueue<InitWithdrawalJob>(
-                job => job.Execute(matrixPosition.Id, null));
+                job => job.Execute(new InitWithdrawalModel
+                {
+                    MatrixPositionId = matrixPosition.Id,
+                    WithdrawalFor = WithdrawalForHelper.AssignmentInMatrix
+                }, null));
 
             return matrixPosition.Id;
         }
