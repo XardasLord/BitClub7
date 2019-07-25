@@ -9,6 +9,7 @@ namespace BC7.Domain
     {
         public static readonly string ProjectDonation = "Project donation";
         public static readonly string AssignmentInMatrix = "Assignment in matrix";
+        public static readonly string UpgradedMatrix = "Upgraded matrix";
     }
 
     public class Withdrawal
