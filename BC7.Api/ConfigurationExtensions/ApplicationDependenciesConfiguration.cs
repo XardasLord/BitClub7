@@ -4,8 +4,10 @@ using BC7.Common.Settings;
 using BC7.Database;
 using BC7.Infrastructure.Implementation.Payments;
 using BC7.Infrastructure.Implementation.Payments.BitBayPay;
+using BC7.Infrastructure.Implementation.Payments.BitPay;
 using BC7.Infrastructure.Payments;
 using BC7.Infrastructure.Payments.BitBayPay;
+using BC7.Infrastructure.Payments.BitPay;
 using BC7.Repository;
 using BC7.Repository.Implementation;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +36,7 @@ namespace BC7.Api.ConfigurationExtensions
             services.AddTransient<IWithdrawalRepository, WithdrawalRepository>();
 
             services.AddTransient<IBitBayPayFacade, BitBayPayFacade>();
+            services.AddTransient<IBitPayFacade, BitPayFacade>();
 
             services.AddDbContext<IBitClub7Context, BitClub7Context>(
                 opts => opts.UseSqlServer(configuration.GetConnectionString("BitClub7DB"),
@@ -42,6 +45,7 @@ namespace BC7.Api.ConfigurationExtensions
 
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
             services.Configure<BitBayPayApiSettings>(configuration.GetSection("BitBayPayApiSettings"));
+            services.Configure<BitPayApiSettings>(configuration.GetSection("BitPayApiSettings"));
             services.Configure<ApplicationSettings>(configuration.GetSection("ApplicationSettings"));
             services.Configure<MatrixStructureSettings>(configuration.GetSection("MatrixStructureSettings"));
             services.Configure<StorageSettings>(configuration.GetSection("StorageSettings"));

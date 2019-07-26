@@ -1,0 +1,25 @@
+﻿{
+  "BitPayConfiguration": {
+    "Environment": "Test",
+    "EnvConfig": {
+      "Test": {
+        "ClientDescription": "Fundacja MEBSPORT",
+        "ApiUrl": "https://test.bitpay.com/",
+        "PrivateKeyPath": "",
+        "ApiTokens": {
+          "pos": "",
+          "merchant": "",
+          "payroll": ""
+        }
+      },
+      "Prod": {
+        "PrivateKeyPath": "",
+        "ApiTokens": {
+          "pos": "",
+          "merchant": "",
+          "payroll": ""
+        }
+      }
+    }
+  }
+}
