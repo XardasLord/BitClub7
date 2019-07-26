@@ -28,7 +28,8 @@ namespace BC7.Business.Implementation.Users.Requests.GetInitiativeDescriptionFor
             {
                 Initiative = multiAccount.UserAccountData.InitiativeDescription,
                 ProjectId = multiAccount.MultiAccountName,
-                ProjectCode = multiAccount.RefLink
+                ProjectCode = multiAccount.RefLink,
+                Avatar = multiAccount.UserAccountData.Avatar
             };
         }
     }

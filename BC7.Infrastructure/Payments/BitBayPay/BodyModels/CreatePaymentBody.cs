@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace BC7.Infrastructure.Payments.BodyModels
+namespace BC7.Infrastructure.Payments.BitBayPay.BodyModels
 {
     public class CreatePaymentBody
     {

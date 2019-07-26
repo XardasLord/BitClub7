@@ -4,6 +4,7 @@ using BC7.Business.Implementation.Payments.Commands.Donate;
 using BC7.Business.Implementation.Payments.Commands.PayMatrixLevel;
 using BC7.Business.Implementation.Payments.Commands.PayMembershipsFee;
 using BC7.Business.Implementation.Payments.Events;
+using BC7.Business.Implementation.Payments.Requests.GetPayments;
 using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -22,6 +23,20 @@ namespace BC7.Api.Controllers
         {
             _mediator = mediator;
             _backgroundJobClient = backgroundJobClient;
+        }
+
+        /// <summary>
+        /// Get all payments registered in the system
+        /// </summary>
+        /// <returns>Returns list of whole payments</returns>
+        /// <response code="200">Returns list of whole payments</response>
+        /// <response code="401">Failed - only logged in users have access</response>
+        /// <response code="403">Fail - only root users have access</response>
+        [HttpGet]
+        [Authorize(Roles = "Root")]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _mediator.Send(new GetPaymentsRequest()));
         }
 
         /// <summary>

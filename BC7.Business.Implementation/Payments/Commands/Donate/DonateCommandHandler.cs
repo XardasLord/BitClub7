@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using BC7.Domain;
 using BC7.Infrastructure.CustomExceptions;
 using BC7.Infrastructure.Payments;
-using BC7.Infrastructure.Payments.BodyModels;
+using BC7.Infrastructure.Payments.BitBayPay;
+using BC7.Infrastructure.Payments.BitBayPay.BodyModels;
 using BC7.Repository;
 using MediatR;
 

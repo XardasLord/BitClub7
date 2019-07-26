@@ -17,6 +17,11 @@ namespace BC7.Repository.Implementation
             _context = context;
         }
 
+        public Task<List<PaymentHistory>> GetAllAsync()
+        {
+            return _context.Set<PaymentHistory>().ToListAsync();
+        }
+
         public Task<PaymentHistory> GetAsync(Guid paymentId)
         {
             return _context.Set<PaymentHistory>().SingleAsync(x => x.PaymentId == paymentId);

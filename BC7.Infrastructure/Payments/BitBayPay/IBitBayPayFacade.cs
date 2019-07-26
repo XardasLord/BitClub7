@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BC7.Infrastructure.Payments.BodyModels;
+using BC7.Infrastructure.Payments.BitBayPay.BodyModels;
 
-namespace BC7.Infrastructure.Payments
+namespace BC7.Infrastructure.Payments.BitBayPay
 {
     public interface IBitBayPayFacade
     {
