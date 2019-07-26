@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BC7.Business.Helpers;
+using BC7.Business.Implementation.Withdrawals.Jobs.JobModels;
 using BC7.Domain;
 using BC7.Domain.Enums;
 using BC7.Infrastructure.Implementation.Hangfire;
@@ -12,7 +13,7 @@ using Newtonsoft.Json;
 
 namespace BC7.Business.Implementation.Withdrawals.Jobs
 {
-    public class InitWithdrawalJob : IJob<Guid>
+    public class InitWithdrawalJob : IJob<InitWithdrawalModel>
     {
         private readonly IMatrixPositionRepository _matrixPositionRepository;
         private readonly IMatrixPositionHelper _matrixPositionHelper;
@@ -25,13 +26,13 @@ namespace BC7.Business.Implementation.Withdrawals.Jobs
             _withdrawalHelper = withdrawalHelper;
         }
 
-        public async Task Execute(Guid boughtMatrixPositionId, PerformContext context)
+        public async Task Execute(InitWithdrawalModel initWithdrawalModel, PerformContext context)
         {
-            context.WriteLine($"InitWithdrawalJob started with boughtMatrixPositionId - {boughtMatrixPositionId}");
+            context.WriteLine($"InitWithdrawalJob started with data: {JsonConvert.SerializeObject(initWithdrawalModel)}");
 
-            var matrixPositionInLineB = await _matrixPositionRepository.GetAsync(boughtMatrixPositionId);
+            var matrixPositionInLineB = await _matrixPositionRepository.GetAsync(initWithdrawalModel.MatrixPositionId);
 
-            context.WriteLine($"Bought matrix position data: {JsonConvert.SerializeObject(matrixPositionInLineB)}");
+            context.WriteLine($"Matrix position data: {JsonConvert.SerializeObject(matrixPositionInLineB)}");
 
             var matrixOwner = await _matrixPositionHelper.GetTopParentAsync(matrixPositionInLineB, matrixPositionInLineB.MatrixLevel);
 
@@ -49,8 +50,8 @@ namespace BC7.Business.Implementation.Withdrawals.Jobs
                 matrixOwner.UserMultiAccountId.Value,
                 amountToWithdraw,
                 PaymentSystemType.BitBayPay,
-                WithdrawalForHelper.AssignmentInMatrix);
-
+                initWithdrawalModel.WithdrawalFor);
+            
             BackgroundJob.Enqueue<CommitWithdrawalJob>(
                 job => job.Execute(withdrawal, null));
 

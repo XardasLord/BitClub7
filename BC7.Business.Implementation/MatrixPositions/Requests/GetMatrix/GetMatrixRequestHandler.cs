@@ -25,7 +25,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Requests.GetMatrix
         public async Task<MatrixViewModel> Handle(GetMatrixRequest request, CancellationToken cancellationToken = default(CancellationToken))
         {
             var matrixPosition = await _matrixPositionRepository.GetAsync(request.MatrixPositionId);
-            var matrix = await _matrixPositionRepository.GetMatrixAsync(matrixPosition);
+            var matrix = await _matrixPositionRepository.GetMatrixAsync(matrixPosition, matrixPosition.MatrixLevel);
 
             var matrixModel = _mapper.Map<IEnumerable<MatrixPositionModel>>(matrix);
 

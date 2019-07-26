@@ -6,7 +6,9 @@ using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
 using BC7.Domain;
 using BC7.Security;
 using FluentAssertions;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using NUnit.Framework;
 using TestStack.BDDfy;
 
@@ -27,7 +29,9 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.UpgradingMatrix
 
         void GivenSystemUnderTest()
         {
-            _sut = new UpgradeMatrixCommandHandler(_userMultiAccountRepository, _matrixPositionRepository, _userAccountDataRepository, _paymentHistoryHelper, _matrixPositionHelper, _mediator);
+            var backgroundJobClient = new Mock<IBackgroundJobClient>();
+
+            _sut = new UpgradeMatrixCommandHandler(_userMultiAccountRepository, _matrixPositionRepository, _userAccountDataRepository, _paymentHistoryHelper, _matrixPositionHelper, backgroundJobClient.Object);
         }
         
         async Task AndGivenCreatedDefaultAccountsAndMatricesInDatabase()
