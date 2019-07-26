@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatrix;
+using BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatrixWithoutPaymentValidation_TMP;
 using BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix;
+using BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrixWithoutPaymentValidation_TMP;
 using BC7.Business.Implementation.MatrixPositions.Requests.GenerateTreeDefinitionFile;
 using BC7.Business.Implementation.MatrixPositions.Requests.GetMatrix;
 using MediatR;
@@ -77,6 +79,22 @@ namespace BC7.Api.Controllers
         {
             await _mediator.Send(new GenerateTreeDefinitionFileRequest(matrixLevel));
             return Ok();
+        }
+        
+
+        // THESE TWO ARE ONLY FOR TMP INIT WACH'S ACCOUNTS IN MATRIX
+        [HttpPost("upgradeMatrixWithoutPaymentValidation_TMP")]
+        [Authorize(Roles = "Root")]
+        public async Task<IActionResult> UpgradeMatrixWithoutPaymentValidation_TMP([FromBody] UpgradeMatrixWithoutPaymentValidation_TMPCommand command)
+        {
+            return Ok(new { Id = await _mediator.Send(command) });
+        }
+
+        [HttpPost("buyMatrixPositionWithoutPaymentValidation_TMP")]
+        [Authorize(Roles = "Root")]
+        public async Task<IActionResult> BuyMatrixPositionWithoutPaymentValidation_TMP([FromBody] BuyPositionInMatrixWithoutPaymentValidation_TMPCommand command)
+        {
+            return Ok(new { Id = await _mediator.Send(command) });
         }
     }
 }

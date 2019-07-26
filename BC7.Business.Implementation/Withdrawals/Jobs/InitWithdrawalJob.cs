@@ -51,9 +51,7 @@ namespace BC7.Business.Implementation.Withdrawals.Jobs
                 amountToWithdraw,
                 PaymentSystemType.BitBayPay,
                 initWithdrawalModel.WithdrawalFor);
-
-            // TODO: Check if highest admin is Piotr Wach - if so then withdrawal is for him
-
+            
             BackgroundJob.Enqueue<CommitWithdrawalJob>(
                 job => job.Execute(withdrawal, null));
 
