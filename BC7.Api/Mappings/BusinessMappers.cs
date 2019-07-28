@@ -11,7 +11,7 @@ namespace BC7.Api.Mappings
         public BusinessMappers()
         {
             CreateMap<RegisterNewUserModel, RegisterNewUserAccountCommand>()
-                .ForMember(x => x.SponsorRefLink, opt => opt.Ignore());
+                .ForMember(x => x.SponsorRefLink, opt => opt.MapFrom(y => y.Reflink));
 
             CreateMap<UserMultiAccount, UserMultiAccountModel>()
                 .ForMember(x => x.MatrixPositionModels, opt => opt.MapFrom(y => y.MatrixPositions));

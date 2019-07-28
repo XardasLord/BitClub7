@@ -53,15 +53,13 @@ namespace BC7.Api.Controllers
         /// Register new user account
         /// </summary>
         /// <param name="model">A model with all user account data</param>
-        /// <param name="reflink">Optional query parameter. If send it will attach the main account to this reflink's user</param>
         /// <returns>Returns the Id of the created user account</returns>
         /// <response code="201">Returns the Id of the newly created user account</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> RegisterNewAccount([FromBody] RegisterNewUserModel model, [FromQuery] string reflink = null)
+        public async Task<IActionResult> RegisterNewAccount([FromBody] RegisterNewUserModel model)
         {
             var command = _mapper.Map<RegisterNewUserAccountCommand>(model);
-            command.SponsorRefLink = reflink;
 
             var userId = await _mediator.Send(command);
 
