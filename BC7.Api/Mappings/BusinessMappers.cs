@@ -31,7 +31,8 @@ namespace BC7.Api.Mappings
                 .ForMember(x => x.RequestedUser, opt => opt.Ignore());
 
             CreateMap<UserAccountData, UserAccountDataModel>()
-                .ForMember(x => x.MultiAccountsTotalCount, opt => opt.MapFrom(y => y.UserMultiAccounts.Count));
+                .ForMember(x => x.MultiAccountsTotalCount, opt => opt.MapFrom(y => y.UserMultiAccounts.Count))
+                .ForMember(x => x.MainAccountSponsor, opt => opt.Ignore());
 
             CreateMap<PaymentHistory, PaymentHistoryModel>()
                 .ForMember(x => x.AccountName, opt => opt.Ignore()); // TODO: PaymentFor better display?
