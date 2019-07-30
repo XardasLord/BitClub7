@@ -42,7 +42,8 @@ namespace BC7.Business.Implementation.Users.Requests.GetUsers
 
                 var userToSetSponsor = userModels.Single(x => x.Id == userAccount.Id);
 
-                userToSetSponsor.MainAccountSponsor = mainAccountSponsor.MultiAccountName;
+                userToSetSponsor.MainAccountSponsorLogin = mainAccountSponsor.MultiAccountName;
+                userToSetSponsor.MainAccountSponsorReflink = mainAccountSponsor.RefLink;
             }
 
 

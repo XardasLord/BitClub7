@@ -17,7 +17,8 @@ namespace BC7.Business.Models
         public string Role { get; private set; }
         public string InitiativeDescription { get; private set; }
         public string Avatar { get; private set; }
-        public string MainAccountSponsor { get; set; }
+        public string MainAccountSponsorLogin { get; set; }
+        public string MainAccountSponsorReflink { get; set; }
         public bool IsMembershipFeePaid { get; private set; }
         public int MultiAccountsTotalCount { get; set; }
     }
