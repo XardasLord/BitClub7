@@ -24,7 +24,13 @@ namespace BC7.Business.Implementation.Users.Commands.UpdateUser
 
             ValidatePermission(userToUpdate, command.RequestedUser, command.Role);
 
-            userToUpdate.UpdateInformation(command.FirstName, command.LastName, command.Street, command.City, command.ZipCode, command.Country, command.BtcWalletAddress, command.InitiativeDescription);
+            var userWithEmail = await _userAccountDataRepository.GetAsync(command.Email);
+            if (userWithEmail != null && userWithEmail.Id != userToUpdate.Id)
+            {
+                throw new ValidationException("Email does already exists.");
+            }
+
+            userToUpdate.UpdateInformation(command.Email, command.FirstName, command.LastName, command.Street, command.City, command.ZipCode, command.Country, command.BtcWalletAddress, command.InitiativeDescription);
             userToUpdate.UpdateRole(command.Role);
 
             await _userAccountDataRepository.UpdateAsync(userToUpdate);

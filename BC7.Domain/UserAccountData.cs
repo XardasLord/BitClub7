@@ -126,8 +126,12 @@ namespace BC7.Domain
             IsMembershipFeePaid = true;
         }
 
-        public void UpdateInformation(string firstName, string lastName, string street, string city, string zipCode, string country, string btcWalletAddress, string initiativeDescription)
+        public void UpdateInformation(string email, string firstName, string lastName, string street, string city, string zipCode, string country, string btcWalletAddress, string initiativeDescription)
         {
+            if (email.IsNullOrWhiteSpace())
+            {
+                throw new DomainException("Invalid email.");
+            }
             if (firstName.IsNullOrWhiteSpace())
             {
                 throw new DomainException("Invalid firstName.");
@@ -157,6 +161,7 @@ namespace BC7.Domain
                 throw new DomainException("Invalid btcWalletAddress.");
             }
 
+            Email = email;
             FirstName = firstName;
             LastName = lastName;
             Street = street;
