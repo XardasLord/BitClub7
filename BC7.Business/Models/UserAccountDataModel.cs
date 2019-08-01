@@ -21,5 +21,8 @@ namespace BC7.Business.Models
         public string MainAccountSponsorReflink { get; set; }
         public bool IsMembershipFeePaid { get; private set; }
         public int MultiAccountsTotalCount { get; set; }
+        public decimal EarnedBtc { get; set; }
+        public int InvitedAccountsTotalCount { get; set; }
+        public int AccountsInMatrixTotalCount { get; set; }
     }
 }

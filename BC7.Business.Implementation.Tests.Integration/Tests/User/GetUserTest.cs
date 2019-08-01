@@ -27,7 +27,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.User
 
         void GivenSystemUnderTest()
         {
-            _sut = new GetUserRequestHandler(_userAccountDataRepository, _mapper);
+            _sut = new GetUserRequestHandler(_userAccountDataRepository, _withdrawalRepository, _userMultiAccountHelper, _mapper);
         }
 
         async Task AndGivenCreatedUserAccountInDatabase()

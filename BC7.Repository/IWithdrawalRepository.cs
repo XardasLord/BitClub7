@@ -9,6 +9,7 @@ namespace BC7.Repository
     {
         Task<Withdrawal> GetAsync(Guid id);
         Task<List<Withdrawal>> GetAllAsync();
+        Task<List<Withdrawal>> GetAllAsync(IEnumerable<Guid> userMultiAccountIds);
         Task CreateAsync(Withdrawal withdrawal);
         Task UpdateAsync(Withdrawal withdrawal);
     }
