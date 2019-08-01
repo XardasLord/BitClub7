@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BC7.Business.Helpers;
@@ -40,6 +41,20 @@ namespace BC7.Business.Implementation.Helpers
             }
 
             return $"{userAccount.Login}-{numberOfMultiAccounts:000}";
+        }
+
+        public Task<List<UserMultiAccount>> GetAllWhereMultiAccountIsSponsor(Guid userMultiAccountId)
+        {
+            return _context.UserMultiAccounts
+                .Where(x => x.SponsorId == userMultiAccountId)
+                .ToListAsync();
+        }
+
+        public Task<List<UserMultiAccount>> GetAllWhereMultiAccountsAreSponsors(IEnumerable<Guid> userMultiAccountIds)
+        {
+            return _context.UserMultiAccounts
+                .Where(x => userMultiAccountIds.Contains(x.SponsorId.Value))
+                .ToListAsync();
         }
     }
 }

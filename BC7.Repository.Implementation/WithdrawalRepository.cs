@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BC7.Database;
 using BC7.Domain;
@@ -24,6 +25,15 @@ namespace BC7.Repository.Implementation
         public Task<List<Withdrawal>> GetAllAsync()
         {
             return _context.Set<Withdrawal>()
+                .Include(x => x.UserMultiAccount)
+                .ThenInclude(x => x.UserAccountData)
+                .ToListAsync();
+        }
+
+        public Task<List<Withdrawal>> GetAllAsync(IEnumerable<Guid> userMultiAccountIds)
+        {
+            return _context.Set<Withdrawal>()
+                .Where(x => userMultiAccountIds.Contains(x.UserMultiAccountId))
                 .Include(x => x.UserMultiAccount)
                 .ThenInclude(x => x.UserAccountData)
                 .ToListAsync();
