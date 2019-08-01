@@ -85,18 +85,24 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
         {
             if (_multiAccount is null)
             {
-                throw new ValidationException("User with given ID was not found");
+                throw new ValidationException("User with given ID was not found.");
             }
 
             _userMatrixPositionOnLowerMatrix = await _matrixPositionHelper.GetPositionForAccountAtLevelAsync(_multiAccount.Id, _lowerLevelMatrix);
             if (_userMatrixPositionOnLowerMatrix is null)
             {
-                throw new ValidationException($"User does not have position in the lower level matrix: {_lowerLevelMatrix}");
+                throw new ValidationException($"User does not have position in the lower level matrix: {_lowerLevelMatrix}.");
+            }
+
+            var alreadyUpgraded = await _matrixPositionHelper.GetPositionForAccountAtLevelAsync(_multiAccount.Id, _command.MatrixLevel);
+            if (alreadyUpgraded != null)
+            {
+                throw new ValidationException("User has already been upgraded to this level.");
             }
 
             if (await _paymentHistoryHelper.DoesUserPaidForMatrixLevelAsync(_command.MatrixLevel, _multiAccount.Id) == false)
             {
-                throw new ValidationException("User didn't pay for the upgraded matrix yet");
+                throw new ValidationException("User didn't pay for the upgraded matrix yet.");
             }
         }
 
