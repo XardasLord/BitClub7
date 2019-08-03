@@ -8,6 +8,7 @@ namespace BC7.Business.Helpers
     public interface IUserMultiAccountHelper
     {
         Task<UserMultiAccount> GetRandomUserMultiAccountSponsor();
+        Task<UserMultiAccount> GetSponsorForMultiAccount(Guid userMultiAccountId);
         Task<string> GenerateNextMultiAccountName(Guid userAccountDataId);
         Task<List<UserMultiAccount>> GetAllWhereMultiAccountIsSponsor(Guid userMultiAccountId);
         Task<List<UserMultiAccount>> GetAllWhereMultiAccountsAreSponsors(IEnumerable<Guid> userMultiAccountIds);

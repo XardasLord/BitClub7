@@ -56,6 +56,8 @@ namespace BC7.Business.Implementation.Payments.Events
                     return Task.CompletedTask;
                 case "ProjectDonation":
                     return ProjectDonationPaid(orderId, paymentId);
+                case "ProjectDonationViaAffiliateProgram":
+                    return ProjectDonationViaAffiliateProgramPaid(orderId, paymentId);
                 default:
                     throw new ValidationException($"Unknown paymentFor value: {paymentFor}");
             }
@@ -91,6 +93,26 @@ namespace BC7.Business.Implementation.Payments.Events
 
             _backgroundJobClient.Enqueue<ProjectDonatedJob>(
                 job => job.Execute(projectDonatedModel, null));
+        }
+
+        private async Task ProjectDonationViaAffiliateProgramPaid(Guid orderId, Guid paymentId)
+        {
+            var multiAccount = await _userMultiAccountRepository.GetAsync(orderId);
+            if (multiAccount is null)
+            {
+                throw new ValidationException($"Cannot find the MultiAccount from PaymentHistory with OrderId: {orderId}");
+            }
+
+            var payment = await _paymentHistoryRepository.GetAsync(paymentId);
+
+            var projectDonatedViaAffiliateProgramModel = new ProjectDonatedModelViaAffiliateProgramModel
+            {
+                DonatedUserMultiAccountId = orderId,
+                Amount = payment.AmountToPay
+            };
+
+            _backgroundJobClient.Enqueue<ProjectDonatedViaAffiliateProgramJob>(
+                job => job.Execute(projectDonatedViaAffiliateProgramModel, null));
         }
     }
 }
