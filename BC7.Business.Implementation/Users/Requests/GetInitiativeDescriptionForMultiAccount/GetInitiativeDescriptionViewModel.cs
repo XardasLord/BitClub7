@@ -13,5 +13,7 @@
         /// Reflink
         /// </summary>
         public string ProjectCode { get; set; }
+
+        public string Avatar { get; set; }
     }
 }
