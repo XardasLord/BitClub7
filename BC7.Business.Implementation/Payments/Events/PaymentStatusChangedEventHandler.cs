@@ -52,7 +52,7 @@ namespace BC7.Business.Implementation.Payments.Events
                 case "MatrixLevel3":
                 case "MatrixLevel4":
                 case "MatrixLevel5":
-                case "MatrixLevel6":
+                case "MatrixLevel6": // TODO: Auto upgrade on status change
                     return Task.CompletedTask;
                 case "ProjectDonation":
                     return ProjectDonationPaid(orderId, paymentId);
