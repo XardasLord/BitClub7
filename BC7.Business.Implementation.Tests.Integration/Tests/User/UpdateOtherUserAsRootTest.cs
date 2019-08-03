@@ -56,6 +56,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.User
             {
                 UserId = _updatedUserId,
                 RequestedUser = new LoggedUserModel(_requestedUserId, _requestedUserEmail, _requestedUserRole),
+                Email = "Updated email",
                 FirstName = "Updated first name",
                 LastName = "Updated last name",
                 Street = "Updated street",
@@ -76,6 +77,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.User
         {
             var user = await _context.UserAccountsData.SingleAsync(x => x.Id == _updatedUserId);
 
+            user.Email.Should().Be("Updated email");
             user.FirstName.Should().Be("Updated first name");
             user.LastName.Should().Be("Updated last name");
             user.Street.Should().Be("Updated street");

@@ -52,7 +52,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             var invitingUserMatrix = await _matrixPositionHelper.GetMatrixForGivenMultiAccountAsync(sponsorAccountId, command.MatrixLevel);
             if (invitingUserMatrix is null)
             {
-                throw new ValidationException($"The inviting user from reflink does not have matrix on level: {command.MatrixLevel}");
+                throw new ValidationException($"The inviting user from reflink does not have structure on level: {command.MatrixLevel}");
             }
 
             MatrixPosition matrixPosition;
@@ -72,7 +72,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
                 if (matrixPosition is null)
                 {
-                    throw new ValidationException("There is no empty space in matrix where account can be assigned");
+                    throw new ValidationException("There is no empty space in the structure where account can be assigned");
                 }
 
                 await ChangeUserSponsor(userMultiAccount, matrixPosition);
@@ -103,7 +103,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
             if (userMultiAccount is null) throw new ArgumentNullException(nameof(userMultiAccount));
             if (userMultiAccount.MatrixPositions.Any())
             {
-                throw new ValidationException("This account already exists in a matrix");
+                throw new ValidationException("This account already exists in a structure");
             }
 
             if (userMultiAccount.UserAccountData.IsMembershipFeePaid == false)
@@ -113,7 +113,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.BuyPositionInMatr
 
             if (await _paymentHistoryHelper.DoesUserPaidForMatrixLevelAsync(matrixLevel, userMultiAccount.Id) == false)
             {
-                throw new ValidationException($"User didn't pay for the matrix at level {matrixLevel} yet");
+                throw new ValidationException($"User didn't pay for the structure at level {matrixLevel} yet");
             }
 
             if (!userMultiAccount.SponsorId.HasValue)

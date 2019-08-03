@@ -30,6 +30,15 @@ namespace BC7.Business.Implementation.Helpers
                 .FirstAsync();
         }
 
+        public Task<UserMultiAccount> GetSponsorForMultiAccount(Guid userMultiAccountId)
+        {
+            return _context.Set<UserMultiAccount>()
+                .Where(x => x.Id == userMultiAccountId)
+                .Include(x => x.Sponsor)
+                .Select(x => x.Sponsor)
+                .SingleOrDefaultAsync();
+        }
+
         public async Task<string> GenerateNextMultiAccountName(Guid userAccountDataId)
         {
             var userAccount = await _userAccountDataRepository.GetAsync(userAccountDataId);

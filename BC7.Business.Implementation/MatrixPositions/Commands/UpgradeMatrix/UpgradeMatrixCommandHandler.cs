@@ -72,7 +72,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
             {
                 //TODO: Event to notify admin that someone wants to upgrade his matrix
                 //TODO: Use hangfire for this
-                return new UpgradeMatrixResult(Guid.Empty, "Cannot upgrade because admin didn't upgrade his matrix yet. E-mail notification has been sent to admin");
+                return new UpgradeMatrixResult(Guid.Empty, "Cannot upgrade because admin didn't upgrade his structure yet. E-mail notification has been sent to admin");
             }
 
             var adminSide = await _matrixPositionHelper.GetAdminStructureSide(_multiAccount.Id, _lowerLevelMatrix, adminPositionOnLowerMatrix);
@@ -102,7 +102,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
 
             if (await _paymentHistoryHelper.DoesUserPaidForMatrixLevelAsync(_command.MatrixLevel, _multiAccount.Id) == false)
             {
-                throw new ValidationException("User didn't pay for the upgraded matrix yet.");
+                throw new ValidationException("User didn't pay for the upgraded structure yet.");
             }
         }
 
@@ -157,7 +157,7 @@ namespace BC7.Business.Implementation.MatrixPositions.Commands.UpgradeMatrix
 
             if (upgradedPosition is null)
             {
-                throw new ValidationException($"There is no empty space in matrix level - {_command.MatrixLevel} - where account can be assigned");
+                throw new ValidationException($"There is no empty space in the structure level - {_command.MatrixLevel} - where account can be assigned");
             }
 
             upgradedPosition.AssignMultiAccount(_multiAccount.Id);
