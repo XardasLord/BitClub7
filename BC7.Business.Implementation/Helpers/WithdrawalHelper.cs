@@ -47,7 +47,7 @@ namespace BC7.Business.Implementation.Helpers
         {
             switch (affiliateProgramType)
             {
-                case AffiliateProgramType.PersonDonated:
+                case AffiliateProgramType.DirectDonate:
                     return amount * 0.8M;
                 case AffiliateProgramType.AffiliateLineA:
                     return amount * 0.1M;
