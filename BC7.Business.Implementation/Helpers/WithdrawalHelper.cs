@@ -1,5 +1,6 @@
 ﻿using System;
 using BC7.Business.Helpers;
+using BC7.Business.Models;
 
 namespace BC7.Business.Implementation.Helpers
 {
@@ -16,7 +17,6 @@ namespace BC7.Business.Implementation.Helpers
 
         public decimal CalculateAmountToWithdraw(int matrixLevel)
         {
-
             switch (matrixLevel)
             {
                 case 0:
@@ -41,6 +41,25 @@ namespace BC7.Business.Implementation.Helpers
         public decimal CalculateAmountToWithdraw(decimal amount)
         {
             return amount;
+        }
+
+        public decimal CalculateAmountToWithdraw(decimal amount, AffiliateProgramType affiliateProgramType)
+        {
+            switch (affiliateProgramType)
+            {
+                case AffiliateProgramType.DirectDonate:
+                    return amount * 0.8M;
+                case AffiliateProgramType.AffiliateLineA:
+                    return amount * 0.1M;
+                case AffiliateProgramType.AffiliateLineB:
+                    return amount * 0.05M;
+                case AffiliateProgramType.Bc7DonateFee:
+                    return amount * 0.05M;
+                case AffiliateProgramType.Bc7ConstFee:
+                    return amount * 0.095M;
+                default:
+                    throw new ArgumentOutOfRangeException($"Invalid AffiliateProgramType value: {affiliateProgramType}");
+            }
         }
     }
 }

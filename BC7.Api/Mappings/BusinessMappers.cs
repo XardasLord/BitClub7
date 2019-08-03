@@ -33,7 +33,10 @@ namespace BC7.Api.Mappings
             CreateMap<UserAccountData, UserAccountDataModel>()
                 .ForMember(x => x.MultiAccountsTotalCount, opt => opt.MapFrom(y => y.UserMultiAccounts.Count))
                 .ForMember(x => x.MainAccountSponsorLogin, opt => opt.Ignore())
-                .ForMember(x => x.MainAccountSponsorReflink, opt => opt.Ignore());
+                .ForMember(x => x.MainAccountSponsorReflink, opt => opt.Ignore())
+                .ForMember(x => x.EarnedBtc, opt => opt.Ignore())
+                .ForMember(x => x.InvitedAccountsTotalCount, opt => opt.Ignore())
+                .ForMember(x => x.AccountsInMatrixTotalCount, opt => opt.Ignore());
 
             CreateMap<PaymentHistory, PaymentHistoryModel>()
                 .ForMember(x => x.AccountName, opt => opt.Ignore()); // TODO: PaymentFor better display?

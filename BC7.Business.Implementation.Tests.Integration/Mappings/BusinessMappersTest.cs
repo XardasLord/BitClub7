@@ -11,7 +11,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Mappings
         public BusinessMappersTest()
         {
             CreateMap<RegisterNewUserModel, RegisterNewUserAccountCommand>()
-                .ForMember(x => x.SponsorRefLink, opt => opt.Ignore());
+                .ForMember(x => x.SponsorRefLink, opt => opt.MapFrom(y => y.Reflink));
 
             CreateMap<UserMultiAccount, UserMultiAccountModel>()
                 .ForMember(x => x.MatrixPositionModels, opt => opt.MapFrom(y => y.MatrixPositions));
@@ -31,7 +31,12 @@ namespace BC7.Business.Implementation.Tests.Integration.Mappings
                 .ForMember(x => x.RequestedUser, opt => opt.Ignore());
 
             CreateMap<UserAccountData, UserAccountDataModel>()
-                .ForMember(x => x.MultiAccountsTotalCount, opt => opt.MapFrom(y => y.UserMultiAccounts.Count));
+                .ForMember(x => x.MultiAccountsTotalCount, opt => opt.MapFrom(y => y.UserMultiAccounts.Count))
+                .ForMember(x => x.MainAccountSponsorLogin, opt => opt.Ignore())
+                .ForMember(x => x.MainAccountSponsorReflink, opt => opt.Ignore())
+                .ForMember(x => x.EarnedBtc, opt => opt.Ignore())
+                .ForMember(x => x.InvitedAccountsTotalCount, opt => opt.Ignore())
+                .ForMember(x => x.AccountsInMatrixTotalCount, opt => opt.Ignore());
 
             CreateMap<PaymentHistory, PaymentHistoryModel>()
                 .ForMember(x => x.AccountName, opt => opt.Ignore());
@@ -42,7 +47,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Mappings
                 .ForMember(x => x.MultiAccountName, opt => opt.MapFrom(y => y.UserMultiAccount.MultiAccountName))
                 .ForMember(x => x.UserAccountDataId, opt => opt.MapFrom(y => y.UserMultiAccount.UserAccountDataId))
                 .ForMember(x => x.UserMultiAccountId, opt => opt.MapFrom(y => y.UserMultiAccountId))
-                .ForMember(x => x.PaymentFor, opt => opt.Ignore());
+                .ForMember(x => x.PaymentFor, opt => opt.MapFrom(y => y.WithdrawalFor));
         }
     }
 }

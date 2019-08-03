@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace BC7.Business.Implementation.Withdrawals.Jobs
 {
-    class ProjectDonatedJob : IJob<ProjectDonatedModel>
+    public class ProjectDonatedJob : IJob<ProjectDonatedModel>
     {
         private readonly IWithdrawalHelper _withdrawalHelper;
 

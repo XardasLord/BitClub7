@@ -14,13 +14,13 @@ namespace BC7.Business.Implementation.Tests.Unit
         }
 
         [Theory]
-        [TestCase(0, 0.00905)]
-        [TestCase(1, 0.02715)]
-        [TestCase(2, 0.0543)]
-        [TestCase(3, 0.1086)]
-        [TestCase(4, 0.22625)]
-        [TestCase(5, 0.4525)]
-        [TestCase(6, 0.905)]
+        [TestCase(0, 0.01)]
+        [TestCase(1, 0.03)]
+        [TestCase(2, 0.06)]
+        [TestCase(3, 0.12)]
+        [TestCase(4, 0.25)]
+        [TestCase(5, 0.50)]
+        [TestCase(6, 1)]
         public void CalculateAmountToWithdraw_WhenCalledWithMatrixLevel_ReturnsCorrectCalculatedValue(int matrixLevel, decimal expectedResult)
         {
             var result = _withdrawalHelper.CalculateAmountToWithdraw(matrixLevel);
@@ -29,12 +29,12 @@ namespace BC7.Business.Implementation.Tests.Unit
         }
 
         [Theory]
-        [TestCase(0.01, 0.00905)]
-        [TestCase(0.02, 0.0181)]
-        [TestCase(0.03, 0.02715)]
-        [TestCase(0.04, 0.0362)]
-        [TestCase(0.05, 0.04525)]
-        [TestCase(0.11, 0.09955)]
+        [TestCase(0.01, 0.01)]
+        [TestCase(0.02, 0.02)]
+        [TestCase(0.03, 0.03)]
+        [TestCase(0.04, 0.04)]
+        [TestCase(0.05, 0.05)]
+        [TestCase(0.11, 0.11)]
         public void CalculateAmountToWithdraw_WhenCalledWithAmount_ReturnsCorrectCalculatedValue(decimal amount, decimal expectedResult)
         {
             var result = _withdrawalHelper.CalculateAmountToWithdraw(amount);

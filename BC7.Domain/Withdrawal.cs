@@ -8,6 +8,11 @@ namespace BC7.Domain
     public static class WithdrawalForHelper
     {
         public static readonly string ProjectDonation = "Project donation";
+        public static readonly string ProjectDonationViaAffiliateProgramBc7ConstFee = "Project donation via affiliate program (9.5%)";
+        public static readonly string ProjectDonationViaAffiliateProgramBc7DonateFee = "Project donation via affiliate program (5%)";
+        public static readonly string ProjectDonationViaAffiliateProgramDirectDonate = "Project donation via affiliate program (Direct donate 80%)";
+        public static readonly string ProjectDonationViaAffiliateProgramLineA = "Project donation via affiliate program (Line A 10%)";
+        public static readonly string ProjectDonationViaAffiliateProgramLineB = "Project donation via affiliate program (Line B 5%)";
         public static readonly string AssignmentInMatrix = "Assignment in matrix";
         public static readonly string UpgradedMatrix = "Upgraded matrix";
     }
