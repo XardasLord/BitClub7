@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using BC7.Business.Implementation.Jobs;
 using BC7.Business.Implementation.Payments.Commands.Donate;
+using BC7.Business.Implementation.Payments.Commands.DonateViaAffiliateProgram;
 using BC7.Business.Implementation.Payments.Commands.PayMatrixLevel;
 using BC7.Business.Implementation.Payments.Commands.PayMembershipsFee;
 using BC7.Business.Implementation.Payments.Events;
@@ -60,6 +61,18 @@ namespace BC7.Api.Controllers
         /// <response code="200">Returns the Url where the payment can be done</response>
         [HttpPost("donation")]
         public async Task<IActionResult> Donate([FromBody] DonateCommand command)
+        {
+            return Ok(await _mediator.Send(command));
+        }
+
+        /// <summary>
+        /// Donation via affiliate program to the project
+        /// </summary>
+        /// <param name="command">A command with project and amount to donate via affiliate program</param>
+        /// <returns>Returns the Url where the payment can be done</returns>
+        /// <response code="200">Returns the Url where the payment can be done</response>
+        [HttpPost("donationViaAffiliateProgram")]
+        public async Task<IActionResult> DonateViaAffiliateProgram([FromBody] DonateViaAffiliateProgramCommand command)
         {
             return Ok(await _mediator.Send(command));
         }
