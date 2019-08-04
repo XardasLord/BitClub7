@@ -12,6 +12,8 @@ namespace BC7.Business.Implementation.Payments.Commands.Donate
 {
     public class DonateCommandHandler : IRequestHandler<DonateCommand, DonateViewModel>
     {
+        private readonly Guid _rootId = Guid.Parse("441C799C-E2B7-4F1C-B141-DB3C6C1AF034"); // TODO: Move this to the settings
+
         private readonly IUserMultiAccountRepository _userMultiAccountRepository;
         private readonly IPaymentHistoryRepository _paymentHistoryRepository;
         private readonly IBitBayPayFacade _bitBayPayFacade;
@@ -27,7 +29,7 @@ namespace BC7.Business.Implementation.Payments.Commands.Donate
         {
             await ValidateCommand(command);
 
-            var orderId = command.UserMultiAccountId;
+            var orderId = command.UserMultiAccountId ?? _rootId;
             var paymentResponse = await _bitBayPayFacade.CreatePayment(orderId, command.Amount);
 
             ValidateResponse(paymentResponse);
@@ -49,7 +51,12 @@ namespace BC7.Business.Implementation.Payments.Commands.Donate
 
         private async Task ValidateCommand(DonateCommand command)
         {
-            var multiAccount = await _userMultiAccountRepository.GetAsync(command.UserMultiAccountId);
+            if (!command.UserMultiAccountId.HasValue)
+            {
+                return;
+            }
+
+            var multiAccount = await _userMultiAccountRepository.GetAsync(command.UserMultiAccountId.Value);
             if (multiAccount is null)
             {
                 throw new AccountNotFoundException("Multi account with given ID was not found");
