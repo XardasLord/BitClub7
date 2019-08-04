@@ -54,9 +54,9 @@ namespace BC7.Api.Controllers
         }
 
         /// <summary>
-        /// Donation to the project
+        /// Donation to the project or foundation
         /// </summary>
-        /// <param name="command">A command with project and amount to donate</param>
+        /// <param name="command">A command with project and amount to donate. If `UserMultiAccountId` value is not set then donation is for the foundation</param>
         /// <returns>Returns the Url where the payment can be done</returns>
         /// <response code="200">Returns the Url where the payment can be done</response>
         [HttpPost("donation")]
