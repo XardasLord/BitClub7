@@ -77,9 +77,9 @@ namespace BC7.Api.Controllers
         /// <param name="command">Command object contains user ID, title and text of the article</param>
         /// <returns>Returns OK (200)</returns>
         /// <response code="201">Success - returns ID of the newly created article</response>
-        /// <response code="403">Failed - only root users have access</response>
+        /// <response code="403">Failed - only root and admin users have access</response>
         [HttpPost]
-        [Authorize(Roles = "Root")]
+        [Authorize(Roles = "Root, Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Create(CreateArticleCommand command)
@@ -96,9 +96,9 @@ namespace BC7.Api.Controllers
         /// <param name="model">Model with new title and text of article</param>
         /// <returns>Returns NoContent (204)</returns>
         /// <response code="204">Success - article updated</response>
-        /// <response code="403">Failed - only root users have access</response>
+        /// <response code="403">Failed - only root and admin users have access</response>
         [HttpPut("{id}")]
-        [Authorize(Roles = "Root")]
+        [Authorize(Roles = "Root, Admin")]
         public async Task<IActionResult> Update(Guid id, UpdateArticleModel model)
         {
             var command = new UpdateArticleCommand
