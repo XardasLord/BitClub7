@@ -7,7 +7,8 @@ namespace BC7.Domain
 {
     public static class WithdrawalForHelper
     {
-        public static readonly string ProjectDonation = "Project donation";
+	    public static readonly string DonationForFoundation = "Donation for foundation";
+		public static readonly string ProjectDonation = "Project donation";
         public static readonly string ProjectDonationViaAffiliateProgramBc7ConstFee = "Project donation via affiliate program (9.5%)";
         public static readonly string ProjectDonationViaAffiliateProgramBc7DonateFee = "Project donation via affiliate program (5%)";
         public static readonly string ProjectDonationViaAffiliateProgramDirectDonate = "Project donation via affiliate program (Direct donate 80%)";
@@ -19,7 +20,6 @@ namespace BC7.Domain
 
     public class Withdrawal
     {
-
         public Guid Id { get; private set; }
         public Guid? WithdrawalId { get; private set; }
         public Guid UserMultiAccountId { get; private set; }

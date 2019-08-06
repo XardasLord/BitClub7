@@ -24,7 +24,7 @@ namespace BC7.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Seed();
+            //modelBuilder.Seed();
             modelBuilder.Configuration();
         }
 

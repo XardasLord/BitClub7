@@ -11,8 +11,10 @@ using MediatR;
 namespace BC7.Business.Implementation.Payments.Commands.PayMatrixLevel
 {
     public class PayMatrixLevelCommandHandler : IRequestHandler<PayMatrixLevelCommand, string>
-    {
-        private readonly IBitBayPayFacade _bitBayPayFacade;
+	{
+		private readonly Guid _rootId = Guid.Parse("441C799C-E2B7-4F1C-B141-DB3C6C1AF034"); // TODO: Move this to the settings
+
+		private readonly IBitBayPayFacade _bitBayPayFacade;
         private readonly IUserMultiAccountRepository _userAccountDataRepository;
         private readonly IPaymentHistoryRepository _paymentHistoryRepository;
 
@@ -36,7 +38,8 @@ namespace BC7.Business.Implementation.Payments.Commands.PayMatrixLevel
                 id: Guid.NewGuid(),
                 paymentId: paymentResponse.Data.PaymentId,
                 orderId: orderId,
-                amountToPay: command.Amount,
+				userPaymentForId: _rootId,
+				amountToPay: command.Amount,
                 paymentFor: PaymentForHelper.MatrixLevelPositionsDictionary[command.MatrixLevel]
             );
             await _paymentHistoryRepository.CreateAsync(paymentHistory);
