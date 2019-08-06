@@ -29,11 +29,10 @@ namespace BC7.Business.Implementation.Payments.Commands.Donate
         {
             await ValidateCommand(command);
 
-			var isDonationForFoundation = command.UserMultiAccountId.HasValue == false;
-
 			var orderId = command.RequestedUserAccount.Id;
 
 			// If donation is for foundation (command.UserMultiAccountId is null) then we set orderId (id of the user who makes payment) to the requested user ID
+			var isDonationForFoundation = command.UserMultiAccountId.HasValue == false;
 			var userPaymentForId = isDonationForFoundation ? _rootId : command.UserMultiAccountId.Value;
 
 			var paymentResponse = await _bitBayPayFacade.CreatePayment(orderId, command.Amount);
