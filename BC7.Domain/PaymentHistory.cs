@@ -9,7 +9,8 @@ namespace BC7.Domain
     {
         public static readonly string MembershipsFee = "MembershipsFee";
         public static readonly string ProjectDonation = "ProjectDonation";
-        public static readonly string ProjectDonationViaAffiliateProgram = "ProjectDonationViaAffiliateProgram";
+        public static readonly string DonationForFoundation = "DonationForFoundation";
+		public static readonly string ProjectDonationViaAffiliateProgram = "ProjectDonationViaAffiliateProgram";
         public static readonly Dictionary<int, string> MatrixLevelPositionsDictionary = new Dictionary<int, string>
         {
             {0, "MatrixLevel0"},
@@ -32,9 +33,22 @@ namespace BC7.Domain
     public class PaymentHistory
     {
         public Guid Id { get; private set; }
+
+		/// <summary>
+		/// ID of the payment in the external payment system
+		/// </summary>
         public Guid PaymentId { get; private set; }
+
+		/// <summary>
+		/// User who makes payment
+		/// </summary>
         public Guid OrderId { get; private set; }
-        public decimal AmountToPay { get; private set; }
+
+		/// <summary>
+		/// User for whom payment is done
+		/// </summary>
+        public Guid UserPaymentForId { get; private set; }
+		public decimal AmountToPay { get; private set; }
         public decimal? PaidAmount { get; private set; }
         public string Status { get; private set; }
         public string PaymentFor { get; private set; }
@@ -44,13 +58,14 @@ namespace BC7.Domain
         {
         }
 
-        public PaymentHistory(Guid id, Guid paymentId, Guid orderId, decimal amountToPay, string paymentFor)
+        public PaymentHistory(Guid id, Guid paymentId, Guid orderId, Guid userPaymentForId, decimal amountToPay, string paymentFor)
         {
-            ValidateDomain(id, paymentId, orderId, amountToPay, paymentFor);
+            ValidateDomain(id, paymentId, orderId, userPaymentForId, amountToPay, paymentFor);
 
             Id = id;
             PaymentId = paymentId;
             OrderId = orderId;
+            UserPaymentForId = userPaymentForId;
             AmountToPay = amountToPay;
             PaidAmount = null;
             Status = PaymentStatusHelper.NotPaid;
@@ -58,7 +73,7 @@ namespace BC7.Domain
             CreatedAt = DateTime.UtcNow;
         }
 
-        private static void ValidateDomain(Guid id, Guid paymentId, Guid orderId, decimal amountToPay, string paymentFor)
+        private static void ValidateDomain(Guid id, Guid paymentId, Guid orderId, Guid userPaymentForId, decimal amountToPay, string paymentFor)
         {
             if (id == Guid.Empty)
             {
@@ -66,13 +81,17 @@ namespace BC7.Domain
             }
             if (paymentId == Guid.Empty)
             {
-                throw new DomainException("Invalid paymentId.");
+                throw new DomainException($"Invalid {nameof(paymentId)}.");
             }
             if (orderId == Guid.Empty)
             {
-                throw new DomainException("Invalid orderId.");
-            }
-            if (amountToPay <= 0)
+                throw new DomainException($"Invalid {nameof(orderId)}.");
+			}
+			if (userPaymentForId == Guid.Empty)
+			{
+				throw new DomainException($"Invalid {nameof(userPaymentForId)}.");
+			}
+			if (amountToPay <= 0)
             {
                 throw new DomainException($"Invalid amountToPay value: {amountToPay}");
             }

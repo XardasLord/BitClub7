@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BC7.Business.Implementation.Jobs;
 using BC7.Business.Implementation.Payments.Events;
 using BC7.Business.Implementation.Tests.Integration.Base;
 using BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator;
@@ -20,14 +21,14 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Payment
     )]
     public class PaymentStatusChangedTest : BaseIntegration
     {
-        private PaymentStatusChangedEventHandler _sut;
+        private PaymentStatusChangedEventJob _sut;
         private PaymentStatusChangedEvent _event;
 
         void GivenSystemUnderTest()
         {
             var backgroundJobClient = new Mock<IBackgroundJobClient>();
 
-            _sut = new PaymentStatusChangedEventHandler(_paymentHistoryRepository, _userAccountDataRepository, _userMultiAccountRepository, backgroundJobClient.Object);
+            _sut = new PaymentStatusChangedEventJob(_paymentHistoryRepository, _userAccountDataRepository, backgroundJobClient.Object);
         }
 
         async Task AndGivenPaymentAndUserAccountInDatabase()
@@ -65,7 +66,7 @@ namespace BC7.Business.Implementation.Tests.Integration.Tests.Payment
 
         async Task WhenHandlerHandlesTheEvent()
         {
-            await _sut.Handle(_event);
+            await _sut.Execute(_event, null);
         }
 
         async Task ThenPaymentInDatabaseHasPaidStatusAndPaidAmountValueSetCorrectly()

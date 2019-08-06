@@ -37,6 +37,7 @@ namespace BC7.Business.Implementation.Tests.Integration.FakerSeedGenerator
                     id: Guid.NewGuid(),
                     paymentId: Guid.NewGuid(),
                     orderId: Guid.NewGuid(),
+					userPaymentForId: Guid.NewGuid(), 
                     amountToPay: f.Finance.Amount(0.01M, 10M),
                     paymentFor: PaymentForHelper.MembershipsFee));
         }

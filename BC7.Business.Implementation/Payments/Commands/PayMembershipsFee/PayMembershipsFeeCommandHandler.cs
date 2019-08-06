@@ -11,8 +11,10 @@ using MediatR;
 namespace BC7.Business.Implementation.Payments.Commands.PayMembershipsFee
 {
     public class PayMembershipsFeeCommandHandler : IRequestHandler<PayMembershipsFeeCommand, string>
-    {
-        private readonly IBitBayPayFacade _bitBayPayFacade;
+	{
+		private readonly Guid _rootId = Guid.Parse("441C799C-E2B7-4F1C-B141-DB3C6C1AF034"); // TODO: Move this to the settings
+
+		private readonly IBitBayPayFacade _bitBayPayFacade;
         private readonly IUserAccountDataRepository _userAccountDataRepository;
         private readonly IPaymentHistoryRepository _paymentHistoryRepository;
 
@@ -36,7 +38,8 @@ namespace BC7.Business.Implementation.Payments.Commands.PayMembershipsFee
                 id: Guid.NewGuid(),
                 paymentId: paymentResponse.Data.PaymentId,
                 orderId: orderId,
-                amountToPay: command.Amount,
+                userPaymentForId: _rootId,
+				amountToPay: command.Amount,
                 paymentFor: PaymentForHelper.MembershipsFee
             );
             await _paymentHistoryRepository.CreateAsync(paymentHistory);
