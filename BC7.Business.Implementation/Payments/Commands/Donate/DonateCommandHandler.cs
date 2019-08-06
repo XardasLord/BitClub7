@@ -11,10 +11,10 @@ using MediatR;
 namespace BC7.Business.Implementation.Payments.Commands.Donate
 {
     public class DonateCommandHandler : IRequestHandler<DonateCommand, DonateViewModel>
-    {
-        private readonly Guid _rootId = Guid.Parse("441C799C-E2B7-4F1C-B141-DB3C6C1AF034"); // TODO: Move this to the settings
+	{
+		private readonly Guid _rootId = Guid.Parse("441C799C-E2B7-4F1C-B141-DB3C6C1AF034"); // TODO: Move this to the settings
 
-        private readonly IUserMultiAccountRepository _userMultiAccountRepository;
+		private readonly IUserMultiAccountRepository _userMultiAccountRepository;
         private readonly IPaymentHistoryRepository _paymentHistoryRepository;
         private readonly IBitBayPayFacade _bitBayPayFacade;
 
@@ -29,8 +29,14 @@ namespace BC7.Business.Implementation.Payments.Commands.Donate
         {
             await ValidateCommand(command);
 
-            var orderId = command.UserMultiAccountId ?? _rootId;
-            var paymentResponse = await _bitBayPayFacade.CreatePayment(orderId, command.Amount);
+			var isDonationForFoundation = command.UserMultiAccountId.HasValue == false;
+
+			var orderId = command.RequestedUserAccount.Id;
+
+			// If donation is for foundation (command.UserMultiAccountId is null) then we set orderId (id of the user who makes payment) to the requested user ID
+			var userPaymentForId = isDonationForFoundation ? _rootId : command.UserMultiAccountId.Value;
+
+			var paymentResponse = await _bitBayPayFacade.CreatePayment(orderId, command.Amount);
 
             ValidateResponse(paymentResponse);
 
@@ -38,8 +44,9 @@ namespace BC7.Business.Implementation.Payments.Commands.Donate
                 id: Guid.NewGuid(),
                 paymentId: paymentResponse.Data.PaymentId,
                 orderId: orderId,
-                amountToPay: command.Amount,
-                paymentFor: PaymentForHelper.ProjectDonation
+				userPaymentForId: userPaymentForId,
+				amountToPay: command.Amount,
+                paymentFor: command.UserMultiAccountId.HasValue ? PaymentForHelper.ProjectDonation : PaymentForHelper.DonationForFoundation
             );
             await _paymentHistoryRepository.CreateAsync(paymentHistory);
 

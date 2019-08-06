@@ -54,7 +54,9 @@ namespace BC7.Business.Implementation.Payments.Events
                 case "MatrixLevel5":
                 case "MatrixLevel6": // TODO: Auto-upgrade on status change
                     return Task.CompletedTask;
-                case "ProjectDonation":
+                case "DonationForFoundation":
+	                return DonationForFoundationPaid(orderId, paymentId);
+				case "ProjectDonation":
                     return ProjectDonationPaid(orderId, paymentId);
                 case "ProjectDonationViaAffiliateProgram":
                     return ProjectDonationViaAffiliateProgramPaid(orderId, paymentId);
@@ -73,9 +75,29 @@ namespace BC7.Business.Implementation.Payments.Events
 
             userAccount.PaidMembershipFee();
             await _userAccountDataRepository.UpdateAsync(userAccount);
-        }
+		}
 
-        private async Task ProjectDonationPaid(Guid orderId, Guid paymentId)
+        private async Task DonationForFoundationPaid(Guid orderId, Guid paymentId)
+		{
+			var multiAccount = await _userMultiAccountRepository.GetAsync(orderId);
+			if (multiAccount is null)
+			{
+				throw new ValidationException($"Cannot find the MultiAccount from PaymentHistory with OrderId: {orderId}");
+			}
+
+			var payment = await _paymentHistoryRepository.GetAsync(paymentId);
+
+			var projectDonatedModel = new DonationForFoundationModel
+			{
+				DonatedUserMultiAccountId = payment.UserPaymentForId,
+				Amount = payment.AmountToPay
+			};
+
+			_backgroundJobClient.Enqueue<DonationForFoundationJob>(
+				job => job.Execute(projectDonatedModel, null));
+		}
+
+		private async Task ProjectDonationPaid(Guid orderId, Guid paymentId)
         {
             var multiAccount = await _userMultiAccountRepository.GetAsync(orderId);
             if (multiAccount is null)
@@ -87,7 +109,7 @@ namespace BC7.Business.Implementation.Payments.Events
 
             var projectDonatedModel = new ProjectDonatedModel
             {
-                DonatedUserMultiAccountId = orderId,
+                DonatedUserMultiAccountId = payment.UserPaymentForId,
                 Amount = payment.AmountToPay
             };
 
@@ -107,7 +129,7 @@ namespace BC7.Business.Implementation.Payments.Events
 
             var projectDonatedViaAffiliateProgramModel = new ProjectDonatedModelViaAffiliateProgramModel
             {
-                DonatedUserMultiAccountId = orderId,
+                DonatedUserMultiAccountId = payment.UserPaymentForId,
                 Amount = payment.AmountToPay
             };
 

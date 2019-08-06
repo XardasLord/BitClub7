@@ -27,8 +27,10 @@ namespace BC7.Business.Implementation.Payments.Commands.DonateViaAffiliateProgra
         {
             await ValidateCommand(command);
 
-            var orderId = command.UserMultiAccountId;
-            var paymentResponse = await _bitBayPayFacade.CreatePayment(orderId, command.Amount);
+            var orderId = command.RequestedUserAccount.Id;
+            var userPaymentForId = command.UserMultiAccountId;
+
+			var paymentResponse = await _bitBayPayFacade.CreatePayment(orderId, command.Amount);
 
             ValidateResponse(paymentResponse);
 
@@ -36,7 +38,8 @@ namespace BC7.Business.Implementation.Payments.Commands.DonateViaAffiliateProgra
                 id: Guid.NewGuid(),
                 paymentId: paymentResponse.Data.PaymentId,
                 orderId: orderId,
-                amountToPay: command.Amount,
+				userPaymentForId: userPaymentForId,
+				amountToPay: command.Amount,
                 paymentFor: PaymentForHelper.ProjectDonationViaAffiliateProgram
             );
             await _paymentHistoryRepository.CreateAsync(paymentHistory);

@@ -1,10 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using BC7.Business.Implementation.Jobs;
 using BC7.Business.Implementation.Payments.Commands.Donate;
 using BC7.Business.Implementation.Payments.Commands.DonateViaAffiliateProgram;
 using BC7.Business.Implementation.Payments.Commands.PayMatrixLevel;
 using BC7.Business.Implementation.Payments.Commands.PayMembershipsFee;
 using BC7.Business.Implementation.Payments.Events;
+using BC7.Business.Models;
 using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -56,25 +60,39 @@ namespace BC7.Api.Controllers
         /// <summary>
         /// Donation to the project or foundation
         /// </summary>
-        /// <param name="command">A command with project and amount to donate. If `UserMultiAccountId` value is not set then donation is for the foundation</param>
+        /// <param name="model">A model with project and amount to donate. If `UserMultiAccountId` value is not set then donation is for the foundation</param>
         /// <returns>Returns the Url where the payment can be done</returns>
         /// <response code="200">Returns the Url where the payment can be done</response>
         [HttpPost("donation")]
-        public async Task<IActionResult> Donate([FromBody] DonateCommand command)
+        public async Task<IActionResult> Donate([FromBody] DonateModel model)
         {
+	        var command = new DonateCommand
+	        {
+				Amount = model.Amount,
+				UserMultiAccountId = model.UserMultiAccountId,
+				RequestedUserAccount = GetLoggerUserFromJwt()
+	        };
+
             return Ok(await _mediator.Send(command));
         }
 
         /// <summary>
         /// Donation via affiliate program to the project
         /// </summary>
-        /// <param name="command">A command with project and amount to donate via affiliate program</param>
+        /// <param name="model">A model with project and amount to donate via affiliate program</param>
         /// <returns>Returns the Url where the payment can be done</returns>
         /// <response code="200">Returns the Url where the payment can be done</response>
         [HttpPost("donationViaAffiliateProgram")]
-        public async Task<IActionResult> DonateViaAffiliateProgram([FromBody] DonateViaAffiliateProgramCommand command)
+        public async Task<IActionResult> DonateViaAffiliateProgram([FromBody] DonateViaAffiliateProgramModel model)
         {
-            return Ok(await _mediator.Send(command));
+	        var command = new DonateViaAffiliateProgramCommand
+	        {
+				Amount = model.Amount,
+				UserMultiAccountId = model.UserMultiAccountId,
+				RequestedUserAccount = GetLoggerUserFromJwt()
+	        };
+
+	        return Ok(await _mediator.Send(command));
         }
 
         /// <summary>
@@ -91,6 +109,17 @@ namespace BC7.Api.Controllers
                 job => job.Execute(@event, null));
 
             return Ok();
+		}
+
+        private LoggedUserModel GetLoggerUserFromJwt()
+        {
+	        var claims = HttpContext.User.Claims.ToList();
+
+	        var id = claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid)?.Value;
+	        var email = claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+	        var role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+
+	        return new LoggedUserModel(Guid.Parse(id), email, role);
         }
-    }
+	}
 }
