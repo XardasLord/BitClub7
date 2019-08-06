@@ -45,7 +45,7 @@ namespace BC7.Business.Implementation.Payments.Commands.Donate
                 orderId: orderId,
 				userPaymentForId: userPaymentForId,
 				amountToPay: command.Amount,
-                paymentFor: command.UserMultiAccountId.HasValue ? PaymentForHelper.ProjectDonation : PaymentForHelper.DonationForFoundation
+                paymentFor: isDonationForFoundation ? PaymentForHelper.DonationForFoundation : PaymentForHelper.ProjectDonation
             );
             await _paymentHistoryRepository.CreateAsync(paymentHistory);
 
