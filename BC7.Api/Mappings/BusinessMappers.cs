@@ -39,7 +39,8 @@ namespace BC7.Api.Mappings
                 .ForMember(x => x.AccountsInMatrixTotalCount, opt => opt.Ignore());
 
             CreateMap<PaymentHistory, PaymentHistoryModel>()
-                .ForMember(x => x.AccountName, opt => opt.Ignore()); // TODO: PaymentFor better display?
+                .ForMember(x => x.AccountName, opt => opt.Ignore()) // TODO: PaymentFor better display?
+                .ForMember(x => x.IsPaid, opt => opt.MapFrom(y => y.Status == "PAID" || y.Status == "COMPLETED"));
 
             CreateMap<Withdrawal, WithdrawalModel>()
                 .ForMember(x => x.IsWithdrawn, opt => opt.MapFrom(y => y.WithdrawnAt.HasValue))
