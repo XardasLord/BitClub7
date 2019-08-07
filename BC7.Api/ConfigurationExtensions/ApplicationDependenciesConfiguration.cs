@@ -15,8 +15,10 @@ namespace BC7.Api.ConfigurationExtensions
     public static class ApplicationDependenciesConfiguration
     {
         public static IServiceCollection ConfigureApplicationDependencies(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddTransient<IReflinkHelper, ReflinkHelper>();
+		{
+			services.AddScoped<IUserInfoProvider, UserInfoProvider>();
+
+			services.AddTransient<IReflinkHelper, ReflinkHelper>();
             services.AddTransient<IUserMultiAccountHelper, UserMultiAccountHelper>();
             services.AddTransient<IUserAccountDataHelper, UserAccountDataHelper>();
             services.AddTransient<IMatrixPositionHelper, MatrixPositionHelper>();

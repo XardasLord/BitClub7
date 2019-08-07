@@ -8,7 +8,11 @@ namespace BC7.Business.Models
         public string Email { get; set; }
         public string Role { get; set; }
 
-        public LoggedUserModel(Guid id, string email, string role)
+        public LoggedUserModel()
+        {
+        }
+
+		public LoggedUserModel(Guid id, string email, string role)
         {
             Id = id;
             Email = email;

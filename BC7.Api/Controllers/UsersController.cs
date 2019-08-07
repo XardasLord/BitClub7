@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using BC7.Business.Helpers;
 using BC7.Business.Implementation.Files.Commands.UploadFile;
 using BC7.Business.Implementation.Users.Commands.ChangeAvatar;
 using BC7.Business.Implementation.Users.Commands.CreateMultiAccount;
@@ -23,16 +23,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BC7.Api.Controllers
 {
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
+        private readonly IUserInfoProvider _userInfoProvider;
 
-        public UsersController(IMediator mediator, IMapper mapper)
+        public UsersController(IMediator mediator, IMapper mapper, IUserInfoProvider userInfoProvider)
         {
             _mediator = mediator;
             _mapper = mapper;
+            _userInfoProvider = userInfoProvider;
         }
 
         /// <summary>
@@ -194,22 +196,11 @@ namespace BC7.Api.Controllers
             var command = _mapper.Map<UpdateUserCommand>(model);
 
             command.UserId = id;
-            command.RequestedUser = GetLoggerUserFromJwt();
+            command.RequestedUser = _userInfoProvider.GetUserInfo();
 
             await _mediator.Send(command);
 
             return NoContent();
-        }
-
-        private LoggedUserModel GetLoggerUserFromJwt()
-        {
-            var claims = HttpContext.User.Claims.ToList();
-
-            var id = claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid)?.Value;
-            var email = claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-            var role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-
-            return new LoggedUserModel(Guid.Parse(id), email, role);
         }
     }
 }

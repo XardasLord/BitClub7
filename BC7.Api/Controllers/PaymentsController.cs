@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using BC7.Business.Helpers;
 using BC7.Business.Implementation.Jobs;
 using BC7.Business.Implementation.Payments.Commands.Donate;
 using BC7.Business.Implementation.Payments.Commands.DonateViaAffiliateProgram;
@@ -16,17 +14,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BC7.Api.Controllers
 {
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
     [ApiController]
     public class PaymentsController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly IBackgroundJobClient _backgroundJobClient;
+        private readonly IUserInfoProvider _userInfoProvider;
 
-        public PaymentsController(IMediator mediator, IBackgroundJobClient backgroundJobClient)
+        public PaymentsController(IMediator mediator, IBackgroundJobClient backgroundJobClient, IUserInfoProvider userInfoProvider)
         {
             _mediator = mediator;
             _backgroundJobClient = backgroundJobClient;
+            _userInfoProvider = userInfoProvider;
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace BC7.Api.Controllers
 	        {
 				Amount = model.Amount,
 				UserMultiAccountId = model.UserMultiAccountId,
-				RequestedUserAccount = GetLoggerUserFromJwt()
+				RequestedUserAccount = _userInfoProvider.GetUserInfo()
 	        };
 
             return Ok(await _mediator.Send(command));
@@ -89,8 +89,8 @@ namespace BC7.Api.Controllers
 	        {
 				Amount = model.Amount,
 				UserMultiAccountId = model.UserMultiAccountId,
-				RequestedUserAccount = GetLoggerUserFromJwt()
-	        };
+				RequestedUserAccount = _userInfoProvider.GetUserInfo()
+	};
 
 	        return Ok(await _mediator.Send(command));
         }
@@ -110,16 +110,5 @@ namespace BC7.Api.Controllers
 
             return Ok();
 		}
-
-        private LoggedUserModel GetLoggerUserFromJwt()
-        {
-	        var claims = HttpContext.User.Claims.ToList();
-
-	        var id = claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid)?.Value;
-	        var email = claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-	        var role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-
-	        return new LoggedUserModel(Guid.Parse(id), email, role);
-        }
 	}
 }
