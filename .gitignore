@@ -251,3 +251,8 @@ logs.txt
 *.StyleCop
 >>>>>>> feature/guid-order-generator
 logs/internal-nlog.txt
+
+BC7.Api/appsettings.Docker.json
+BC7.Api/appsettings.Development.json
+BC7.Api/appsettings.Test.json
+BC7.Api/appsettings.Production.json
